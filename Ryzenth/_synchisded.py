@@ -21,6 +21,7 @@ import logging
 
 import httpx
 from box import Box
+
 from Ryzenth.types import QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] sync")
