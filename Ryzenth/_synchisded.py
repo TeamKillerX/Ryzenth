@@ -30,8 +30,9 @@ class RyzenthXSync:
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {"x-api-key": self.api_key}
+        self.images = self.ImagesSync(self)
 
-    class ImagesAsync:
+    class ImagesSync:
         def __init__(self, parent):
             self.parent = parent
 
