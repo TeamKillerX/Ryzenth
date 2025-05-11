@@ -23,12 +23,12 @@ from Ryzenth._synchisded import RyzenthXSync
 from Ryzenth._asynchisded import RyzenthXAsync
 
 class ApiKeyFrom:
-    def __init__(self, api_key: str):
-        self.api_key = api_key
+    def __init__(self, api_key: str = None):
         if not api_key:
-            api_key = os.environ["RYZENTH_API_KEY"]
+            api_key = os.environ.get("RYZENTH_API_KEY")
+        self.api_key = api_key
         self.aio = RyzenthXAsync(api_key)
         self._sync = RyzenthXSync(api_key)
 
-    def something():
+    def something(self):
         pass
