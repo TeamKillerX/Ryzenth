@@ -32,8 +32,6 @@ class RyzenthXSync:
         self.headers = {"x-api-key": self.api_key}
 
     def send_downloader(self, switch_name: str = None, params: QueryParameter = None, list_key=False):
-        if not switch_name:
-            raise ValueError(f"required name use list_key=True list")
         dl_dict = {
             "teraboxv4": "terabox-v4",
             "twitterv3": "twitter-v3",
@@ -49,14 +47,18 @@ class RyzenthXSync:
             "snapsave": "snapsave",
             "savefrom": "savefrom"
         }
-        switch_name = dl_dict.get(switch_name)
-        if not switch_name:
-            raise ValueError(f"Invalid name: {switch_name}")
         if list_key:
-            return dl_dict.keys()
+            return list(dl_dict.keys())
+            
+        if not switch_name:
+            raise ValueError("`switch_name` is required. Use `list_key=True` to see all valid options.")
+            
+        model_name = dl_dict.get(switch_name)
+        if not model_name:
+            raise ValueError(f"Invalid switch_name: {switch_name}")
         try:
             response = httpx.get(
-                f"{self.base_url}v1/dl/{switch_name}",
+                f"{self.base_url}v1/dl/{model_name}",
                 params=params.dict(),
                 headers=self.headers,
                 timeout=10
@@ -67,7 +69,7 @@ class RyzenthXSync:
             LOGS.error(f"[SYNC] Error fetching from model '{model_param}': {e}")
             return None
 
-    def send_message(self, model: str, params: QueryParameter):
+    def send_message(self, model: str = None, params: QueryParameter = None, list_key=False):
         model_dict = {
             "hybrid": "AkenoX-1.9-Hybrid",
             "melayu": "lu-melayu",
@@ -79,6 +81,12 @@ class RyzenthXSync:
             "lirikend": "lirik-end",
             "alsholawat": "al-sholawat"
         }
+        if list_key:
+            return list(model_dict.keys())
+
+        if not model:
+            raise ValueError("`model` is required. Use `list_key=True` to see all valid options.")
+
         model_param = model_dict.get(model)
         if not model_param:
             raise ValueError(f"Invalid model name: {model}")
