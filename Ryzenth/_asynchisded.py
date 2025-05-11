@@ -30,6 +30,19 @@ class RyzenthXAsync:
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {"x-api-key": self.api_key}
+        self.images = self.ImagesAsync(self)
+
+    class ImagesAsync:
+        def __init__(self, parent):
+            self.parent = parent
+
+        async def generate(self, params: QueryParameter):
+            url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
+
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url, params=params, headers=self.parent.headers, timeout=30)
+                response.raise_for_status()
+                return response.read()
 
     async def send_downloader(self, switch_name: str = None, params: QueryParameter = None, list_key=False):
         dl_dict = {
