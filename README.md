@@ -25,9 +25,9 @@ pip install ryzenth[fast]
 from Ryzenth import ApiKeyFrom
 from Ryzenth.types import QueryParameter
 
-ryz = ApiKeyFrom("akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC")
+ryz = ApiKeyFrom("your-api-key")
 
-ok = await ryz.aio.send_message(
+await ryz.aio.send_message(
     "hybrid",
     QueryParameter(
         query="hello world!"
