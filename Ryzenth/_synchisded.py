@@ -66,7 +66,7 @@ class RyzenthXSync:
             response.raise_for_status()
             return response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from model '{model_param}': {e}")
+            LOGS.error(f"[SYNC] Error fetching from model '{model_name}': {e}")
             return None
 
     def send_message(self, model: str = None, params: QueryParameter = None, list_key=False):
