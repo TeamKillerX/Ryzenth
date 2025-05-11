@@ -31,6 +31,42 @@ class RyzenthXSync:
         self.base_url = base_url.rstrip("/")
         self.headers = {"x-api-key": self.api_key}
 
+    def send_downloader(self, switch_name: str = None, params: QueryParameter = None, list_key=False):
+        if not switch_name:
+            raise ValueError(f"required name use list_key=True list")
+        dl_dict = {
+            "teraboxv4": "terabox-v4",
+            "twitterv3": "twitter-v3",
+            "xnxxinfov2": "xnxx-info-v2",
+            "instagramv4": "instagram-v4",
+            "instagramv3": "instagram-v3",
+            "instagramv2": "instagram-v2",
+            "instagram": "instagram",
+            "twitter": "twitter",
+            "tiktok": "tiktok",
+            "tiktokv2": "tiktok-v2",
+            "facebook": "fb",
+            "snapsave": "snapsave",
+            "savefrom": "savefrom"
+        }
+        switch_name = dl_dict.get(switch_name)
+        if not switch_name:
+            raise ValueError(f"Invalid name: {switch_name}")
+        if list_key:
+            return dl_dict.keys()
+        try:
+            response = httpx.get(
+                f"{self.base_url}v1/dl/{switch_name}",
+                params=params.dict(),
+                headers=self.headers,
+                timeout=10
+            )
+            response.raise_for_status()
+            return response.json()
+        except httpx.HTTPError as e:
+            LOGS.error(f"[SYNC] Error fetching from model '{model_param}': {e}")
+            return None
+
     def send_message(self, model: str, params: QueryParameter):
         model_dict = {
             "hybrid": "AkenoX-1.9-Hybrid",
