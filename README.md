@@ -25,11 +25,14 @@ pip install ryzenth[fast]
 from Ryzenth import ApiKeyFrom
 from Ryzenth.types import QueryParameter
 
-ryz = ApiKeyFrom("your-api-key")
-await ryz.aio.send_message(
-    model="hybrid",
-    QueryParameter(query="hello world!")
- )
+ryz = ApiKeyFrom("akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC")
+
+ok = await ryz.aio.send_message(
+    "hybrid",
+    QueryParameter(
+        query="hello world!"
+    )
+)
 ```
 
 ### Sync Example
@@ -40,9 +43,11 @@ from Ryzenth.types import QueryParameter
 
 ryz = ApiKeyFrom("your-api-key")
 ryz._sync.send_message(
-    model="hybrid",
-    QueryParameter(query="hello world!")
- )
+    "hybrid",
+    QueryParameter(
+        query="hello world!"
+    )
+)
 ```
 
 ## Environment Variable Support
