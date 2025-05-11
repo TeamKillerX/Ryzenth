@@ -42,7 +42,7 @@ class RyzenthXAsync:
             async with httpx.AsyncClient() as client:
                 response = await client.get(url, params=params, headers=self.parent.headers, timeout=30)
                 response.raise_for_status()
-                return response.read()
+                return response.content
 
     async def send_downloader(self, switch_name: str = None, params: QueryParameter = None, list_key=False):
         dl_dict = {
