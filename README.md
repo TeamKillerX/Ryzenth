@@ -25,7 +25,7 @@ pip install ryzenth
 from Ryzenth import ApiKeyFrom
 
 ryz = ApiKeyFrom("your-api-key")
-await ryz.aio.send_message("Hello from Ryzenth!")
+await ryz.aio.send_message_hybrid("Hello from Ryzenth!")
 ```
 
 ### Sync Example
@@ -34,7 +34,7 @@ await ryz.aio.send_message("Hello from Ryzenth!")
 from Ryzenth import ApiKeyFrom
 
 ryz = ApiKeyFrom("your-api-key")
-ryz._sync.send_message("Hello from Ryzenth (sync)!")
+ryz._sync.send_message_hybrid("Hello from Ryzenth (sync)!")
 ```
 
 ## Environment Variable Support
