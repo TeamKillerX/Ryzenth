@@ -49,10 +49,10 @@ class RyzenthXAsync:
         }
         if list_key:
             return list(dl_dict.keys())
-            
+
         if not switch_name:
             raise ValueError("`switch_name` is required. Use `list_key=True` to see all valid options.")
-            
+
         model_name = dl_dict.get(switch_name)
         if not model_name:
             raise ValueError(f"Invalid switch_name: {switch_name}")

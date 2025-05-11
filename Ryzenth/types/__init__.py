@@ -18,8 +18,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from typing import Optional, Any
+from typing import Any, Optional
+
 from pydantic import BaseModel
+
 
 class QueryParameter(BaseModel):
     query: Optional[str] = None
