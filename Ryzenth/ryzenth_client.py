@@ -19,8 +19,9 @@
 
 import os
 
-from Ryzenth._synchisded import RyzenthXSync
 from Ryzenth._asynchisded import RyzenthXAsync
+from Ryzenth._synchisded import RyzenthXSync
+
 
 class ApiKeyFrom:
     def __init__(self, api_key: str = None):

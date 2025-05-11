@@ -17,20 +17,40 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from Ryzenth.types import *
+import logging
+
 import httpx
 
-class RyzenthXAsync:
-    def __init__(self, api_key, base_url="https://randydev-ryu-js.hf.space/api"):
-        self.api_key = api_key
-        self.base_url = base_url
-        self.headers = {"x-api-key": f"{self.api_key}"}
+from Ryzenth.types import QueryParameter
 
-    async def send_message_hybrid(self, text: str):
+LOGS = logging.getLogger("[Ryzenth] async")
+
+class RyzenthXAsync:
+    def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
+        self.api_key = api_key
+        self.base_url = base_url.rstrip("/")
+        self.headers = {"x-api-key": self.api_key}
+
+    async def send_message(self, model: str, params: QueryParameter):
+        model_dict = {
+            "hybrid": "AkenoX-1.9-Hybrid",
+            "melayu": "lu-melayu",
+            "nocodefou": "nocodefou",
+            "mia": "mia-khalifah",
+            "curlmcode": "curl-command-code",
+            "quotessad": "quotes-sad",
+            "quoteslucu": "quotes-lucu",
+            "lirikend": "lirik-end",
+            "alsholawat": "al-sholawat"
+        }
+        model_param = model_dict.get(model)
+        if not model_param:
+            raise ValueError(f"Invalid model name: {model}")
+
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
-                    f"{self.base_url}/v1/ai/akenox/AkenoX-1.9-Hybrid",
+                    f"{self.base_url}/v1/ai/akenox/{model_param}",
                     params=params.dict(),
                     headers=self.headers,
                     timeout=10
@@ -38,5 +58,5 @@ class RyzenthXAsync:
                 response.raise_for_status()
                 return response.json()
             except httpx.HTTPError as e:
-                print(f"[ASYNC] Error: {e}")
+                LOGS.error(f"[ASYNC] Error: {str(e)}")
                 return None
