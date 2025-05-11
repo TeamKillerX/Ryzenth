@@ -38,11 +38,14 @@ class RyzenthXAsync:
 
         async def generate(self, params: QueryParameter):
             url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
-
             async with httpx.AsyncClient() as client:
-                response = await client.get(url, params=params, headers=self.parent.headers, timeout=30)
-                response.raise_for_status()
-                return response.content
+                try:
+                    response = await client.get(url, params=params.dict(), headers=self.parent.headers, timeout=30)
+                    response.raise_for_status()
+                    return response.content
+                except httpx.HTTPError as e:
+                    LOGS.error(f"[ASYNC] Error: {str(e)}")
+                    return None
 
     async def send_downloader(self, switch_name: str = None, params: QueryParameter = None, list_key=False):
         dl_dict = {
