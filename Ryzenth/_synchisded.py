@@ -17,9 +17,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from Ryzenth.types import QueryParameter
-import httpx
 import logging
+
+import httpx
+
+from Ryzenth.types import QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] sync")
 

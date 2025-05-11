@@ -18,8 +18,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from . import *
-from .ryzenth_client import ApiKeyFrom
 from .__version__ import __version__
+from .ryzenth_client import ApiKeyFrom
 
 __all__ = [
   "ApiKeyFrom"
