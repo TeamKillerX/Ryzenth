@@ -58,7 +58,7 @@ class RyzenthXSync:
             raise ValueError(f"Invalid switch_name: {switch_name}")
         try:
             response = httpx.get(
-                f"{self.base_url}v1/dl/{model_name}",
+                f"{self.base_url}/v1/dl/{model_name}",
                 params=params.dict(),
                 headers=self.headers,
                 timeout=10
@@ -66,7 +66,7 @@ class RyzenthXSync:
             response.raise_for_status()
             return response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from model '{model_name}': {e}")
+            LOGS.error(f"[SYNC] Error fetching from downloader {e}")
             return None
 
     def send_message(self, model: str = None, params: QueryParameter = None, list_key=False):
@@ -101,5 +101,5 @@ class RyzenthXSync:
             response.raise_for_status()
             return response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from model '{model_param}': {e}")
+            LOGS.error(f"[SYNC] Error fetching from akenox: {e}")
             return None

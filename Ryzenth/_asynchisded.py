@@ -60,7 +60,7 @@ class RyzenthXAsync:
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
-                    f"{self.base_url}v1/dl/{model_name}",
+                    f"{self.base_url}/v1/dl/{model_name}",
                     params=params.dict(),
                     headers=self.headers,
                     timeout=10
