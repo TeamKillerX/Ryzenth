@@ -20,13 +20,17 @@
 from Ryzenth.types import *
 import httpx
 
+import logging
+
+LOGS = logging.getLogger("[Ryzenth] async")
+
 class RyzenthXAsync:
     def __init__(self, api_key, base_url="https://randydev-ryu-js.hf.space/api"):
         self.api_key = api_key
         self.base_url = base_url
         self.headers = {"x-api-key": f"{self.api_key}"}
 
-    async def send_message_hybrid(self, text: str):
+    async def send_message_hybrid(self, params: HybridParams):
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
@@ -38,5 +42,5 @@ class RyzenthXAsync:
                 response.raise_for_status()
                 return response.json()
             except httpx.HTTPError as e:
-                print(f"[ASYNC] Error: {e}")
+                LOGS.error(f"[ASYNC] Error: {str(e)}")
                 return None
