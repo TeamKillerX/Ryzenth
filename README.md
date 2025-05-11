@@ -1,6 +1,6 @@
 # Ryzenth Library
 
-**Ryzenth** is a powerful and flexible Python SDK for interacting with the new **Ryzenth API** — a successor to the AkenoX API — supporting both synchronous and asynchronous workflows out of the box.
+**Ryzenth** is a powerful and flexible Python SDK for interacting with the new **Ryzenth API**  a successor to the AkenoX API supporting both synchronous and asynchronous workflows out of the box.
 
 > Note: AkenoX API is still alive and supported, but Ryzenth is the next generation.
 
@@ -14,7 +14,7 @@
 ## Installation
 
 ```bash
-pip install ryzenth
+pip install ryzenth[fast]
 ````
 
 ## Getting Started
@@ -23,21 +23,30 @@ pip install ryzenth
 
 ```python
 from Ryzenth import ApiKeyFrom
+from Ryzenth.types import QueryParameter
 
 ryz = ApiKeyFrom("your-api-key")
-await ryz.aio.send_message_hybrid("Hello from Ryzenth!")
+await ryz.aio.send_message(
+    model="hybrid",
+    QueryParameter(query="hello world!")
+ )
 ```
 
 ### Sync Example
 
 ```python
 from Ryzenth import ApiKeyFrom
+from Ryzenth.types import QueryParameter
 
 ryz = ApiKeyFrom("your-api-key")
-ryz._sync.send_message_hybrid("Hello from Ryzenth (sync)!")
+ryz._sync.send_message(
+    model="hybrid",
+    QueryParameter(query="hello world!")
+ )
 ```
 
 ## Environment Variable Support
+- Available API key v2 via [`@aknuserbot`](https://t.me/aknuserbot)
 
 You can skip passing the API key directly by setting it via environment:
 
