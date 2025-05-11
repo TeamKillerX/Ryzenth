@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2021-2025 (c) Randy W @xtdevs, @xtsea
+# Copyright 2019-2025 (c) Randy W @xtdevs, @xtsea
 #
 # from : https://github.com/TeamKillerX
 # Channel : @RendyProjects
