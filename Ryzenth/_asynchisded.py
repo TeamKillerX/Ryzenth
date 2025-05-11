@@ -20,6 +20,7 @@
 import logging
 
 import httpx
+from box import Box
 
 from Ryzenth.types import QueryParameter
 
@@ -31,6 +32,7 @@ class RyzenthXAsync:
         self.base_url = base_url.rstrip("/")
         self.headers = {"x-api-key": self.api_key}
         self.images = self.ImagesAsync(self)
+        self.obj = Box
 
     class ImagesAsync:
         def __init__(self, parent):
@@ -47,7 +49,13 @@ class RyzenthXAsync:
                     LOGS.error(f"[ASYNC] Error: {str(e)}")
                     return None
 
-    async def send_downloader(self, switch_name: str = None, params: QueryParameter = None, list_key=False):
+    async def send_downloader(
+        self,
+        switch_name: str = None,
+        params: QueryParameter = None,
+        list_key=False,
+        dot_access=False
+    ):
         dl_dict = {
             "teraboxv4": "terabox-v4",
             "twitterv3": "twitter-v3",
@@ -82,12 +90,18 @@ class RyzenthXAsync:
                     timeout=10
                 )
                 response.raise_for_status()
-                return response.json()
+                return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
                 return None
 
-    async def send_message(self, model: str = None, params: QueryParameter = None, list_key=False):
+    async def send_message(
+        self,
+        model: str = None,
+        params: QueryParameter = None,
+        list_key=False,
+        dot_access=False
+    ):
         model_dict = {
             "hybrid": "AkenoX-1.9-Hybrid",
             "melayu": "lu-melayu",
@@ -118,7 +132,7 @@ class RyzenthXAsync:
                     timeout=10
                 )
                 response.raise_for_status()
-                return response.json()
+                return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
                 return None
