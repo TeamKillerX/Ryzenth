@@ -106,6 +106,7 @@ class RyzenthXSync:
     ):
         model_dict = {
             "hybrid": "AkenoX-1.9-Hybrid",
+            "hybrid-english": "AkenoX-1.9-Hybrid-Englsih",
             "melayu": "lu-melayu",
             "nocodefou": "nocodefou",
             "mia": "mia-khalifah",
