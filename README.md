@@ -32,7 +32,7 @@ pip install ryzenth[fast]
 from Ryzenth import ApiKeyFrom
 from Ryzenth.types import QueryParameter
 
-ryz = ApiKeyFrom("your-api-key")
+ryz = ApiKeyFrom(..., is_free_from_ryzenth=True)
 
 await ryz.aio.send_message(
     "hybrid",
@@ -48,7 +48,7 @@ await ryz.aio.send_message(
 from Ryzenth import ApiKeyFrom
 from Ryzenth.types import QueryParameter
 
-ryz = ApiKeyFrom("your-api-key")
+ryz = ApiKeyFrom(..., is_free_from_ryzenth=True)
 ryz._sync.send_message(
     "hybrid",
     QueryParameter(
@@ -58,7 +58,7 @@ ryz._sync.send_message(
 ```
 
 ## Environment Variable Support
-- Available API key v2 via [`@aknuserbot`](https://t.me/aknuserbot)
+- Available API key v2 via [`@RyzenthKeyBot`](https://t.me/RyzenthKeyBot)
 
 You can skip passing the API key directly by setting it via environment:
 

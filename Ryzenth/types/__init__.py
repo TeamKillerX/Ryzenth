@@ -24,5 +24,7 @@ from pydantic import BaseModel
 
 
 class QueryParameter(BaseModel):
-    query: Optional[str] = None
-    url: Optional[str] = None
+    query: str
+
+class DownloaderBy(BaseModel):
+    url: str
