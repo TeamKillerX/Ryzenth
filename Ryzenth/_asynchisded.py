@@ -32,7 +32,23 @@ class RyzenthXAsync:
         self.base_url = base_url.rstrip("/")
         self.headers = {"x-api-key": self.api_key}
         self.images = self.ImagesAsync(self)
+        self.what = self.WhatAsync(self)
         self.obj = Box
+
+    class WhatAsync:
+        def __init__(self, parent):
+            self.parent = parent
+
+        async def think(self, params: QueryParameter, dot_access=False):
+            url = f"{self.parent.base_url}/v1/ai/deepseek/deepseek-r1-distill-qwen-32b"
+            async with httpx.AsyncClient() as client:
+                try:
+                    response = await client.get(url, params=params.dict(), headers=self.parent.headers, timeout=30)
+                    response.raise_for_status()
+                    return self.parent.obj(response.json() or {}) if dot_access else response.json()
+                except httpx.HTTPError as e:
+                    LOGS.error(f"[ASYNC] Error: {str(e)}")
+                    return None
 
     class ImagesAsync:
         def __init__(self, parent):
