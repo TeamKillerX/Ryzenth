@@ -22,7 +22,7 @@ import logging
 import httpx
 from box import Box
 
-from Ryzenth.types import QueryParameter
+from Ryzenth.types import QueryParameter, DownloaderBy
 
 LOGS = logging.getLogger("[Ryzenth] sync")
 
@@ -56,7 +56,7 @@ class RyzenthXSync:
     def send_downloader(
         self,
         switch_name: str = None,
-        params: QueryParameter = None,
+        params: DownloaderBy = None,
         list_key=False,
         dot_access=False
     ):
