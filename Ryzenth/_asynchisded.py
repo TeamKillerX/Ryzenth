@@ -49,7 +49,7 @@ class RyzenthXAsync:
                 except httpx.HTTPError as e:
                     LOGS.error(f"[ASYNC] Error: {str(e)}")
                     return None
-        
+
     class ImagesAsync:
         def __init__(self, parent):
             self.parent = parent
