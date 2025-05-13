@@ -19,7 +19,7 @@
 
 from . import *
 from .__version__ import __version__
-from .ryzenth_client import ApiKeyFrom
+from ._client import ApiKeyFrom
 
 __all__ = [
   "ApiKeyFrom"
