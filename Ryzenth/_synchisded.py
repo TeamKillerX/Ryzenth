@@ -23,6 +23,7 @@ import httpx
 from box import Box
 
 from Ryzenth.types import DownloaderBy, QueryParameter
+from Ryzenth.helper import WhisperSync
 
 LOGS = logging.getLogger("[Ryzenth] sync")
 
@@ -33,6 +34,7 @@ class RyzenthXSync:
         self.headers = {"x-api-key": self.api_key}
         self.images = self.ImagesSync(self)
         self.what = self.WhatSync(self)
+        self.openai_audio = self.WhisperSync(self)
         self.obj = Box
 
     class WhatSync:
