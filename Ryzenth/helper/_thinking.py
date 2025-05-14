@@ -34,7 +34,12 @@ class WhatAsync:
         url = f"{self.parent.base_url}/v1/ai/deepseek/deepseek-r1-distill-qwen-32b"
         async with httpx.AsyncClient() as client:
             try:
-                response = await client.get(url, params=params.dict(), headers=self.parent.headers, timeout=30)
+                response = await client.get(
+                    url,
+                    params=params.dict(),
+                    headers=self.parent.headers,
+                    timeout=self.parent.timeout
+                )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
@@ -52,7 +57,7 @@ class WhatSync:
                 url,
                 params=params.dict(),
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
