@@ -1,4 +1,4 @@
-__version__ = "1.8.7"
+__version__ = "1.8.8"
 __author__ = "TeamKillerX"
 __title__ = "Ryzenth"
 __description__ = "Ryzenth Python API Wrapper"
