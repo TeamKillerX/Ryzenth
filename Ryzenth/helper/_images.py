@@ -20,6 +20,7 @@
 import logging
 
 import httpx
+
 from Ryzenth._errors import WhatFuckError
 from Ryzenth.types import QueryParameter
 
