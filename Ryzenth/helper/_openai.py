@@ -21,6 +21,7 @@ import logging
 
 import httpx
 
+from Ryzenth._errors import WhatFuckError
 from Ryzenth.types import OpenaiWhisper
 
 LOGS = logging.getLogger("[Ryzenth]")
@@ -38,7 +39,7 @@ class WhisperAsync:
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
-                return None
+                raise WhatFuckError("[ASYNC] Error fetching") from e
 
 class WhisperSync:
     def __init__(self, parent):
@@ -57,4 +58,4 @@ class WhisperSync:
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
             LOGS.error(f"[SYNC] Error fetching from whisper openai {e}")
-            return None
+            raise WhatFuckError("[SYNC] Error fetching from whisper openai") from e

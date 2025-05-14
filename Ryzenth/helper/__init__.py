@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from ._federation import FbanAsync
+from ._federation import FbanAsync, FbanSync
 from ._images import ImagesAsync, ImagesSync
 from ._openai import WhisperAsync, WhisperSync
 from ._thinking import WhatAsync, WhatSync
@@ -29,5 +29,6 @@ __all__ = [
   "ImagesSync",
   "WhatAsync",
   "WhatSync",
-  "FbanAsync"
+  "FbanAsync",
+  "FbanSync"
 ]
