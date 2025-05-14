@@ -43,7 +43,7 @@ class WhatAsync:
 class WhatSync:
     def __init__(self, parent):
         self.parent = parent
-        
+
     def think(self, params: QueryParameter, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/deepseek/deepseek-r1-distill-qwen-32b"
         try:

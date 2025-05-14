@@ -43,7 +43,7 @@ class ImagesAsync:
 class ImagesSync:
     def __init__(self, parent):
         self.parent = parent
-        
+
     def generate(self, params: QueryParameter):
         url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
         try:

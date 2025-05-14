@@ -22,7 +22,7 @@ import logging
 import httpx
 from box import Box
 
-from Ryzenth.helper import WhisperSync, ImagesSync, WhatSync
+from Ryzenth.helper import ImagesSync, WhatSync, WhisperSync
 from Ryzenth.types import DownloaderBy, QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] sync")
