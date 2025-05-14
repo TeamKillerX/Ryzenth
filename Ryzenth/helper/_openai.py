@@ -29,7 +29,7 @@ class WhisperAsync:
     def __init__(self, parent):
             self.parent = parent
 
-    async def audio_whisper_from(self, params: OpenaiWhisper, dot_access=False):
+    async def whisper_from(self, params: OpenaiWhisper, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/openai/whisper-large-v3-turbo"
         async with httpx.AsyncClient() as client:
             try:
@@ -44,7 +44,7 @@ class WhisperSync:
     def __init__(self, parent):
         self.parent = parent
 
-    def audio_whisper_from(self, params: OpenaiWhisper, dot_access=False):
+    def whisper_from(self, params: OpenaiWhisper, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/openai/whisper-large-v3-turbo"
         try:
             response = httpx.get(
