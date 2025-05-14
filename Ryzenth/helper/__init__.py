@@ -18,11 +18,14 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from ._openai import WhisperAsync, WhisperSync
-from .images import ImagesAsync, ImagesSync
+from ._images import ImagesAsync, ImagesSync
+from ._thinking import WhatAsync, WhatSync
 
 __all__ = [
   "WhisperAsync",
   "WhisperSync",
   "ImagesAsync",
-  "ImagesSync"
+  "ImagesSync",
+  "WhatAsync",
+  "WhatSync"
 ]
