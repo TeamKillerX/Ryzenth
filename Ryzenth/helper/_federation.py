@@ -36,7 +36,7 @@ class FbanSync:
                 url,
                 json={"name": name, "owner": owner},
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -51,7 +51,7 @@ class FbanSync:
                 url,
                 json={"parent_uuid": parent_uuid, "child_uuid": child_uuid},
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -65,7 +65,7 @@ class FbanSync:
             response = httpx.get(
                 url,
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -80,7 +80,7 @@ class FbanSync:
                 url,
                 json={"name": name, "user_id": user_id},
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -95,7 +95,7 @@ class FbanSync:
                 url,
                 json={"federation_uuid": federation_uuid, "user_id": user_id},
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -110,7 +110,7 @@ class FbanSync:
                 url,
                 json={"federation_uuid": federation_uuid, "user_id": user_id},
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -125,7 +125,7 @@ class FbanSync:
                 url,
                 params={"uuid": uuid},
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -140,7 +140,7 @@ class FbanSync:
                 url,
                 json={"parent_uuid": parent_uuid, "child_uuid": child_uuid},
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -155,7 +155,7 @@ class FbanSync:
                 url,
                 json={"federation_uuid": federation_uuid, "new_name": new_name},
                 headers=self.parent.headers,
-                timeout=30
+                timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -175,7 +175,7 @@ class FbanAsync:
                     url,
                     json={"name": name, "owner": owner},
                     headers=self.parent.headers,
-                    timeout=30
+                    timeout=self.parent.timeout
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -191,7 +191,7 @@ class FbanAsync:
                     url,
                     json={"parent_uuid": parent_uuid, "child_uuid": child_uuid},
                     headers=self.parent.headers,
-                    timeout=30
+                    timeout=self.parent.timeout
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -203,7 +203,7 @@ class FbanAsync:
         url = f"{self.parent.base_url}/v2/federation/getfed/{uuid}"
         async with httpx.AsyncClient() as client:
             try:
-                response = await client.get(url, headers=self.parent.headers, timeout=30)
+                response = await client.get(url, headers=self.parent.headers, timeout=self.parent.timeout)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
@@ -218,7 +218,7 @@ class FbanAsync:
                     url,
                     json={"name": name, "user_id": user_id},
                     headers=self.parent.headers,
-                    timeout=30
+                    timeout=self.parent.timeout
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -234,7 +234,7 @@ class FbanAsync:
                     url,
                     json={"federation_uuid": federation_uuid, "user_id": user_id},
                     headers=self.parent.headers,
-                    timeout=30
+                    timeout=self.parent.timeout
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -250,7 +250,7 @@ class FbanAsync:
                     url,
                     json={"federation_uuid": federation_uuid, "user_id": user_id},
                     headers=self.parent.headers,
-                    timeout=30
+                    timeout=self.parent.timeout
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -266,7 +266,7 @@ class FbanAsync:
                     url,
                     params={"uuid": uuid},
                     headers=self.parent.headers,
-                    timeout=30
+                    timeout=self.parent.timeout
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -282,7 +282,7 @@ class FbanAsync:
                     url,
                     json={"parent_uuid": parent_uuid, "child_uuid": child_uuid},
                     headers=self.parent.headers,
-                    timeout=30
+                    timeout=self.parent.timeout
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
@@ -298,7 +298,7 @@ class FbanAsync:
                     url,
                     json={"federation_uuid": federation_uuid, "new_name": new_name},
                     headers=self.parent.headers,
-                    timeout=30
+                    timeout=self.parent.timeout
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
