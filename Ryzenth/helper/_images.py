@@ -39,3 +39,22 @@ class ImagesAsync:
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
                 return None
+
+class ImagesSync:
+    def __init__(self, parent):
+        self.parent = parent
+        
+    def generate(self, params: QueryParameter):
+        url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
+        try:
+            response = httpx.get(
+                url,
+                params=params.dict(),
+                headers=self.parent.headers,
+                timeout=30
+            )
+            response.raise_for_status()
+            return response.content
+        except httpx.HTTPError as e:
+            LOGS.error(f"[SYNC] Error fetching from images {e}")
+            return None
