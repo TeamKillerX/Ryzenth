@@ -22,6 +22,7 @@ import logging
 import httpx
 from box import Box
 
+from Ryzenth._errors import WhatFuckError
 from Ryzenth.helper import FbanAsync, ImagesAsync, WhatAsync, WhisperAsync
 from Ryzenth.types import DownloaderBy, QueryParameter
 
@@ -32,6 +33,7 @@ class RyzenthXAsync:
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {"x-api-key": self.api_key}
+        self.timeout = 10
         self.images = ImagesAsync(self)
         self.what = WhatAsync(self)
         self.openai_audio = WhisperAsync(self)
@@ -76,13 +78,13 @@ class RyzenthXAsync:
                     f"{self.base_url}/v1/dl/{model_name}",
                     params=params.dict(),
                     headers=self.headers,
-                    timeout=10
+                    timeout=self.timeout
                 )
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
-                return None
+                raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def send_message(
         self,
@@ -119,10 +121,10 @@ class RyzenthXAsync:
                     f"{self.base_url}/v1/ai/akenox/{model_param}",
                     params=params.dict(),
                     headers=self.headers,
-                    timeout=10
+                    timeout=self.timeout
                 )
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
-                return None
+                raise WhatFuckError("[ASYNC] Error fetching") from e
