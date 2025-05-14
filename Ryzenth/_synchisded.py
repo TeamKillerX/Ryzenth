@@ -34,7 +34,7 @@ class RyzenthXSync:
         self.headers = {"x-api-key": self.api_key}
         self.images = self.ImagesSync(self)
         self.what = self.WhatSync(self)
-        self.openai_audio = self.WhisperSync(self)
+        self.openai_audio = WhisperSync(self)
         self.obj = Box
 
     class WhatSync:
