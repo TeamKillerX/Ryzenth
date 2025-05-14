@@ -22,9 +22,9 @@ import logging
 import httpx
 from box import Box
 
+from Ryzenth._errors import WhatFuckError
 from Ryzenth.helper import FbanAsync, ImagesAsync, WhatAsync, WhisperAsync
 from Ryzenth.types import DownloaderBy, QueryParameter
-from Ryzenth._errors import WhatFuckError
 
 LOGS = logging.getLogger("[Ryzenth] async")
 
