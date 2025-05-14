@@ -34,7 +34,7 @@ class RyzenthXAsync:
         self.headers = {"x-api-key": self.api_key}
         self.images = self.ImagesAsync(self)
         self.what = self.WhatAsync(self)
-        self.openai = self.WhisperAsync(self)
+        self.openai_audio = self.WhisperAsync(self)
         self.obj = Box
 
     class WhatAsync:
