@@ -20,15 +20,15 @@
 import logging
 import httpx
 
-from Ryzenth.types import OpenaiWhisperFrom
+from Ryzenth.types import OpenaiWhisper
 
-LOGS = logging.getLogger("[Ryzenth] async")
+LOGS = logging.getLogger("[Ryzenth]")
 
 class WhisperAsync:
     def __init__(self, parent):
             self.parent = parent
 
-    async def think(self, params: OpenaiWhisperFrom, dot_access=False):
+    async def audio_whisper_from(self, params: OpenaiWhisper, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/openai/whisper-large-v3-turbo"
         async with httpx.AsyncClient() as client:
             try:
@@ -38,3 +38,22 @@ class WhisperAsync:
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
                 return None
+
+class WhisperSync:
+    def __init__(self, parent):
+        self.parent = parent
+        
+    def audio_whisper_from(self, params: OpenaiWhisper, dot_access=False):
+        url = f"{self.parent.base_url}/v1/ai/openai/whisper-large-v3-turbo"
+        try:
+            response = httpx.get(
+                url,
+                params=params.dict(),
+                headers=self.parent.headers,
+                timeout=30
+            )
+            response.raise_for_status()
+            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+        except httpx.HTTPError as e:
+            LOGS.error(f"[SYNC] Error fetching from whisper openai {e}")
+            return None
