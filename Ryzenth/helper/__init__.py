@@ -17,19 +17,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from ._openai import WhisperAsync, WhisperSync
 
-from typing import Any, Optional
-
-from pydantic import BaseModel
-
-
-class QueryParameter(BaseModel):
-    query: str
-
-class DownloaderBy(BaseModel):
-    url: str
-
-class OpenaiWhisper(BaseModel):
-    url: str
-    language: Optional[str] = None
-    task: Optional[str] = None
+__all__ = [
+  "WhisperAsync",
+  "WhisperSync"
+]

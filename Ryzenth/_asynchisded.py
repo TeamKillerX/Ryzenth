@@ -22,6 +22,7 @@ import logging
 import httpx
 from box import Box
 
+from Ryzenth.helper import WhisperAsync
 from Ryzenth.types import DownloaderBy, QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] async")
@@ -33,6 +34,7 @@ class RyzenthXAsync:
         self.headers = {"x-api-key": self.api_key}
         self.images = self.ImagesAsync(self)
         self.what = self.WhatAsync(self)
+        self.openai_audio = self.WhisperAsync(self)
         self.obj = Box
 
     class WhatAsync:
