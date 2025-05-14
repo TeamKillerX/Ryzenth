@@ -22,7 +22,7 @@ import logging
 import httpx
 from box import Box
 
-from Ryzenth.helper import WhisperAsync
+from Ryzenth.helper import WhisperAsync, ImagesAsync
 from Ryzenth.types import DownloaderBy, QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] async")
@@ -32,7 +32,7 @@ class RyzenthXAsync:
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {"x-api-key": self.api_key}
-        self.images = self.ImagesAsync(self)
+        self.images = ImagesAsync(self)
         self.what = self.WhatAsync(self)
         self.openai_audio = WhisperAsync(self)
         self.obj = Box
@@ -48,21 +48,6 @@ class RyzenthXAsync:
                     response = await client.get(url, params=params.dict(), headers=self.parent.headers, timeout=30)
                     response.raise_for_status()
                     return self.parent.obj(response.json() or {}) if dot_access else response.json()
-                except httpx.HTTPError as e:
-                    LOGS.error(f"[ASYNC] Error: {str(e)}")
-                    return None
-
-    class ImagesAsync:
-        def __init__(self, parent):
-            self.parent = parent
-
-        async def generate(self, params: QueryParameter):
-            url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
-            async with httpx.AsyncClient() as client:
-                try:
-                    response = await client.get(url, params=params.dict(), headers=self.parent.headers, timeout=30)
-                    response.raise_for_status()
-                    return response.content
                 except httpx.HTTPError as e:
                     LOGS.error(f"[ASYNC] Error: {str(e)}")
                     return None
