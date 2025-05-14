@@ -21,6 +21,7 @@ import logging
 
 import httpx
 
+from Ryzenth._errors import WhatFuckError
 from Ryzenth.types import QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth]")
@@ -38,7 +39,7 @@ class WhatAsync:
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
-                return None
+                raise WhatFuckError("[ASYNC] Error fetching") from e
 
 class WhatSync:
     def __init__(self, parent):
@@ -57,4 +58,4 @@ class WhatSync:
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
             LOGS.error(f"[SYNC] Error fetching from deepseek {e}")
-            return None
+            raise WhatFuckError("[SYNC] Error fetching from deepseek") from e
