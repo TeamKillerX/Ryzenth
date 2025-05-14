@@ -20,7 +20,7 @@
 import logging
 
 import httpx
-
+from Ryzenth._errors import WhatFuckError
 from Ryzenth.types import QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth]")
@@ -38,7 +38,7 @@ class ImagesAsync:
                 return response.content
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
-                return None
+                raise WhatFuckError("[ASYNC] Error fetching") from e
 
 class ImagesSync:
     def __init__(self, parent):
@@ -57,4 +57,4 @@ class ImagesSync:
             return response.content
         except httpx.HTTPError as e:
             LOGS.error(f"[SYNC] Error fetching from images {e}")
-            return None
+            raise WhatFuckError("[SYNC] Error fetching from images") from e
