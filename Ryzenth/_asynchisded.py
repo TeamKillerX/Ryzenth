@@ -22,8 +22,8 @@ import logging
 import httpx
 from box import Box
 
-from Ryzenth.types import DownloaderBy, QueryParameter
 from Ryzenth.helper import WhisperAsync
+from Ryzenth.types import DownloaderBy, QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] async")
 

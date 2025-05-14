@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+
 import httpx
 
 from Ryzenth.types import OpenaiWhisper
@@ -42,7 +43,7 @@ class WhisperAsync:
 class WhisperSync:
     def __init__(self, parent):
         self.parent = parent
-        
+
     def audio_whisper_from(self, params: OpenaiWhisper, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/openai/whisper-large-v3-turbo"
         try:
