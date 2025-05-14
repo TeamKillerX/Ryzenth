@@ -28,3 +28,8 @@ class QueryParameter(BaseModel):
 
 class DownloaderBy(BaseModel):
     url: str
+
+class OpenaiWhisper(BaseModel):
+    url: str
+    language: Optional[str] = None
+    task: Optional[str] = None
