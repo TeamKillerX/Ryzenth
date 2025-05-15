@@ -21,6 +21,7 @@ from ._federation import FbanAsync, FbanSync
 from ._images import ImagesAsync, ImagesSync
 from ._openai import WhisperAsync, WhisperSync
 from ._thinking import WhatAsync, WhatSync
+from ._moderator import ModeratorAsync ModeratorSync
 
 __all__ = [
   "WhisperAsync",
@@ -30,5 +31,7 @@ __all__ = [
   "WhatAsync",
   "WhatSync",
   "FbanAsync",
-  "FbanSync"
+  "FbanSync",
+  "ModeratorAsync",
+  "ModeratorSync",
 ]
