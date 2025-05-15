@@ -30,6 +30,55 @@ class ModeratorSync:
     def __init__(self, parent):
         self.parent = parent
 
+    async def antievalai(
+        self,
+        query: str,
+        version: str,
+        to_dict_by_loads=False,
+        dot_access=False
+    ):
+        version_params = {
+            "v1": "v1",
+            "v2": "v2"
+        }
+        _version = version_params.get(version)
+        if not _version:
+            raise ValueError("Invalid Version Name")
+
+        url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.get(
+                    url,
+                    params={"query": query},
+                    headers=self.parent.headers,
+                    timeout=self.parent.timeout
+                )
+                response.raise_for_status()
+                if to_dict_by_loads:
+                    try:
+                        return {
+                            "author": "TeamKillerX",
+                            f"timestamps": dt.now(),
+                            f"is_detect": json.loads(response.json()["results"])["is_detect"],
+                            "Powered by Ryzenth API"
+                        }
+                    except json.decoder.JSONDecodeError:
+                        return {
+                            "author": "TeamKillerX",
+                            f"timestamps": dt.now(),
+                            f"is_detect": False,
+                            "Powered by Ryzenth API"
+                        }
+                return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            except httpx.HTTPError as e:
+                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                raise WhatFuckError("[ASYNC] Error fetching") from e
+
+class ModeratorSync:
+    def __init__(self, parent):
+        self.parent = parent
+
     def antievalai(
         self,
         query: str,
