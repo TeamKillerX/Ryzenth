@@ -26,7 +26,7 @@ from Ryzenth._errors import WhatFuckError
 
 LOGS = logging.getLogger("[Ryzenth]")
 
-class ModeratorSync:
+class ModeratorAsync:
     def __init__(self, parent):
         self.parent = parent
 
