@@ -23,7 +23,7 @@ import httpx
 from box import Box
 
 from Ryzenth._errors import WhatFuckError
-from Ryzenth.helper import FbanSync, ImagesSync, WhatSync, WhisperSync
+from Ryzenth.helper import FbanSync, ImagesSync, WhatSync, WhisperSync, ModeratorSync
 from Ryzenth.types import DownloaderBy, QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] sync")
@@ -38,6 +38,7 @@ class RyzenthXSync:
         self.what = WhatSync(self)
         self.openai_audio = WhisperSync(self)
         self.federation = FbanSync(self)
+        self.moderator = ModeratorSync(self)
         self.obj = Box
 
     def send_downloader(
