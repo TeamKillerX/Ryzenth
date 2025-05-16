@@ -45,7 +45,7 @@ class ModeratorAsync:
         _version = version_params.get(version)
         if not _version:
             raise ErrorParamsRequired("Invalid Version V1 or V2")
-        if query == "":
+        if not query.strip():
             raise ErrorParamsRequired("Cannot empty Query")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
