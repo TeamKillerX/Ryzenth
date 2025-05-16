@@ -12,9 +12,13 @@ class InvalidVersionError(ValueError):
 class InvalidJSONDecodeError(json.decoder.JSONDecodeError):
     pass
 
+class InvalidEmptyError(ValueError):
+    pass
+
 __all__ = [
     "WhatFuckError",
     "ParamsRequiredError",
     "InvalidVersionError",
-    "InvalidJSONDecodeError"
+    "InvalidJSONDecodeError",
+    "InvalidEmptyError"
 ]
