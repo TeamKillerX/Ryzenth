@@ -23,7 +23,14 @@ import httpx
 from box import Box
 
 from Ryzenth._errors import WhatFuckError
-from Ryzenth.helper import FbanAsync, ImagesAsync, ModeratorAsync, WhatAsync, WhisperAsync
+from Ryzenth.helper import (
+FbanAsync,
+ImagesAsync,
+ModeratorAsync,
+WhatAsync,
+WhisperAsync,
+FontsAsync
+)
 from Ryzenth.types import DownloaderBy, QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] async")
@@ -34,11 +41,13 @@ class RyzenthXAsync:
         self.base_url = base_url.rstrip("/")
         self.headers = {"x-api-key": self.api_key}
         self.timeout = 10
+        self.params = {}
         self.images = ImagesAsync(self)
         self.what = WhatAsync(self)
         self.openai_audio = WhisperAsync(self)
         self.federation = FbanAsync(self)
         self.moderator = ModeratorAsync(self)
+        self.fonts = FontsAsync(self)
         self.obj = Box
 
     async def send_downloader(
