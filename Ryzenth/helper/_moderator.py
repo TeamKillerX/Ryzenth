@@ -23,7 +23,7 @@ from datetime import datetime as dt
 
 import httpx
 
-from Ryzenth._errors import ErrorParamsRequired, InvalidVersionError, WhatFuckError
+from Ryzenth._errors import InvalidEmptyError, InvalidVersionError, WhatFuckError
 
 LOGS = logging.getLogger("[Ryzenth]")
 
@@ -45,6 +45,8 @@ class ModeratorAsync:
         _version = version_params.get(version)
         if not _version:
             raise InvalidVersionError("Invalid Version V1 or V2")
+        if not query.strip():
+            raise InvalidEmptyError("Cannot Empty")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
         _params = self.parent.params if use_parent_params_dict else {"query": query}
@@ -80,6 +82,8 @@ class ModeratorSync:
         _version = version_params.get(version)
         if not _version:
             raise InvalidVersionError("Invalid Version V1 or V2")
+        if not query.strip():
+            raise InvalidEmptyError("Cannot Empty")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
         _params = self.parent.params if use_parent_params_dict else {"query": query}
