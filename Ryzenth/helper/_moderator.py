@@ -62,14 +62,14 @@ class ModeratorAsync:
                             "author": "TeamKillerX",
                             f"timestamps": dt.now(),
                             f"is_detect": json.loads(response.json()["results"])["is_detect"],
-                            "Powered by Ryzenth API"
+                            "source": "Powered by Ryzenth API"
                         }
                     except json.decoder.JSONDecodeError:
                         return {
                             "author": "TeamKillerX",
                             f"timestamps": dt.now(),
                             f"is_detect": False,
-                            "Powered by Ryzenth API"
+                            "source": "Powered by Ryzenth API"
                         }
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
@@ -110,14 +110,14 @@ class ModeratorSync:
                         "author": "TeamKillerX",
                         f"timestamps": dt.now(),
                         f"is_detect": json.loads(response.json()["results"])["is_detect"],
-                        "Powered by Ryzenth API"
+                        "source": "Powered by Ryzenth API"
                     }
                 except json.decoder.JSONDecodeError:
                     return {
                         "author": "TeamKillerX",
                         f"timestamps": dt.now(),
                         f"is_detect": False,
-                        "Powered by Ryzenth API"
+                        "source": "Powered by Ryzenth API"
                     }
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
