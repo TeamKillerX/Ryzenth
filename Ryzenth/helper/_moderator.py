@@ -23,7 +23,7 @@ from datetime import datetime as dt
 
 import httpx
 
-from Ryzenth._errors import WhatFuckError
+from Ryzenth._errors import ErrorParamsRequired, WhatFuckError
 
 LOGS = logging.getLogger("[Ryzenth]")
 
@@ -33,9 +33,9 @@ class ModeratorAsync:
 
     async def antievalai(
         self,
-        query: str,
-        version: str,
-        to_dict_by_loads=False,
+        query: str = "jasa hack",
+        version: str = "v2",
+        return_params_dict=False,
         dot_access=False
     ):
         version_params = {
@@ -44,33 +44,21 @@ class ModeratorAsync:
         }
         _version = version_params.get(version)
         if not _version:
-            raise ValueError("Invalid Version Name")
+            raise ErrorParamsRequired("Invalid Version V1 or V2")
+        if not query.strip():
+            raise ErrorParamsRequired("Cannot empty Query")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
+        _params = self.parent.params if return_params_dict else {"query": query}
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
                     url,
-                    params={"query": query},
+                    params=_params,
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
                 response.raise_for_status()
-                if to_dict_by_loads:
-                    try:
-                        return {
-                            "author": "TeamKillerX",
-                            f"timestamps": dt.now(),
-                            f"is_detect": json.loads(response.json()["results"])["is_detect"],
-                            "source": "Powered by Ryzenth API"
-                        }
-                    except json.decoder.JSONDecodeError:
-                        return {
-                            "author": "TeamKillerX",
-                            f"timestamps": dt.now(),
-                            f"is_detect": False,
-                            "source": "Powered by Ryzenth API"
-                        }
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
@@ -82,9 +70,9 @@ class ModeratorSync:
 
     def antievalai(
         self,
-        query: str,
-        version: str,
-        to_dict_by_loads=False,
+        query: str = "jasa hack",
+        version: str = "v2",
+        return_params_dict=False,
         dot_access=False
     ):
         version_params = {
@@ -93,32 +81,20 @@ class ModeratorSync:
         }
         _version = version_params.get(version)
         if not _version:
-            raise ValueError("Invalid Version Name")
+            raise ErrorParamsRequired("Invalid Version V1 or V2")
+        if query == "":
+            raise ErrorParamsRequired("Cannot empty Query")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
+        _params = self.parent.params if return_params_dict else {"query": query}
         try:
             response = httpx.get(
                 url,
-                params={"query": query},
+                params=_params,
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
             response.raise_for_status()
-            if to_dict_by_loads:
-                try:
-                    return {
-                        "author": "TeamKillerX",
-                        f"timestamps": dt.now(),
-                        f"is_detect": json.loads(response.json()["results"])["is_detect"],
-                        "source": "Powered by Ryzenth API"
-                    }
-                except json.decoder.JSONDecodeError:
-                    return {
-                        "author": "TeamKillerX",
-                        f"timestamps": dt.now(),
-                        f"is_detect": False,
-                        "source": "Powered by Ryzenth API"
-                    }
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
             LOGS.error(f"[SYNC] Error fetching from antievalai {e}")
