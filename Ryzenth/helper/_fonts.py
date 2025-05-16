@@ -33,17 +33,17 @@ class FontsAsync:
 
     async def scanning(
         self,
-        query: str = None,
+        text: str = None,
         dot_access=False
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
-        if not query:
-            raise ErrorParamsRequired("Invalid Params Query")
+        if not text:
+            raise ErrorParamsRequired("Invalid Params Text")
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
                     url,
-                    params={"query": query},
+                    params={"query": text},
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
@@ -59,21 +59,21 @@ class FontsSync:
 
     def scanning(
         self,
-        query: str = None,
+        text: str = None,
         dot_access=False
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
-        if not query:
-            raise ErrorParamsRequired("Invalid Params Query")
+        if not text:
+            raise ErrorParamsRequired("Invalid Params Text")
         try:
             response = httpx.get(
                 url,
-                params={"query": query},
+                params={"query": text},
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from antievalai {e}")
-            raise WhatFuckError("[SYNC] Error fetching from antievalai") from e
+            LOGS.error(f"[SYNC] Error fetching from fonts {e}")
+            raise WhatFuckError("[SYNC] Error fetching from fonts") from e
