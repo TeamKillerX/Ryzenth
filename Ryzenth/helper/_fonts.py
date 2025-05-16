@@ -23,7 +23,7 @@ from datetime import datetime as dt
 
 import httpx
 
-from Ryzenth._errors import WhatFuckError, ErrorParamsRequired
+from Ryzenth._errors import ErrorParamsRequired, WhatFuckError
 
 LOGS = logging.getLogger("[Ryzenth]")
 

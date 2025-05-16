@@ -23,14 +23,7 @@ import httpx
 from box import Box
 
 from Ryzenth._errors import WhatFuckError
-from Ryzenth.helper import (
-FbanSync,
-ImagesSync,
-ModeratorSync,
-WhatSync,
-WhisperSync,
-FontsSync
-)
+from Ryzenth.helper import FbanSync, FontsSync, ImagesSync, ModeratorSync, WhatSync, WhisperSync
 from Ryzenth.types import DownloaderBy, QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] sync")

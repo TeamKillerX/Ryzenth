@@ -18,11 +18,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from ._federation import FbanAsync, FbanSync
+from ._fonts import FontsAsync, FontsSync
 from ._images import ImagesAsync, ImagesSync
 from ._moderator import ModeratorAsync, ModeratorSync
 from ._openai import WhisperAsync, WhisperSync
 from ._thinking import WhatAsync, WhatSync
-from ._fonts import FontsAsync, FontsSync
 
 __all__ = [
   "WhisperAsync",

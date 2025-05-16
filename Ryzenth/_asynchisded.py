@@ -24,12 +24,12 @@ from box import Box
 
 from Ryzenth._errors import WhatFuckError
 from Ryzenth.helper import (
-FbanAsync,
-ImagesAsync,
-ModeratorAsync,
-WhatAsync,
-WhisperAsync,
-FontsAsync
+    FbanAsync,
+    FontsAsync,
+    ImagesAsync,
+    ModeratorAsync,
+    WhatAsync,
+    WhisperAsync,
 )
 from Ryzenth.types import DownloaderBy, QueryParameter
 
