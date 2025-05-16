@@ -23,7 +23,7 @@ from datetime import datetime as dt
 
 import httpx
 
-from Ryzenth._errors import ErrorParamsRequired, WhatFuckError
+from Ryzenth._errors import InvalidVersionError, ErrorParamsRequired, WhatFuckError
 
 LOGS = logging.getLogger("[Ryzenth]")
 
@@ -35,7 +35,7 @@ class ModeratorAsync:
         self,
         query: str = "jasa hack",
         version: str = "v2",
-        return_params_dict=False,
+        use_parent_params_dict=False,
         dot_access=False
     ):
         version_params = {
@@ -44,12 +44,10 @@ class ModeratorAsync:
         }
         _version = version_params.get(version)
         if not _version:
-            raise ErrorParamsRequired("Invalid Version V1 or V2")
-        if not query.strip():
-            raise ErrorParamsRequired("Cannot empty Query")
-
+            raise InvalidVersionError("Invalid Version V1 or V2")
+        
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
-        _params = self.parent.params if return_params_dict else {"query": query}
+        _params = self.parent.params if use_parent_params_dict else {"query": query}
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
@@ -72,7 +70,7 @@ class ModeratorSync:
         self,
         query: str = "jasa hack",
         version: str = "v2",
-        return_params_dict=False,
+        use_parent_params_dict=False,
         dot_access=False
     ):
         version_params = {
@@ -81,12 +79,10 @@ class ModeratorSync:
         }
         _version = version_params.get(version)
         if not _version:
-            raise ErrorParamsRequired("Invalid Version V1 or V2")
-        if query == "":
-            raise ErrorParamsRequired("Cannot empty Query")
+            raise InvalidVersionError("Invalid Version V1 or V2")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
-        _params = self.parent.params if return_params_dict else {"query": query}
+        _params = self.parent.params if use_parent_params_dict else {"query": query}
         try:
             response = httpx.get(
                 url,
