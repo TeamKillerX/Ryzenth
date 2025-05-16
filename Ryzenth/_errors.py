@@ -1,14 +1,20 @@
+import json
+
 class WhatFuckError(Exception):
     pass
 
-class ErrorParamsRequired(ValueError):
+class ParamsRequiredError(ValueError):
     pass
 
 class InvalidVersionError(ValueError):
     pass
 
+class InvalidJSONDecodeError(json.decoder.JSONDecodeError):
+    pass
+
 __all__ = [
     "WhatFuckError",
-    "ErrorParamsRequired",
-    "InvalidVersionError"
+    "ParamsRequiredError",
+    "InvalidVersionError",
+    "InvalidJSONDecodeError"
 ]
