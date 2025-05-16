@@ -33,17 +33,18 @@ class FontsAsync:
 
     async def scanning(
         self,
-        text: str = None,
+        text: str = "𝖍𝖊𝖑𝖑𝖔 𝖘𝖎𝖒𝖇𝖔𝖑",
         dot_access=False
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
-        if not text:
-            raise ErrorParamsRequired("Invalid Params Text")
+        if not text or text == "":
+            raise ErrorParamsRequired("Invalid Params Text or Cannot Empty")
+        _params = self.parent.params if return_params_dict else {"query": text}
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
                     url,
-                    params={"query": text},
+                    params=_params,
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
@@ -59,16 +60,18 @@ class FontsSync:
 
     def scanning(
         self,
-        text: str = None,
+        text: str = "𝖍𝖊𝖑𝖑𝖔 𝖘𝖎𝖒𝖇𝖔𝖑",
+        return_params_dict=False
         dot_access=False
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
-        if not text:
-            raise ErrorParamsRequired("Invalid Params Text")
+        if not text or text == "":
+            raise ErrorParamsRequired("Invalid Params Text or Cannot Empty")
+        _params = self.parent.params if return_params_dict else {"query": text}
         try:
             response = httpx.get(
                 url,
-                params={"query": text},
+                params=_params,
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
