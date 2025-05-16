@@ -23,7 +23,7 @@ from datetime import datetime as dt
 
 import httpx
 
-from Ryzenth._errors import ErrorParamsRequired, WhatFuckError
+from Ryzenth._errors import ParamsRequiredError, WhatFuckError
 
 LOGS = logging.getLogger("[Ryzenth]")
 
@@ -39,7 +39,7 @@ class FontsAsync:
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
         if not text:
-            raise ErrorParamsRequired("Invalid Params Text")
+            raise ParamsRequiredError("Invalid Params Text")
         _params = self.parent.params if use_parent_params_dict else {"query": text}
         async with httpx.AsyncClient() as client:
             try:
@@ -67,7 +67,7 @@ class FontsSync:
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
         if not text:
-            raise ErrorParamsRequired("Invalid Params Text")
+            raise ParamsRequiredError("Invalid Params Text")
         _params = self.parent.params if use_parent_params_dict else {"query": text}
         try:
             response = httpx.get(
