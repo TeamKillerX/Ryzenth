@@ -37,16 +37,13 @@ class FontsAsync:
         dot_access=False
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
+        if not query:
+            raise ErrorParamsRequired("Invalid Params Query")
         async with httpx.AsyncClient() as client:
             try:
-                if not query:
-                    params = self.parent.params
-                if not params:
-                    raise ErrorParamsRequired("Invalid Params Query")
-                params = params or {"query": query}
                 response = await client.get(
                     url,
-                    params=params,
+                    params={"query": query},
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
@@ -66,15 +63,12 @@ class FontsSync:
         dot_access=False
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
+        if not query:
+            raise ErrorParamsRequired("Invalid Params Query")
         try:
-            if not query:
-                params = self.parent.params
-            if not params:
-                raise ErrorParamsRequired("Invalid Params Query")
-            params = params or {"query": query}
             response = httpx.get(
                 url,
-                params=params,
+                params={"query": query},
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
