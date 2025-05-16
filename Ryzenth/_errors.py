@@ -4,7 +4,11 @@ class WhatFuckError(Exception):
 class ErrorParamsRequired(ValueError):
     pass
 
+class InvalidVersionError(ValueError):
+    pass
+
 __all__ = [
     "WhatFuckError",
-    "ErrorParamsRequired"
+    "ErrorParamsRequired",
+    "InvalidVersionError"
 ]
