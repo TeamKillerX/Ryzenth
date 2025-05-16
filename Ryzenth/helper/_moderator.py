@@ -23,7 +23,7 @@ from datetime import datetime as dt
 
 import httpx
 
-from Ryzenth._errors import WhatFuckError
+from Ryzenth._errors import ErrorParamsRequired, WhatFuckError
 
 LOGS = logging.getLogger("[Ryzenth]")
 
@@ -44,7 +44,7 @@ class ModeratorAsync:
         }
         _version = version_params.get(version)
         if not _version:
-            raise ValueError("Invalid Version Name")
+            raise ErrorParamsRequired("Invalid Version V1 or V2")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
         async with httpx.AsyncClient() as client:
@@ -93,7 +93,7 @@ class ModeratorSync:
         }
         _version = version_params.get(version)
         if not _version:
-            raise ValueError("Invalid Version Name")
+            raise ErrorParamsRequired("Invalid Version V1 or V2")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
         try:
