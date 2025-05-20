@@ -7,6 +7,7 @@ ryz = ApiKeyFrom(..., is_free_from_ryzenth=True)
 
 ryz.aio.timeout = 10
 
+# aigen_image_check
 async def aigen_image_check(user_id: int, text: str):
     result = {}
     try:
