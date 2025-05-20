@@ -18,10 +18,10 @@ async def aigen_image_check(user_id: int, text: str):
             dot_access=False
         )
         result[user_id] = {
-            "is_image": response.get("is_image", False),
-            "prompt": response.get("prompt", ""),
-            "is_anti_porno": response.get("is_anti_porno", False),
-            "reason": response.get("reason", "")
+            "is_image": response["check_result"].get("is_image", False),
+            "prompt": response["check_result"].get("prompt", ""),
+            "is_anti_porno": response["check_result"].get("is_anti_porno", False),
+            "reason": response["check_result"].get("reason", "")
         }
         return result
     except Exception:
