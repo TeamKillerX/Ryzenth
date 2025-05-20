@@ -31,12 +31,12 @@ class ModeratorAsync:
     def __init__(self, parent):
         self.parent = parent
 
-    async def antievalai(
+    async def aigen_image_check(
         self,
-        query: str = "jasa hack",
+        text: str,
         version: str = "v2",
-        use_parent_params_dict=False,
-        dot_access=False
+        is_loads: bool = False,
+        dot_access: bool = False
     ):
         version_params = {
             "v1": "v1",
@@ -45,16 +45,42 @@ class ModeratorAsync:
         _version = version_params.get(version)
         if not _version:
             raise InvalidVersionError("Invalid Version V1 or V2")
-        if not query.strip():
-            raise InvalidEmptyError("Cannot Empty")
 
-        url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
-        _params = self.parent.params if use_parent_params_dict else {"query": query}
+        url = f"{self.parent.base_url}/v1/ai/akenox/aigen-{_version}"
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
                     url,
-                    params=_params,
+                    params={"query": text, "isJson": is_loads},
+                    headers=self.parent.headers,
+                    timeout=self.parent.timeout
+                )
+                response.raise_for_status()
+                return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            except httpx.HTTPError as e:
+                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                raise WhatFuckError("[ASYNC] Error fetching") from e
+
+    async def antievalai(
+        self,
+        text: str,
+        version: str = "v2",
+        dot_access: bool = False
+    ):
+        version_params = {
+            "v1": "v1",
+            "v2": "v2"
+        }
+        _version = version_params.get(version)
+        if not _version:
+            raise InvalidVersionError("Invalid Version V1 or V2")
+
+        url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.get(
+                    url,
+                    params={"query": text},
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
@@ -68,12 +94,12 @@ class ModeratorSync:
     def __init__(self, parent):
         self.parent = parent
 
-    def antievalai(
+    def aigen_image_check(
         self,
-        query: str = "jasa hack",
+        text: str,
         version: str = "v2",
-        use_parent_params_dict=False,
-        dot_access=False
+        is_loads: bool = False,
+        dot_access: bool = False
     ):
         version_params = {
             "v1": "v1",
@@ -82,15 +108,40 @@ class ModeratorSync:
         _version = version_params.get(version)
         if not _version:
             raise InvalidVersionError("Invalid Version V1 or V2")
-        if not query.strip():
-            raise InvalidEmptyError("Cannot Empty")
 
-        url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
-        _params = self.parent.params if use_parent_params_dict else {"query": query}
+        url = f"{self.parent.base_url}/v1/ai/akenox/aigen-{_version}"
         try:
             response = httpx.get(
                 url,
-                params=_params,
+                params={"query": text, "isJson": is_loads},
+                headers=self.parent.headers,
+                timeout=self.parent.timeout
+            )
+            response.raise_for_status()
+            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+        except httpx.HTTPError as e:
+            LOGS.error(f"[SYNC] Error fetching from aigen_image_check {e}")
+            raise WhatFuckError("[SYNC] Error fetching from aigen_image_check") from e
+
+    def antievalai(
+        self,
+        text: str,
+        version: str = "v2",
+        dot_access: bool = False
+    ):
+        version_params = {
+            "v1": "v1",
+            "v2": "v2"
+        }
+        _version = version_params.get(version)
+        if not _version:
+            raise InvalidVersionError("Invalid Version V1 or V2")
+
+        url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
+        try:
+            response = httpx.get(
+                url,
+                params={"query": text},
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
