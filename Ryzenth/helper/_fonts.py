@@ -62,7 +62,7 @@ class FontsSync:
     def scanning(
         self,
         text: str = "𝖍𝖊𝖑𝖑𝖔 𝖘𝖎𝖒𝖇𝖔𝖑",
-        use_parent_params_dict=False
+        use_parent_params_dict=False,
         dot_access=False
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
