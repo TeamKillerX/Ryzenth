@@ -36,7 +36,7 @@ async def aigen_image_check(user_id: int, text: str):
 async def example(_, message):
     image_data = await aigen_image_check(message.from_user.id, message.text)
     image_result = image_data.get(message.from_user.id, {})
-    
+
     if image_result.get("is_image"):
         return await message.reply_text(image_result["prompt"])
     if image_result.get("is_anti_porno"):
