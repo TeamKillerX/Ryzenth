@@ -21,6 +21,7 @@ from functools import wraps
 
 from ..types import QueryParameter
 
+
 class Decorators:
     def __init__(self, class_func):
         self._clients_ai = class_func(..., is_free_from_ryzenth=True)

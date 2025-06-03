@@ -23,6 +23,7 @@ from ._asynchisded import RyzenthXAsync
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
+
 class ApiKeyFrom:
     def __init__(self, api_key: str = None, is_free_from_ryzenth=False):
         if api_key is Ellipsis:
