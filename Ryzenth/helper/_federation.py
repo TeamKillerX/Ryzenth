@@ -21,8 +21,7 @@ import logging
 
 import httpx
 
-from Ryzenth._errors import WhatFuckError
-
+from .._errors import WhatFuckError
 LOGS = logging.getLogger("[Ryzenth]")
 
 class FbanSync:

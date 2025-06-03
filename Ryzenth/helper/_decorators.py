@@ -19,13 +19,12 @@
 
 from functools import wraps
 
-from Ryzenth._client import ApiKeyFrom
-from Ryzenth.types import QueryParameter
-
+from ..types import QueryParameter
+from .._client import ApiKeyFrom
 
 class Decorators:
     def __init__(self):
-        self._clients = ApiKeyFrom
+        self._clients_ai = ApiKeyFrom(..., is_free_from_ryzenth=True)
 
     def send_ai(self, name: str, only_author=False):
         def decorator(func):
@@ -40,8 +39,7 @@ class Decorators:
                     return await message.reply_text(
                         "Please provide a query after the command.", **kwargs
                     )
-                ryz = self._clients(..., is_free_from_ryzenth=True)
-                result = await ryz.aio.send_message(
+                result = await self._clients_ai.aio.send_message(
                     name, QueryParameter(query=query), dot_access=True
                 )
                 await message.reply_text(result.results, **kwargs)

@@ -19,10 +19,9 @@
 
 import os
 
-from Ryzenth._asynchisded import RyzenthXAsync
-from Ryzenth._decorators import Decorators
-from Ryzenth._synchisded import RyzenthXSync
-
+from ._asynchisded import RyzenthXAsync
+from ._synchisded import RyzenthXSync
+from .helper import Decorators
 
 class UrHellFrom:
     def __init__(self, name: str, only_author=False):

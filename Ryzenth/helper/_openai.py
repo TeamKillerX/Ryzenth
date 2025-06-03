@@ -21,8 +21,8 @@ import logging
 
 import httpx
 
-from Ryzenth._errors import WhatFuckError
-from Ryzenth.types import OpenaiWhisper
+from .._errors import WhatFuckError
+from ..types import OpenaiWhisper
 
 LOGS = logging.getLogger("[Ryzenth]")
 

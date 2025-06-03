@@ -23,6 +23,7 @@ from ._images import ImagesAsync, ImagesSync
 from ._moderator import ModeratorAsync, ModeratorSync
 from ._openai import WhisperAsync, WhisperSync
 from ._thinking import WhatAsync, WhatSync
+from ._decorators import Decorators
 
 __all__ = [
   "WhisperAsync",
@@ -36,5 +37,6 @@ __all__ = [
   "ModeratorAsync",
   "ModeratorSync",
   "FontsAsync",
-  "FontsSync"
+  "FontsSync",
+  "Decorators"
 ]
