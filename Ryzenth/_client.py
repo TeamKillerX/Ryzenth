@@ -24,14 +24,6 @@ from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
 
-class UrHellFrom:
-    def __init__(self, name: str, only_author=False):
-        self.decorators = Decorators()
-        self.ai = self.decorators.send_ai(name=name, only_author=only_author)
-
-    def something(self):
-        pass
-
 class ApiKeyFrom:
     def __init__(self, api_key: str = None, is_free_from_ryzenth=False):
         if api_key is Ellipsis:
@@ -47,6 +39,14 @@ class ApiKeyFrom:
         self.api_key = api_key
         self.aio = RyzenthXAsync(api_key)
         self._sync = RyzenthXSync(api_key)
+
+    def something(self):
+        pass
+
+class UrHellFrom:
+    def __init__(self, name: str, only_author=False):
+        self.decorators = Decorators(ApiKeyFrom)
+        self.ai = self.decorators.send_ai(name=name, only_author=only_author)
 
     def something(self):
         pass
