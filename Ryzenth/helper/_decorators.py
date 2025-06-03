@@ -19,8 +19,9 @@
 
 from functools import wraps
 
-from ..types import QueryParameter
 from .._client import ApiKeyFrom
+from ..types import QueryParameter
+
 
 class Decorators:
     def __init__(self):

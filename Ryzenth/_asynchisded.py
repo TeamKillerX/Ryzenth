@@ -23,7 +23,6 @@ import httpx
 from box import Box
 
 from ._errors import WhatFuckError
-from .types import DownloaderBy, QueryParameter
 from .helper import (
     FbanAsync,
     FontsAsync,
@@ -32,6 +31,8 @@ from .helper import (
     WhatAsync,
     WhisperAsync,
 )
+from .types import DownloaderBy, QueryParameter
+
 LOGS = logging.getLogger("[Ryzenth] async")
 
 class RyzenthXAsync:
