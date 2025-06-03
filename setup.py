@@ -32,7 +32,6 @@ setuptools.setup(
         "aiohttp",
         "httpx[http2]",
         "bs4",
-        "uvloop",
         "python-box",
     ],
     extras_require={
@@ -45,7 +44,6 @@ setuptools.setup(
             "pydantic",
             "bs4",
             "typing",
-            "uvloop",
         ]
     },
     classifiers=[
