@@ -17,13 +17,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import json
 import logging
-from datetime import datetime as dt
 
 import httpx
 
-from Ryzenth._errors import ParamsRequiredError, WhatFuckError
+from .._errors import WhatFuckError, ParamsRequiredError
 
 LOGS = logging.getLogger("[Ryzenth]")
 
