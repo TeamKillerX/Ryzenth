@@ -21,7 +21,7 @@ import logging
 
 import httpx
 
-from .._errors import WhatFuckError, ParamsRequiredError
+from .._errors import ParamsRequiredError, WhatFuckError
 
 LOGS = logging.getLogger("[Ryzenth]")
 
