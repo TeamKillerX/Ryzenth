@@ -19,13 +19,11 @@
 
 from functools import wraps
 
-from .._client import ApiKeyFrom
 from ..types import QueryParameter
 
-
 class Decorators:
-    def __init__(self):
-        self._clients_ai = ApiKeyFrom(..., is_free_from_ryzenth=True)
+    def __init__(self, class_func):
+        self._clients_ai = class_func(..., is_free_from_ryzenth=True)
 
     def send_ai(self, name: str, only_author=False):
         def decorator(func):
