@@ -18,8 +18,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from functools import wraps
+
 from Ryzenth._client import ApiKeyFrom
 from Ryzenth.types import QueryParameter
+
 
 class Decorators:
     def __init__(self):
