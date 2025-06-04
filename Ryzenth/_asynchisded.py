@@ -26,6 +26,7 @@ from ._errors import WhatFuckError
 from .helper import (
     FbanAsync,
     FontsAsync,
+    HumanizeAsync,
     ImagesAsync,
     ModeratorAsync,
     WhatAsync,
@@ -48,6 +49,7 @@ class RyzenthXAsync:
         self.federation = FbanAsync(self)
         self.moderator = ModeratorAsync(self)
         self.fonts = FontsAsync(self)
+        self.humanize = HumanizeAsync(self)
         self.obj = Box
 
     async def send_downloader(
