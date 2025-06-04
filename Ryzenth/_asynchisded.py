@@ -30,6 +30,7 @@ from .helper import (
     ModeratorAsync,
     WhatAsync,
     WhisperAsync,
+    HumanizeAsync
 )
 from .types import DownloaderBy, QueryParameter
 
@@ -48,6 +49,7 @@ class RyzenthXAsync:
         self.federation = FbanAsync(self)
         self.moderator = ModeratorAsync(self)
         self.fonts = FontsAsync(self)
+        self.super_ryzenth = HumanizeAsync(self)
         self.obj = Box
 
     async def send_downloader(
