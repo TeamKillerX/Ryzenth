@@ -43,7 +43,8 @@ class HumanizeAsync:
                 )
                 response.raise_for_status()
                 if pickle_json:
-                    return json.loads(response.json())
+                    result = response.json()["results"]
+                    return json.loads(result)
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
                 LOGS.error(f"[ASYNC] Error: {str(e)}")
@@ -64,7 +65,8 @@ class HumanizeSync:
             )
             response.raise_for_status()
             if pickle_json:
-                return json.loads(response.json())
+                result = response.json()["results"]
+                return json.loads(result)
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
             LOGS.error(f"[SYNC] Error fetching from humanize {e}")
