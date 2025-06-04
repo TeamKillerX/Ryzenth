@@ -24,13 +24,13 @@ from box import Box
 
 from ._errors import WhatFuckError
 from .helper import (
-   FbanSync,
-   FontsSync,
-   ImagesSync,
-   ModeratorSync,
-   WhatSync,
-   WhisperSync,
-   HumanizeSync
+    FbanSync,
+    FontsSync,
+    HumanizeSync,
+    ImagesSync,
+    ModeratorSync,
+    WhatSync,
+    WhisperSync,
 )
 from .types import DownloaderBy, QueryParameter
 

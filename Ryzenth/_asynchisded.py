@@ -26,11 +26,11 @@ from ._errors import WhatFuckError
 from .helper import (
     FbanAsync,
     FontsAsync,
+    HumanizeAsync,
     ImagesAsync,
     ModeratorAsync,
     WhatAsync,
     WhisperAsync,
-    HumanizeAsync
 )
 from .types import DownloaderBy, QueryParameter
 
