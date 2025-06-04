@@ -36,6 +36,6 @@ class OpenaiWhisper(BaseModel):
 
 class RequestHumanizer(BaseModel):
     text: str
-    style: str
+    writing_style: str
     author_id: str
     timestamp: str
