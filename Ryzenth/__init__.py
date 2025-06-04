@@ -19,6 +19,6 @@
 
 from . import *
 from .__version__ import __version__
-from ._client import ApiKeyFrom, UrHellFrom
+from ._client import ApiKeyFrom, SmallConvertDot, UrHellFrom
 
 __all__ = [ "ApiKeyFrom", "UrHellFrom", "SmallConvertDot"]
