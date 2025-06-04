@@ -23,7 +23,7 @@ import logging
 import httpx
 
 from .._errors import WhatFuckError
-from ..types import QueryParameter
+from ..types import MapHumanize
 
 LOGS = logging.getLogger("[Ryzenth]")
 
@@ -31,7 +31,7 @@ class HumanizeAsync:
     def __init__(self, parent):
         self.parent = parent
 
-    async def new_humanize_by_from(self, params: QueryParameter, pickle_json=False, dot_access=False):
+    async def what_do_you_think(self, params: MapHumanize, pickle_json=False, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/r/Ryzenth-Humanize-05-06-2025"
         async with httpx.AsyncClient() as client:
             try:
@@ -53,7 +53,7 @@ class HumanizeSync:
     def __init__(self, parent):
         self.parent = parent
 
-    def new_humanize_by_from(self, params: QueryParameter, pickle_json=False, dot_access=False):
+    def what_do_you_think(self, params: MapHumanize, pickle_json=False, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/r/Ryzenth-Humanize-05-06-2025"
         try:
             response = httpx.get(

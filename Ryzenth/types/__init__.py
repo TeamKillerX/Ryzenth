@@ -33,3 +33,8 @@ class OpenaiWhisper(BaseModel):
     url: str
     language: Optional[str] = None
     task: Optional[str] = None
+
+class MapHumanize(BaseModel):
+    query: str
+    author_id: str
+    timestamp: str
