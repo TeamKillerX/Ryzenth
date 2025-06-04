@@ -56,7 +56,6 @@ class UrHellFrom:
 class SmallConvertDot:
     def __init__(self, obj):
         self.obj = obj
-        self.dot = Box
 
     def to_dot(self):
-        return self.dot(self.obj or {})
+        return Box(self.obj if self.obj is not None else {})
