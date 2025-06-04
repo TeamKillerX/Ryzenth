@@ -24,7 +24,7 @@ from ..types import QueryParameter
 
 class Decorators:
     def __init__(self, class_func):
-        self._clients_ai = class_func(..., is_free_from_ryzenth=True)
+        self._clients_ai = class_func(..., is_ok=True)
 
     def send_ai(self, name: str, only_author=False):
         def decorator(func):
