@@ -49,7 +49,7 @@ class RyzenthXSync:
         self.federation = FbanSync(self)
         self.moderator = ModeratorSync(self)
         self.fonts = FontsSync(self)
-        self.humanize = HumanizeSync(self)
+        self.humanizer = HumanizeSync(self)
         self.obj = Box
 
     def send_downloader(
