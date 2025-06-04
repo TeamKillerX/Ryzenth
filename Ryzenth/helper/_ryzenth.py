@@ -31,7 +31,7 @@ class HumanizeAsync:
     def __init__(self, parent):
         self.parent = parent
 
-    async def humanize(self, params: QueryParameter, pickle_json=False, dot_access=False):
+    async def new_humanize_by_from(self, params: QueryParameter, pickle_json=False, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/r/Ryzenth-Humanize-05-06-2025"
         async with httpx.AsyncClient() as client:
             try:
@@ -53,7 +53,7 @@ class HumanizeSync:
     def __init__(self, parent):
         self.parent = parent
 
-    def humanize(self, params: QueryParameter, pickle_json=False, dot_access=False):
+    def new_humanize_by_from(self, params: QueryParameter, pickle_json=False, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/r/Ryzenth-Humanize-05-06-2025"
         try:
             response = httpx.get(
