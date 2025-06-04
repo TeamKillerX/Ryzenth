@@ -49,7 +49,7 @@ class RyzenthXAsync:
         self.federation = FbanAsync(self)
         self.moderator = ModeratorAsync(self)
         self.fonts = FontsAsync(self)
-        self.super_ryzenth = HumanizeAsync(self)
+        self.humanize = HumanizeAsync(self)
         self.obj = Box
 
     async def send_downloader(
