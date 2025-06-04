@@ -19,6 +19,8 @@
 
 import os
 
+from box import Box
+
 from ._asynchisded import RyzenthXAsync
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
@@ -50,3 +52,11 @@ class UrHellFrom:
 
     def something(self):
         pass
+
+class SmallConvertDot:
+    def __init__(self, obj):
+        self.obj = obj
+        self.dot = Box
+
+    def to_dot(self):
+        return self.dot(self.obj or {})
