@@ -22,9 +22,17 @@ import logging
 import httpx
 from box import Box
 
-from Ryzenth._errors import WhatFuckError
-from Ryzenth.helper import FbanSync, FontsSync, ImagesSync, ModeratorSync, WhatSync, WhisperSync
-from Ryzenth.types import DownloaderBy, QueryParameter
+from ._errors import WhatFuckError
+from .helper import (
+   FbanSync,
+   FontsSync,
+   ImagesSync,
+   ModeratorSync,
+   WhatSync,
+   WhisperSync,
+   HumanizeSync
+)
+from .types import DownloaderBy, QueryParameter
 
 LOGS = logging.getLogger("[Ryzenth] sync")
 
@@ -41,6 +49,7 @@ class RyzenthXSync:
         self.federation = FbanSync(self)
         self.moderator = ModeratorSync(self)
         self.fonts = FontsSync(self)
+        self.super_ryzenth = HumanizeSync(self)
         self.obj = Box
 
     def send_downloader(
