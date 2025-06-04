@@ -3,7 +3,7 @@
 
 from Ryzenth import ApiKeyFrom
 
-ryz = ApiKeyFrom(..., is_free_from_ryzenth=True)
+ryz = ApiKeyFrom(..., is_ok=True)
 
 ryz.aio.timeout = 10
 
