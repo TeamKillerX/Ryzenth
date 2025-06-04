@@ -34,7 +34,8 @@ class OpenaiWhisper(BaseModel):
     language: Optional[str] = None
     task: Optional[str] = None
 
-class MapHumanize(BaseModel):
-    query: str
+class RequestHumanizer(BaseModel):
+    text: str
+    style: str
     author_id: str
     timestamp: str
