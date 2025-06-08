@@ -23,7 +23,6 @@ import httpx
 from box import Box
 
 from ._errors import WhatFuckError
-from ._logger import logging_message_check, setting_loggings
 from .helper import (
     FbanSync,
     FontsSync,
@@ -34,8 +33,6 @@ from .helper import (
     WhisperSync,
 )
 from .types import DownloaderBy, QueryParameter
-
-setting_loggings()
 
 class RyzenthXSync:
     def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
@@ -52,6 +49,15 @@ class RyzenthXSync:
         self.fonts = FontsSync(self)
         self.humanizer = HumanizeSync(self)
         self.obj = Box
+        self.httpx = httpx
+        self.logger = logging.getLogger("Ryzenth Bot")
+        self.logger.setLevel(logging.INFO)
+        logging.getLogger('httpx').setLevel(logging.WARNING)
+        logging.getLogger('httpcore').setLevel(logging.WARNING)
+        handler = logging.FileHandler("RyzenthLib.log", encoding="utf-8")
+        handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        self.logger.addHandler(handler)
+
 
     def send_downloader(
         self,
@@ -94,7 +100,7 @@ class RyzenthXSync:
             response.raise_for_status()
             return self.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            logging_message_check().error(f"[SYNC] Error fetching from downloader {e}")
+            self.logger.error(f"[SYNC] Error fetching from downloader {e}")
             raise WhatFuckError("[SYNC] Error fetching from downloader") from e
 
     def send_message(
@@ -136,5 +142,5 @@ class RyzenthXSync:
             response.raise_for_status()
             return self.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            logging_message_check().error(f"[SYNC] Error fetching from akenox: {e}")
+            self.logger.error(f"[SYNC] Error fetching from akenox: {e}")
             raise WhatFuckError("[SYNC] Error fetching from akenox") from e
