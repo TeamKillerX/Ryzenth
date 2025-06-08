@@ -22,8 +22,9 @@ import logging
 import httpx
 
 from .._errors import WhatFuckError
+from .._logger import logging_message_check, setting_loggings
 
-LOGS = logging.getLogger("[Ryzenth]")
+setting_loggings()
 
 class FbanSync:
     def __init__(self, parent):
@@ -41,7 +42,7 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from newfed {e}")
+            logging_message_check().error(f"[SYNC] Error fetching from newfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from newfed") from e
 
     def subfed(self, parent_uuid: str, child_uuid: str, dot_access=False):
@@ -56,7 +57,7 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from subfed {e}")
+            logging_message_check().error(f"[SYNC] Error fetching from subfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from subfed") from e
 
     def getfed(self, uuid: str, dot_access=False):
@@ -70,7 +71,7 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from getfed {e}")
+            logging_message_check().error(f"[SYNC] Error fetching from getfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from getfed") from e
 
     def unban(self, name: str, user_id: int, dot_access=False):
@@ -85,7 +86,7 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from unban {e}")
+            logging_message_check().error(f"[SYNC] Error fetching from unban {e}")
             raise WhatFuckError("[SYNC] Error fetching from unban") from e
 
     def ban(self, federation_uuid: str, user_id: int, dot_access=False):
@@ -100,7 +101,7 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from unban {e}")
+            logging_message_check().error(f"[SYNC] Error fetching from unban {e}")
             raise WhatFuckError("[SYNC] Error fetching from unban") from e
 
     def ban_check(self, federation_uuid: str, user_id: int, dot_access=False):
@@ -115,7 +116,7 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from ban-check {e}")
+            logging_message_check().error(f"[SYNC] Error fetching from ban-check {e}")
             raise WhatFuckError("[SYNC] Error fetching from ban-check") from e
 
     def fedstats(self, uuid: str, dot_access=False):
@@ -130,7 +131,7 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from fedstats {e}")
+            logging_message_check().error(f"[SYNC] Error fetching from fedstats {e}")
             raise WhatFuckError("[SYNC] Error fetching from fedstats") from e
 
     def unsubfed(self, parent_uuid: str, child_uuid: str, dot_access=False):
@@ -145,7 +146,7 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from unsubfed {e}")
+            logging_message_check().error(f"[SYNC] Error fetching from unsubfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from unsubfed") from e
 
     def renamefed(self, federation_uuid: str, new_name: str, dot_access=False):
@@ -160,7 +161,7 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from renamefed {e}")
+            logging_message_check().error(f"[SYNC] Error fetching from renamefed {e}")
             raise WhatFuckError("[SYNC] Error fetching from renamefed") from e
 
 class FbanAsync:
@@ -180,7 +181,7 @@ class FbanAsync:
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                logging_message_check().error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def subfed(self, parent_uuid: str, child_uuid: str, dot_access=False):
@@ -196,7 +197,7 @@ class FbanAsync:
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                logging_message_check().error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def getfed(self, uuid: str, dot_access=False):
@@ -207,7 +208,7 @@ class FbanAsync:
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                logging_message_check().error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def unban(self, name: str, user_id: int, dot_access=False):
@@ -223,7 +224,7 @@ class FbanAsync:
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                logging_message_check().error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def ban(self, federation_uuid: str, user_id: int, dot_access=False):
@@ -239,7 +240,7 @@ class FbanAsync:
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                logging_message_check().error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def ban_check(self, federation_uuid: str, user_id: int, dot_access=False):
@@ -255,7 +256,7 @@ class FbanAsync:
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                logging_message_check().error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def fedstats(self, uuid: str, dot_access=False):
@@ -271,7 +272,7 @@ class FbanAsync:
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                logging_message_check().error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def unsubfed(self, parent_uuid: str, child_uuid: str, dot_access=False):
@@ -287,7 +288,7 @@ class FbanAsync:
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                logging_message_check().error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def renamefed(self, federation_uuid: str, new_name: str, dot_access=False):
@@ -303,5 +304,5 @@ class FbanAsync:
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                logging_message_check().error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
