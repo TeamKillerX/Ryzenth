@@ -23,7 +23,7 @@ import httpx
 from box import Box
 
 from ._errors import WhatFuckError
-from ._logger import logging_message_check
+from ._logger import logging_message_check, setting_loggings
 from .helper import (
     FbanAsync,
     FontsAsync,
@@ -35,34 +35,7 @@ from .helper import (
 )
 from .types import DownloaderBy, QueryParameter
 
-LOGGING_CONFIG = {
-    "version": 1,
-    "handlers": {
-        "default": {
-            "class": "logging.StreamHandler",
-            "formatter": "http",
-            "stream": "ext://sys.stderr"
-        }
-    },
-    "formatters": {
-        "http": {
-            "format": "%(levelname)s [%(asctime)s] %(name)s - %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S",
-        }
-    },
-    'loggers': {
-        'httpx': {
-            'handlers': ['default'],
-            'level': 'WARNING',
-        },
-        'httpcore': {
-            'handlers': ['default'],
-            'level': 'WARNING',
-        },
-    }
-}
-
-logging.config.dictConfig(LOGGING_CONFIG)
+setting_loggings()
 
 class RyzenthXAsync:
     def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
