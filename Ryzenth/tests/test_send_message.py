@@ -1,5 +1,5 @@
 from Ryzenth import ApiKeyFrom
-from Ryzenth.types import QueryParameter
+from ..types import QueryParameter
 
 def send_message():
     ryz = ApiKeyFrom(..., is_ok=True)
