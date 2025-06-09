@@ -6,9 +6,9 @@
 [![Ryzenth - Version](https://img.shields.io/pypi/v/Ryzenth?style=round)](https://pypi.org/project/Ryzenth)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/Ryzenth/main.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/Ryzenth/main)
 
-**Ryzenth** is a powerful and flexible Python SDK for interacting with the new **Ryzenth API**  a successor to the AkenoX API supporting both synchronous and asynchronous workflows out of the box.
+**Ryzenth** is a powerful and flexible Python SDK for interacting with the new **Ryzenth API V1**  a successor to the AkenoX API supporting both synchronous and asynchronous workflows out of the box.
 
-> Note: AkenoX API is still alive and supported, but Ryzenth is the next generation.
+> Note: Ryzenth API V1 is still alive and supported, but Ryzenth is the next generation.
 
 ## Features
 
