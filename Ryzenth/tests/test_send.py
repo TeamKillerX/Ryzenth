@@ -1,11 +1,10 @@
 from Ryzenth import ApiKeyFrom
-from ..types import QueryParameter
+from Ryzenth.types import QueryParameter  # disarankan gunakan absolute import
 
-def send_message():
+def test_send_message():
     ryz = ApiKeyFrom(..., is_ok=True)
-    assert ryz._sync.send_message(
+    result = ryz._sync.send_message(
         "hybrid",
-        QueryParameter(
-            query="hello world!"
-        )
+        QueryParameter(query="hello world!")
     )
+    assert result is not None
