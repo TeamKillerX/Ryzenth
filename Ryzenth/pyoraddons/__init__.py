@@ -18,7 +18,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from functools import wraps
+
 from .._errors.py import UnauthorizedAccessInvalidError
+
 
 def unauthorized_access(
     user_list: list = None,
