@@ -55,9 +55,10 @@ class RyzenthXAsync:
         self.logger.setLevel(logging.INFO)
         logging.getLogger('httpx').setLevel(logging.WARNING)
         logging.getLogger('httpcore').setLevel(logging.WARNING)
-        handler = logging.FileHandler("RyzenthLib.log", encoding="utf-8")
-        handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
-        self.logger.addHandler(handler)
+        if not self.logger.handlers:
+            handler = logging.FileHandler("RyzenthLib.log", encoding="utf-8")
+            handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+            self.logger.addHandler(handler)
 
     async def send_downloader(
         self,

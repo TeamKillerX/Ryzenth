@@ -95,8 +95,8 @@ class FbanSync:
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
-            self.parent.logger.error(f"[SYNC] Error fetching from unban {e}")
-            raise WhatFuckError("[SYNC] Error fetching from unban") from e
+            self.parent.logger.error(f"[SYNC] Error fetching from ban {e}")
+            raise WhatFuckError("[SYNC] Error fetching from ban") from e
 
     def ban_check(self, federation_uuid: str, user_id: int, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/ban-check"
