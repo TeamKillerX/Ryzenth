@@ -26,6 +26,9 @@ class WhatFuckError(Exception):
 class ParamsRequiredError(ValueError):
     pass
 
+class UnauthorizedAccessInvalidError(ValueError):
+    pass
+
 class InvalidVersionError(ValueError):
     pass
 
@@ -40,5 +43,6 @@ __all__ = [
     "ParamsRequiredError",
     "InvalidVersionError",
     "InvalidJSONDecodeError",
-    "InvalidEmptyError"
+    "InvalidEmptyError",
+    "UnauthorizedAccessInvalidError"
 ]
