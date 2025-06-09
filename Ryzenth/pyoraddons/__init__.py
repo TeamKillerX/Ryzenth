@@ -20,7 +20,7 @@
 from functools import wraps
 
 
-def UnauthorizedAccess(
+def unauthorized_access(
     user_list: list = [],
     author_only: bool = False,
     member_only: bool = False
@@ -29,7 +29,7 @@ def UnauthorizedAccess(
     def decorator(func):
         @wraps(func)
         async def wrapper(client, message):
-            if only_author and message.from_user.id != client.me.id:
+            if author_only and message.from_user.id != client.me.id:
                 return await message.reply_text("This Unauthorized Access Only Owner.")
             if member_only and message.from_user.id not in user_list:
                 return await message.reply_text("This Unauthorized Access Only Members.")
@@ -41,4 +41,4 @@ def UnauthorizedAccess(
         return wrapper
     return decorator
 
-__all__ = ["UnauthorizedAccess"]
+__all__ = ["unauthorized_access"]
