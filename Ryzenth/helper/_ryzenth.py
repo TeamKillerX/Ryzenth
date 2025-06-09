@@ -18,14 +18,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
-import logging
-
-import httpx
-
 from .._errors import WhatFuckError
 from ..types import RequestHumanizer
-
-LOGS = logging.getLogger("[Ryzenth]")
 
 class HumanizeAsync:
     def __init__(self, parent):
@@ -33,7 +27,7 @@ class HumanizeAsync:
 
     async def rewrite(self, params: RequestHumanizer, pickle_json=False, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/r/Ryzenth-Humanize-05-06-2025"
-        async with httpx.AsyncClient() as client:
+        async with self.parent.httpx.AsyncClient() as client:
             try:
                 response = await client.get(
                     url,
@@ -46,8 +40,8 @@ class HumanizeAsync:
                     result = response.json()["results"]
                     return json.loads(result)
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+            except self.parent.httpx.HTTPError as e:
+                self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
 class HumanizeSync:
@@ -57,7 +51,7 @@ class HumanizeSync:
     def rewrite(self, params: RequestHumanizer, pickle_json=False, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/r/Ryzenth-Humanize-05-06-2025"
         try:
-            response = httpx.get(
+            response = self.parent.httpx.get(
                 url,
                 params=params.dict(),
                 headers=self.parent.headers,
@@ -68,6 +62,6 @@ class HumanizeSync:
                 result = response.json()["results"]
                 return json.loads(result)
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
-        except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from humanize {e}")
+        except self.parent.httpx.HTTPError as e:
+            self.parent.logger.error(f"[SYNC] Error fetching from humanize {e}")
             raise WhatFuckError("[SYNC] Error fetching from humanize") from e
