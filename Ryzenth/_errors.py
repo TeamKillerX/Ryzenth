@@ -44,5 +44,5 @@ __all__ = [
     "InvalidVersionError",
     "InvalidJSONDecodeError",
     "InvalidEmptyError",
-    "UnauthorizedAccessInvalidError"
+    "UnauthorizedAccessError"
 ]
