@@ -1,7 +1,6 @@
 # Ryzenth Library
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/TeamKillerX/Ryzenth)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green)](https://github.com/TeamKillerX/Ryzenth/graphs/commit-activity)
-[![GitHub Forks](https://img.shields.io/github/forks/TeamKillerX/Ryzenth?&logo=github)](https://github.com/TeamKillerX/Ryzenth)
 [![License](https://img.shields.io/badge/License-GPL-pink)](https://github.com/TeamKillerX/Ryzenth/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 [![Ryzenth - Version](https://img.shields.io/pypi/v/Ryzenth?style=round)](https://pypi.org/project/Ryzenth)
@@ -74,4 +73,4 @@ export RYZENTH_API_KEY=your-api-key
 
 ## License
 
-Private – API still in early access stage. Public release coming soon.
+You can now access the [`Ryzenth API (Typescript)`](https://github.com/xtsea/akenox-ts-dev/blob/main/ryzenth-api.md#-existing-api-still-alive)
