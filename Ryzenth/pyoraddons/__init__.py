@@ -19,6 +19,7 @@
 
 from functools import wraps
 
+
 def UnauthorizedAccess(
     user_list: list = [],
     author_only: bool = False,
