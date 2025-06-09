@@ -17,14 +17,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import logging
-
-import httpx
-
 from .._errors import WhatFuckError
 from ..types import QueryParameter
-
-LOGS = logging.getLogger("[Ryzenth]")
 
 class ImagesAsync:
     def __init__(self, parent):
@@ -32,13 +26,13 @@ class ImagesAsync:
 
     async def generate(self, params: QueryParameter):
         url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
-        async with httpx.AsyncClient() as client:
+        async with self.parent.httpx.AsyncClient() as client:
             try:
                 response = await client.get(url, params=params.dict(), headers=self.parent.headers, timeout=self.parent.timeout)
                 response.raise_for_status()
                 return response.content
-            except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+            except self.parent.httpx.HTTPError as e:
+                self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
 class ImagesSync:
@@ -48,7 +42,7 @@ class ImagesSync:
     def generate(self, params: QueryParameter):
         url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
         try:
-            response = httpx.get(
+            response = self.parent.httpx.get(
                 url,
                 params=params.dict(),
                 headers=self.parent.headers,
@@ -56,6 +50,6 @@ class ImagesSync:
             )
             response.raise_for_status()
             return response.content
-        except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from images {e}")
+        except self.parent.httpx.HTTPError as e:
+            self.parent.logger.error(f"[SYNC] Error fetching from images {e}")
             raise WhatFuckError("[SYNC] Error fetching from images") from e
