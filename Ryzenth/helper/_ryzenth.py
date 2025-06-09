@@ -33,7 +33,7 @@ class HumanizeAsync:
             try:
                 response = await client.get(
                     url,
-                    params=params.dict(),
+                    params=params.model_dump(),
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
@@ -55,7 +55,7 @@ class HumanizeSync:
         try:
             response = self.parent.httpx.get(
                 url,
-                params=params.dict(),
+                params=params.model_dump(),
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
