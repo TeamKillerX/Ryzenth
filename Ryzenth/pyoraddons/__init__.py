@@ -19,7 +19,7 @@
 
 from functools import wraps
 
-from .._errors import UnauthorizedAccessError
+from .._errors import RequiredError, UnauthorizedAccessError
 
 
 def unauthorized_access(
@@ -70,11 +70,11 @@ def admin_only(enums_type=None):
         @wraps(func)
         async def wrapper(client, message):
             if enums_type is None:
-                raise ValueError("Required enums_type")
+                raise RequiredError("Required enums_type")
             member = await client.get_chat_member(message.chat.id, message.from_user.id)
             if member.status not in {enums_type.ADMINISTRATOR, enums_type.OWNER}:
                 return await message.reply_text("Only admin can!")
-            return await func(client, callback)
+            return await func(client, message)
         return wrapper
     return decorator
 
