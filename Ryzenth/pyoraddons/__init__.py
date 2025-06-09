@@ -69,6 +69,8 @@ def admin_only(enums_type=None):
     def decorator(func):
         @wraps(func)
         async def wrapper(client, message):
+            if enums_type is None:
+                raise ValueError("Required enums_type")
             member = await client.get_chat_member(message.chat.id, message.from_user.id)
             if member.status not in {enums_type.ADMINISTRATOR, enums_type.OWNER}:
                 return await message.reply_text("Only admin can!")
