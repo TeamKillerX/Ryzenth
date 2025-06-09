@@ -1,15 +1,14 @@
 # Ryzenth Library
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/TeamKillerX/Ryzenth)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green)](https://github.com/TeamKillerX/Ryzenth/graphs/commit-activity)
-[![GitHub Forks](https://img.shields.io/github/forks/TeamKillerX/Ryzenth?&logo=github)](https://github.com/TeamKillerX/Ryzenth)
 [![License](https://img.shields.io/badge/License-GPL-pink)](https://github.com/TeamKillerX/Ryzenth/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 [![Ryzenth - Version](https://img.shields.io/pypi/v/Ryzenth?style=round)](https://pypi.org/project/Ryzenth)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/Ryzenth/main.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/Ryzenth/main)
 
-**Ryzenth** is a powerful and flexible Python SDK for interacting with the new **Ryzenth API**  a successor to the AkenoX API supporting both synchronous and asynchronous workflows out of the box.
+**Ryzenth** is a powerful and flexible Python SDK for interacting with the new **Ryzenth API V1**  a successor to the Ryzenth API V1 supporting both synchronous and asynchronous workflows out of the box.
 
-> Note: AkenoX API is still alive and supported, but Ryzenth is the next generation.
+> Note: Ryzenth API V1 (**javascript**) is still alive and supported, but Ryzenth is the next generation.
 
 ## Features
 
@@ -74,4 +73,4 @@ export RYZENTH_API_KEY=your-api-key
 
 ## License
 
-Private – API still in early access stage. Public release coming soon.
+You can now access the [`Ryzenth API V2 (Typescript)`](https://github.com/xtsea/akenox-ts-dev/blob/main/ryzenth-api.md#-existing-api-still-alive)
