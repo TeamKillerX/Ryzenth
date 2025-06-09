@@ -19,7 +19,7 @@
 
 from functools import wraps
 
-from .._errors.py import UnauthorizedAccessError
+from .._errors import UnauthorizedAccessError
 
 
 def unauthorized_access(
