@@ -20,7 +20,6 @@
 from .._errors import WhatFuckError
 from ..types import OpenaiWhisper
 
-LOGS = logging.getLogger("[Ryzenth]")
 
 class WhisperAsync:
     def __init__(self, parent):
