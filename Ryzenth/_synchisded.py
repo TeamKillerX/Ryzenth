@@ -96,7 +96,7 @@ class RyzenthXSync:
         try:
             response = httpx.get(
                 f"{self.base_url}/v1/dl/{model_name}",
-                params=params.dict(),
+                params=params.model_dump(),
                 headers=self.headers,
                 timeout=self.timeout
             )
@@ -138,7 +138,7 @@ class RyzenthXSync:
         try:
             response = httpx.get(
                 f"{self.base_url}/v1/ai/akenox/{model_param}",
-                params=params.dict(),
+                params=params.model_dump(),
                 headers=self.headers,
                 timeout=self.timeout
             )
