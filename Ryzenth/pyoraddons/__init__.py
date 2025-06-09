@@ -20,10 +20,11 @@
 from functools import wraps
 
 def unauthorized_access(
-  author_only=False,
-  member_only=False,
-  user_list: list = []
+    user_list: list = [],
+    author_only: bool = False,
+    member_only: bool = False
 ):
+    "Credits by @xtdevs"
     def decorator(func):
         @wraps(func)
         async def wrapper(client, message):
