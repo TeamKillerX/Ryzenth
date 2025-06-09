@@ -1,5 +1,6 @@
 from Ryzenth import ApiKeyFrom
 
+
 def test_moderator():
     ryz = ApiKeyFrom(..., is_ok=True)
     result = ryz._sync.moderator.aigen_image_check(

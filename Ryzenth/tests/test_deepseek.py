@@ -1,5 +1,7 @@
 from Ryzenth import ApiKeyFrom
+
 from ..types import QueryParameter
+
 
 def test_deepseek():
     ryz = ApiKeyFrom(..., True)
