@@ -19,6 +19,7 @@
 
 from .._errors import InvalidVersionError, WhatFuckError
 
+
 class ModeratorAsync:
     def __init__(self, parent):
         self.parent = parent

@@ -19,6 +19,7 @@
 
 from .._errors import ParamsRequiredError, WhatFuckError
 
+
 class FontsAsync:
     def __init__(self, parent):
         self.parent = parent

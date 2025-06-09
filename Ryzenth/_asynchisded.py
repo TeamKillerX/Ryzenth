@@ -34,6 +34,7 @@ from .helper import (
 )
 from .types import DownloaderBy, QueryParameter
 
+
 class RyzenthXAsync:
     def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
         self.api_key = api_key

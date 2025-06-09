@@ -18,8 +18,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
+
 from .._errors import WhatFuckError
 from ..types import RequestHumanizer
+
 
 class HumanizeAsync:
     def __init__(self, parent):

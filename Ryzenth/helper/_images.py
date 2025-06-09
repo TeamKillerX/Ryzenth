@@ -20,6 +20,7 @@
 from .._errors import WhatFuckError
 from ..types import QueryParameter
 
+
 class ImagesAsync:
     def __init__(self, parent):
         self.parent = parent

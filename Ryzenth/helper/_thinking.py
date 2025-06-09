@@ -21,6 +21,7 @@
 from .._errors import WhatFuckError
 from ..types import QueryParameter
 
+
 class WhatAsync:
     def __init__(self, parent):
         self.parent = parent
