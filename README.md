@@ -6,6 +6,11 @@
 [![Ryzenth - Version](https://img.shields.io/pypi/v/Ryzenth?style=round)](https://pypi.org/project/Ryzenth)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/Ryzenth/main.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/Ryzenth/main)
 
+<div align="center">
+    <a href="https://pepy.tech/project/Ryzenth"><img src="https://static.pepy.tech/badge/Ryzenth" alt="Downloads"></a>
+    <a href="https://github.com/TeamKillerX/Ryzenth/workflows/"><img src="https://github.com/TeamKillerX/Ryzenth/actions/workflows/sync-tests.yml/badge.svg" alt="API Tests"/></a>
+</div>
+
 **Ryzenth** is a powerful and flexible Python SDK for interacting with the new **Ryzenth API V1**  a successor to the Ryzenth API V1 supporting both synchronous and asynchronous workflows out of the box.
 
 > Note: Ryzenth API V1 (**javascript**) is still alive and supported, but Ryzenth is the next generation.
@@ -31,7 +36,7 @@ pip install ryzenth[fast]
 from Ryzenth import ApiKeyFrom
 from Ryzenth.types import QueryParameter
 
-ryz = ApiKeyFrom(..., is_free_from_ryzenth=True)
+ryz = ApiKeyFrom(..., is_ok=True)
 
 await ryz.aio.send_message(
     "hybrid",
@@ -47,7 +52,7 @@ await ryz.aio.send_message(
 from Ryzenth import ApiKeyFrom
 from Ryzenth.types import QueryParameter
 
-ryz = ApiKeyFrom(..., is_free_from_ryzenth=True)
+ryz = ApiKeyFrom(..., is_ok=True)
 ryz._sync.send_message(
     "hybrid",
     QueryParameter(
