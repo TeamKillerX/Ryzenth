@@ -34,7 +34,6 @@ from .helper import (
 )
 from .types import DownloaderBy, QueryParameter
 
-LOGS = logging.getLogger("[Ryzenth] async")
 
 class RyzenthXAsync:
     def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
@@ -51,6 +50,14 @@ class RyzenthXAsync:
         self.fonts = FontsAsync(self)
         self.humanizer = HumanizeAsync(self)
         self.obj = Box
+        self.httpx = httpx
+        self.logger = logging.getLogger("Ryzenth Bot")
+        self.logger.setLevel(logging.INFO)
+        logging.getLogger('httpx').setLevel(logging.WARNING)
+        logging.getLogger('httpcore').setLevel(logging.WARNING)
+        handler = logging.FileHandler("RyzenthLib.log", encoding="utf-8")
+        handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        self.logger.addHandler(handler)
 
     async def send_downloader(
         self,
@@ -95,7 +102,7 @@ class RyzenthXAsync:
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                self.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def send_message(
@@ -138,5 +145,5 @@ class RyzenthXAsync:
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+                self.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e

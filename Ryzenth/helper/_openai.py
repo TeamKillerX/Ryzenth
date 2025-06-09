@@ -17,10 +17,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import logging
-
-import httpx
-
 from .._errors import WhatFuckError
 from ..types import OpenaiWhisper
 
@@ -32,7 +28,7 @@ class WhisperAsync:
 
     async def whisper_from(self, params: OpenaiWhisper, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/openai/whisper-large-v3-turbo"
-        async with httpx.AsyncClient() as client:
+        async with self.parent.httpx.AsyncClient() as client:
             try:
                 response = await client.get(
                     url,
@@ -42,8 +38,8 @@ class WhisperAsync:
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+            except self.parent.httpx.HTTPError as e:
+                self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
 class WhisperSync:
@@ -53,7 +49,7 @@ class WhisperSync:
     def whisper_from(self, params: OpenaiWhisper, dot_access=False):
         url = f"{self.parent.base_url}/v1/ai/openai/whisper-large-v3-turbo"
         try:
-            response = httpx.get(
+            response = self.parent.httpx.get(
                 url,
                 params=params.dict(),
                 headers=self.parent.headers,
@@ -61,6 +57,6 @@ class WhisperSync:
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
-        except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from whisper openai {e}")
+        except self.parent.httpx.HTTPError as e:
+            self.parent.logger.error(f"[SYNC] Error fetching from whisper openai {e}")
             raise WhatFuckError("[SYNC] Error fetching from whisper openai") from e

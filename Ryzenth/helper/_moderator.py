@@ -17,13 +17,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import logging
-
-import httpx
-
 from .._errors import InvalidVersionError, WhatFuckError
 
-LOGS = logging.getLogger("[Ryzenth]")
 
 class ModeratorAsync:
     def __init__(self, parent):
@@ -45,7 +40,7 @@ class ModeratorAsync:
             raise InvalidVersionError("Invalid Version V1 or V2")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/aigen-{_version}"
-        async with httpx.AsyncClient() as client:
+        async with self.parent.httpx.AsyncClient() as client:
             try:
                 response = await client.get(
                     url,
@@ -55,8 +50,8 @@ class ModeratorAsync:
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+            except self.parent.httpx.HTTPError as e:
+                self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def antievalai(
@@ -74,7 +69,7 @@ class ModeratorAsync:
             raise InvalidVersionError("Invalid Version V1 or V2")
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
-        async with httpx.AsyncClient() as client:
+        async with self.parent.httpx.AsyncClient() as client:
             try:
                 response = await client.get(
                     url,
@@ -84,8 +79,8 @@ class ModeratorAsync:
                 )
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            except httpx.HTTPError as e:
-                LOGS.error(f"[ASYNC] Error: {str(e)}")
+            except self.parent.httpx.HTTPError as e:
+                self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
 class ModeratorSync:
@@ -109,7 +104,7 @@ class ModeratorSync:
 
         url = f"{self.parent.base_url}/v1/ai/akenox/aigen-{_version}"
         try:
-            response = httpx.get(
+            response = self.parent.httpx.get(
                 url,
                 params={"query": text, "isJson": is_loads},
                 headers=self.parent.headers,
@@ -117,8 +112,8 @@ class ModeratorSync:
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
-        except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from aigen_image_check {e}")
+        except self.parent.httpx.HTTPError as e:
+            self.parent.logger.error(f"[SYNC] Error fetching from aigen_image_check {e}")
             raise WhatFuckError("[SYNC] Error fetching from aigen_image_check") from e
 
     def antievalai(
@@ -137,7 +132,7 @@ class ModeratorSync:
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
         try:
-            response = httpx.get(
+            response = self.parent.httpx.get(
                 url,
                 params={"query": text},
                 headers=self.parent.headers,
@@ -145,6 +140,6 @@ class ModeratorSync:
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
-        except httpx.HTTPError as e:
-            LOGS.error(f"[SYNC] Error fetching from antievalai {e}")
+        except self.parent.httpx.HTTPError as e:
+            self.parent.logger.error(f"[SYNC] Error fetching from antievalai {e}")
             raise WhatFuckError("[SYNC] Error fetching from antievalai") from e
