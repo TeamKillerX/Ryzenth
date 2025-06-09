@@ -21,7 +21,7 @@ from functools import wraps
 
 
 def unauthorized_access(
-    user_list: list = [],
+    user_list: list = None,
     author_only: bool = False,
     member_only: bool = False
 ):
