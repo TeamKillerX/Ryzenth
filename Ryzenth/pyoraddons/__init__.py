@@ -19,6 +19,8 @@
 
 from functools import wraps
 
+from .._errors.py import UnauthorizedAccessError
+
 
 def unauthorized_access(
     user_list: list = None,
@@ -36,7 +38,7 @@ def unauthorized_access(
             return await func(client, message)
 
         if sum([author_only, member_only]) > 1:
-            raise ValueError("Only one of author_only, or member_only can be True")
+            raise UnauthorizedAccessError("Only one of author_only, or member_only can be True")
 
         return wrapper
     return decorator
