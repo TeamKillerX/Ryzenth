@@ -19,7 +19,7 @@
 
 from functools import wraps
 
-def unauthorized_access(
+def UnauthorizedAccess(
     user_list: list = [],
     author_only: bool = False,
     member_only: bool = False
@@ -39,3 +39,5 @@ def unauthorized_access(
 
         return wrapper
     return decorator
+
+__all__ = ["UnauthorizedAccess"]
