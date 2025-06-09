@@ -26,7 +26,7 @@ class WhatFuckError(Exception):
 class ParamsRequiredError(ValueError):
     pass
 
-class UnauthorizedAccessInvalidError(ValueError):
+class UnauthorizedAccessError(ValueError):
     pass
 
 class InvalidVersionError(ValueError):
