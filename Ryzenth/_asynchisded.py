@@ -69,11 +69,8 @@ class RyzenthXAsync:
         on_render=False,
         dot_access=False
     ):
-        if on_render:
-            dl_dict = BASE_DICT_RENDER
-        else:
-            dl_dict = BASE_DICT_OFFICIAL
-
+        
+        dl_dict = BASE_DICT_RENDER if on_render else BASE_DICT_OFFICIAL
         model_name = dl_dict.get(switch_name)
         if not model_name:
             raise ValueError(f"Invalid switch_name: {switch_name}")
