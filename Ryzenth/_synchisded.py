@@ -22,7 +22,7 @@ import logging
 import httpx
 from box import Box
 
-from ._errors import InvalidError, WhatFuckError
+from ._errors import InvalidModelError, WhatFuckError
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
 from .helper import (
     FbanSync,
@@ -72,7 +72,7 @@ class RyzenthXSync:
         dl_dict = BASE_DICT_RENDER if on_render else BASE_DICT_OFFICIAL
         model_name = dl_dict.get(switch_name)
         if not model_name:
-            raise InvalidError(f"Invalid switch_name: {switch_name}")
+            raise InvalidModelError(f"Invalid switch_name: {switch_name}")
         try:
             response = httpx.get(
                 f"{self.base_url}/v1/dl/{model_name}",
@@ -91,13 +91,13 @@ class RyzenthXSync:
         model: str,
         *,
         params: QueryParameter = None,
-        many_key=False,
+        use_full_model_list=False,
         dot_access=False
     ):
-        model_dict = BASE_DICT_AI_RYZENTH if many_key else {"hybrid": "AkenoX-1.9-Hybrid"}
+        model_dict = BASE_DICT_AI_RYZENTH if use_full_model_list else {"hybrid": "AkenoX-1.9-Hybrid"}
         model_param = model_dict.get(model)
         if not model_param:
-            raise InvalidError(f"Invalid model name: {model}")
+            raise InvalidModelError(f"Invalid model name: {model}")
 
         try:
             response = httpx.get(
