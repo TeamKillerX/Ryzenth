@@ -23,6 +23,7 @@ import httpx
 from box import Box
 
 from ._errors import WhatFuckError
+from ._shared import BASE_DICT_OFFICIAL, BASE_DICT_RENDER
 from .helper import (
     FbanSync,
     FontsSync,
@@ -68,34 +69,7 @@ class RyzenthXSync:
         on_render=False,
         dot_access=False
     ):
-        base_dl_dict = {
-            "transcript": "transcript-dl", # render
-            "pinterest": "pinterest-dl", # render
-            "fbvideo": "fbvideo-dl", # render
-            "fbphoto": "fbphoto-dl", # render
-            "tiktok": "tiktok-dl", # render
-            "youtube-mp3": "youtube-mp3-dl", # render
-            "youtube-mp4": "youtube-mp4-dl", # render
-            "instagram": "instagram-dl", # render
-            "teraboxv4": "terabox-v4",
-            "twitterv3": "twitter-v3",
-            "xnxxinfov2": "xnxx-info-v2",
-            "instagramv4": "instagram-v4",
-            "instagramv3": "instagram-v3",
-            "instagramv2": "instagram-v2",
-            "instagram-v0": "instagram",
-            "twitter": "twitter",
-            "tiktok-v0": "tiktok",
-            "tiktokv2": "tiktok-v2",
-            "facebook": "fb",
-            "snapsave": "snapsave",
-            "savefrom": "savefrom"
-        }
-        if on_render:
-            dl_dict = base_dl_dict.copy()
-        else:
-            dl_dict = base_dl_dict.copy()
-
+        dl_dict = BASE_DICT_RENDER if on_render else BASE_DICT_OFFICIAL
         model_name = dl_dict.get(switch_name)
         if not model_name:
             raise ValueError(f"Invalid switch_name: {switch_name}")
