@@ -22,8 +22,8 @@ import logging
 import httpx
 from box import Box
 
-from ._errors import WhatFuckError, InvalidError
-from ._shared import BASE_DICT_OFFICIAL, BASE_DICT_RENDER, BASE_DICT_AI_RYZENTH
+from ._errors import InvalidError, WhatFuckError
+from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
 from .helper import (
     FbanSync,
     FontsSync,
