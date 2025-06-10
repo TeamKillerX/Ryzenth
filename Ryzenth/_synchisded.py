@@ -60,30 +60,41 @@ class RyzenthXSync:
             handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
             self.logger.addHandler(handler)
 
-
-
     def send_downloader(
         self,
         switch_name: str = None,
         params: DownloaderBy = None,
+        on_render=False,
         list_key=False,
         dot_access=False
     ):
-        dl_dict = {
-            "teraboxv4": "terabox-v4",
-            "twitterv3": "twitter-v3",
-            "xnxxinfov2": "xnxx-info-v2",
-            "instagramv4": "instagram-v4",
-            "instagramv3": "instagram-v3",
-            "instagramv2": "instagram-v2",
-            "instagram": "instagram",
-            "twitter": "twitter",
-            "tiktok": "tiktok",
-            "tiktokv2": "tiktok-v2",
-            "facebook": "fb",
-            "snapsave": "snapsave",
-            "savefrom": "savefrom"
-        }
+        if on_render:
+            dl_dict = {
+                "transcript": "transcript-dl",
+                "pinterest": "pinterest-dl",
+                "fbvideo": "fbvideo-dl",
+                "fbphoto": "fbphoto-dl",
+                "tiktok": "tiktok-dl",
+                "youtube-mp3": "youtube-mp3-dl",
+                "youtube-mp4": "youtube-mp4-dl",
+                "instagram": "instagram-dl"
+            }
+        else:
+            dl_dict = {
+                "teraboxv4": "terabox-v4",
+                "twitterv3": "twitter-v3",
+                "xnxxinfov2": "xnxx-info-v2",
+                "instagramv4": "instagram-v4",
+                "instagramv3": "instagram-v3",
+                "instagramv2": "instagram-v2",
+                "instagram": "instagram",
+                "twitter": "twitter",
+                "tiktok": "tiktok",
+                "tiktokv2": "tiktok-v2",
+                "facebook": "fb",
+                "snapsave": "snapsave",
+                "savefrom": "savefrom"
+            }
         if list_key:
             return list(dl_dict.keys())
 
