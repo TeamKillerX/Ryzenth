@@ -29,7 +29,7 @@ BASE_DICT_OFFICIAL = {
 
 BASE_DICT_AI_RYZENTH = {
     "hybrid": "AkenoX-1.9-Hybrid",
-    "hybrid-english": "AkenoX-1.9-Hybrid-Englsih",
+    "hybrid-english": "AkenoX-1.9-Hybrid-English",
     "melayu": "lu-melayu",
     "nocodefou": "nocodefou",
     "mia": "mia-khalifah",
