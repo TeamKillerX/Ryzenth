@@ -77,17 +77,28 @@ class RyzenthXAsync:
 
         async with httpx.AsyncClient() as client:
             try:
-                response = await client.get(
-                    f"{self.base_url}/v1/dl/{model_name}",
-                    params=params.dict(),
-                    headers=self.headers,
-                    timeout=self.timeout
-                )
+                response = await self._client_downloader_get(client, params, model_name)
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
                 self.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
+
+    async def _client_message_get(self, client, params, model_param):
+        return await client.get(
+            f"{self.base_url}/v1/ai/akenox/{model_param}",
+            params=params.dict(),
+            headers=self.headers,
+            timeout=self.timeout
+        )
+
+    async def _client_downloader_get(self, client, params, model_param):
+        return await client.get(
+            f"{self.base_url}/v1/dl/{model_param}",
+            params=params.dict(),
+            headers=self.headers,
+            timeout=self.timeout
+        )
 
     async def send_message(
         self,
@@ -106,12 +117,7 @@ class RyzenthXAsync:
 
         async with httpx.AsyncClient() as client:
             try:
-                response = await client.get(
-                    f"{self.base_url}/v1/ai/akenox/{model_param}",
-                    params=params.dict(),
-                    headers=self.headers,
-                    timeout=self.timeout
-                )
+                response = await self._client_message_get(client, params, model_param)
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
