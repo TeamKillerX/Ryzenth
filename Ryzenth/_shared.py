@@ -26,3 +26,16 @@ BASE_DICT_OFFICIAL = {
     "snapsave": "snapsave",
     "savefrom": "savefrom"
 }
+
+BASE_DICT_AI_RYZENTH = {
+    "hybrid": "AkenoX-1.9-Hybrid",
+    "hybrid-english": "AkenoX-1.9-Hybrid-Englsih",
+    "melayu": "lu-melayu",
+    "nocodefou": "nocodefou",
+    "mia": "mia-khalifah",
+    "curlmcode": "curl-command-code",
+    "quotessad": "quotes-sad",
+    "quoteslucu": "quotes-lucu",
+    "lirikend": "lirik-end",
+    "alsholawat": "al-sholawat"
+}

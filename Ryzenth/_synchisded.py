@@ -22,8 +22,8 @@ import logging
 import httpx
 from box import Box
 
-from ._errors import WhatFuckError
-from ._shared import BASE_DICT_OFFICIAL, BASE_DICT_RENDER
+from ._errors import InvalidError, WhatFuckError
+from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
 from .helper import (
     FbanSync,
     FontsSync,
@@ -72,7 +72,7 @@ class RyzenthXSync:
         dl_dict = BASE_DICT_RENDER if on_render else BASE_DICT_OFFICIAL
         model_name = dl_dict.get(switch_name)
         if not model_name:
-            raise ValueError(f"Invalid switch_name: {switch_name}")
+            raise InvalidError(f"Invalid switch_name: {switch_name}")
         try:
             response = httpx.get(
                 f"{self.base_url}/v1/dl/{model_name}",
@@ -88,32 +88,16 @@ class RyzenthXSync:
 
     def send_message(
         self,
-        model: str = None,
+        model: str,
+        *,
         params: QueryParameter = None,
-        list_key=False,
+        many_key=False,
         dot_access=False
     ):
-        model_dict = {
-            "hybrid": "AkenoX-1.9-Hybrid",
-            "hybrid-english": "AkenoX-1.9-Hybrid-Englsih",
-            "melayu": "lu-melayu",
-            "nocodefou": "nocodefou",
-            "mia": "mia-khalifah",
-            "curlmcode": "curl-command-code",
-            "quotessad": "quotes-sad",
-            "quoteslucu": "quotes-lucu",
-            "lirikend": "lirik-end",
-            "alsholawat": "al-sholawat"
-        }
-        if list_key:
-            return list(model_dict.keys())
-
-        if not model:
-            raise ValueError("`model` is required. Use `list_key=True` to see all valid options.")
-
+        model_dict = BASE_DICT_AI_RYZENTH if many_key else {"hybrid": "AkenoX-1.9-Hybrid"}
         model_param = model_dict.get(model)
         if not model_param:
-            raise ValueError(f"Invalid model name: {model}")
+            raise InvalidError(f"Invalid model name: {model}")
 
         try:
             response = httpx.get(
