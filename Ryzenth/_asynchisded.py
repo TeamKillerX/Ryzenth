@@ -62,44 +62,44 @@ class RyzenthXAsync:
 
     async def send_downloader(
         self,
-        switch_name: str = None,
+        switch_name: str,
+        *,
         params: DownloaderBy = None,
         on_render=False,
         list_key=False,
         dot_access=False
     ):
+        
+        base_dl_dict = {
+            "transcript": "transcript-dl", # render
+            "pinterest": "pinterest-dl", # render
+            "fbvideo": "fbvideo-dl", # render
+            "fbphoto": "fbphoto-dl", # render
+            "tiktok": "tiktok-dl", # render
+            "youtube-mp3": "youtube-mp3-dl", # render
+            "youtube-mp4": "youtube-mp4-dl", # render 
+            "instagram": "instagram-dl", # render
+            "teraboxv4": "terabox-v4",
+            "twitterv3": "twitter-v3",
+            "xnxxinfov2": "xnxx-info-v2",
+            "instagramv4": "instagram-v4",
+            "instagramv3": "instagram-v3",
+            "instagramv2": "instagram-v2",
+            "instagram-v0": "instagram",
+            "twitter": "twitter",
+            "tiktok": "tiktok",
+            "tiktokv2": "tiktok-v2",
+            "facebook": "fb",
+            "snapsave": "snapsave",
+            "savefrom": "savefrom"
+        }
         if on_render:
-            dl_dict = {
-                "transcript": "transcript-dl",
-                "pinterest": "pinterest-dl",
-                "fbvideo": "fbvideo-dl",
-                "fbphoto": "fbphoto-dl",
-                "tiktok": "tiktok-dl",
-                "youtube-mp3": "youtube-mp3-dl",
-                "youtube-mp4": "youtube-mp4-dl",
-                "instagram": "instagram-dl"
-            }
+            dl_dict = base_dl_dict.copy()
         else:
-            dl_dict = {
-                "teraboxv4": "terabox-v4",
-                "twitterv3": "twitter-v3",
-                "xnxxinfov2": "xnxx-info-v2",
-                "instagramv4": "instagram-v4",
-                "instagramv3": "instagram-v3",
-                "instagramv2": "instagram-v2",
-                "instagram": "instagram",
-                "twitter": "twitter",
-                "tiktok": "tiktok",
-                "tiktokv2": "tiktok-v2",
-                "facebook": "fb",
-                "snapsave": "snapsave",
-                "savefrom": "savefrom"
-            }
+            dl_dict = base_dl_dict.copy()
+
         if list_key:
             return list(dl_dict.keys())
-
-        if not switch_name:
-            raise ValueError("`switch_name` is required. Use `list_key=True` to see all valid options.")
 
         model_name = dl_dict.get(switch_name)
         if not model_name:
