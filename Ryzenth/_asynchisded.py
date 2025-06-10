@@ -66,7 +66,6 @@ class RyzenthXAsync:
         *,
         params: DownloaderBy = None,
         on_render=False,
-        list_key=False,
         dot_access=False
     ):
 
@@ -87,7 +86,7 @@ class RyzenthXAsync:
             "instagramv2": "instagram-v2",
             "instagram-v0": "instagram",
             "twitter": "twitter",
-            "tiktok": "tiktok",
+            "tiktok-v0": "tiktok",
             "tiktokv2": "tiktok-v2",
             "facebook": "fb",
             "snapsave": "snapsave",
@@ -97,9 +96,6 @@ class RyzenthXAsync:
             dl_dict = base_dl_dict.copy()
         else:
             dl_dict = base_dl_dict.copy()
-
-        if list_key:
-            return list(dl_dict.keys())
 
         model_name = dl_dict.get(switch_name)
         if not model_name:
