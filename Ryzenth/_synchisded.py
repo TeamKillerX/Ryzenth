@@ -76,7 +76,7 @@ class RyzenthXSync:
             "fbphoto": "fbphoto-dl", # render
             "tiktok": "tiktok-dl", # render
             "youtube-mp3": "youtube-mp3-dl", # render
-            "youtube-mp4": "youtube-mp4-dl", # render 
+            "youtube-mp4": "youtube-mp4-dl", # render
             "instagram": "instagram-dl", # render
             "teraboxv4": "terabox-v4",
             "twitterv3": "twitter-v3",

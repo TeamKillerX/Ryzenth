@@ -69,7 +69,7 @@ class RyzenthXAsync:
         list_key=False,
         dot_access=False
     ):
-        
+
         base_dl_dict = {
             "transcript": "transcript-dl", # render
             "pinterest": "pinterest-dl", # render
@@ -77,7 +77,7 @@ class RyzenthXAsync:
             "fbphoto": "fbphoto-dl", # render
             "tiktok": "tiktok-dl", # render
             "youtube-mp3": "youtube-mp3-dl", # render
-            "youtube-mp4": "youtube-mp4-dl", # render 
+            "youtube-mp4": "youtube-mp4-dl", # render
             "instagram": "instagram-dl", # render
             "teraboxv4": "terabox-v4",
             "twitterv3": "twitter-v3",
