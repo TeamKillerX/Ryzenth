@@ -29,7 +29,7 @@ class ParamsRequiredError(ValueError):
 class RequiredError(ValueError):
     pass
 
-class InvalidError(ValueError):
+class InvalidModelError(ValueError):
     pass
 
 class UnauthorizedAccessError(ValueError):
@@ -50,7 +50,7 @@ __all__ = [
     "InvalidVersionError",
     "InvalidJSONDecodeError",
     "InvalidEmptyError",
-    "InvalidError",
+    "InvalidModelError",
     "UnauthorizedAccessError",
     "RequiredError"
 ]
