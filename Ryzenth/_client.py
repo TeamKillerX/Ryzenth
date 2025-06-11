@@ -45,7 +45,7 @@ class ApiKeyFrom:
 
         self.api_key = api_key
         self.aio = RyzenthXAsync(api_key, base_url)
-        self._sync = RyzenthXSync(api_key, base_url)
+        self._sync = RyzenthXSync(api_key, base_url.rstrip())
 
     def something(self):
         pass
