@@ -21,7 +21,7 @@ import logging
 
 import httpx
 from box import Box
-
+from typing import Union
 from ._errors import InvalidModelError, WhatFuckError
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
 from .helper import (
@@ -65,7 +65,7 @@ class RyzenthXSync:
         self,
         switch_name: str,
         *,
-        params: DownloaderBy = None,
+        params: Union[DownloaderBy, QueryParameter] = None,
         on_render=False,
         dot_access=False
     ):
