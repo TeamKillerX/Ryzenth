@@ -112,3 +112,6 @@ class RyzenthXSync:
         except httpx.HTTPError as e:
             self.logger.error(f"[SYNC] Error fetching from akenox: {e}")
             raise WhatFuckError("[SYNC] Error fetching from akenox") from e
+        except httpx.ReadTimeout as e:
+            self.logger.error(f"[SYNC] Error ReadTimeout from Akenox {e}")
+            raise WhatFuckError("[SYNC] Error ReadTimeout from akenox") from e
