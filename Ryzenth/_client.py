@@ -27,12 +27,7 @@ from .helper import Decorators
 
 
 class ApiKeyFrom:
-    def __init__(
-        self,
-        api_key: str = None,
-        base_url: str = "https://randydev-ryu-js.hf.space/api",
-        is_ok=False
-    ):
+    def __init__(self, api_key: str = None, is_ok=False):
         if api_key is Ellipsis:
             is_ok = True
             api_key = None
@@ -44,8 +39,8 @@ class ApiKeyFrom:
             api_key = "akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC" if is_ok else None
 
         self.api_key = api_key
-        self.aio = RyzenthXAsync(api_key, base_url)
-        self._sync = RyzenthXSync(api_key, base_url)
+        self.aio = RyzenthXAsync(api_key)
+        self._sync = RyzenthXSync(api_key)
 
     def something(self):
         pass
