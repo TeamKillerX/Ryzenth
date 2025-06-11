@@ -40,7 +40,7 @@ class Decorators:
                         "Please provide a query after the command.", **kwargs
                     )
                 result = await self._clients_ai.aio.send_message(
-                    switch_name=name,
+                    model=name,
                     params=QueryParameter(query=query),
                     use_full_model_list=True,
                     dot_access=True
