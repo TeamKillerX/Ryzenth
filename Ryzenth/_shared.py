@@ -1,14 +1,19 @@
 # this API is different
 
 BASE_DICT_RENDER = {
-    "transcript": "transcript-dl", # render
-    "pinterest": "pinterest-dl", # render
-    "fbvideo": "fbvideo-dl", # render
-    "fbphoto": "fbphoto-dl", # render
-    "tiktok": "tiktok-dl", # render
-    "youtube-mp3": "youtube-mp3-dl", # render
-    "youtube-mp4": "youtube-mp4-dl", # render
-    "instagram": "instagram-dl" # render
+    "transcript": "transcript-dl", #url #render
+    "pinterest": "pinterest-dl", #url #render
+    "fbvideo": "fbvideo-dl", #url #render
+    "fbphoto": "fbphoto-dl", #url #render
+    "tiktok": "tiktok-dl", #url #render
+    "youtube-mp3": "youtube-mp3-dl", #url #render
+    "youtube-mp4": "youtube-mp4-dl", #url #render
+    "instagram": "instagram-dl", #url # render
+    "lyrics-search": "lyrics-search-dl", #query #render
+    "yt-search": "yt-search-dl", #query #render
+    "google-search": "google-search-dl", #query #render
+    "pinterest-search": "pinterest-search-dl", #query #render
+    "tiktok-search": "tiktok-search-dl" #query #render
 }
 
 BASE_DICT_OFFICIAL = {

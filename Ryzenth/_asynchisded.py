@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+from typing import Union
 
 import httpx
 from box import Box
@@ -65,7 +66,7 @@ class RyzenthXAsync:
         self,
         switch_name: str,
         *,
-        params: DownloaderBy = None,
+        params: Union[DownloaderBy, QueryParameter] = None,
         on_render=False,
         dot_access=False
     ):
@@ -87,7 +88,7 @@ class RyzenthXAsync:
     async def _client_message_get(self, client, params, model_param):
         return await client.get(
             f"{self.base_url}/v1/ai/akenox/{model_param}",
-            params=params.dict(),
+            params=params.model_dump(),
             headers=self.headers,
             timeout=self.timeout
         )
@@ -95,7 +96,7 @@ class RyzenthXAsync:
     async def _client_downloader_get(self, client, params, model_param):
         return await client.get(
             f"{self.base_url}/v1/dl/{model_param}",
-            params=params.dict(),
+            params=params.model_dump(),
             headers=self.headers,
             timeout=self.timeout
         )

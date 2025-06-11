@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+from typing import Union
 
 import httpx
 from box import Box
@@ -65,7 +66,7 @@ class RyzenthXSync:
         self,
         switch_name: str,
         *,
-        params: DownloaderBy = None,
+        params: Union[DownloaderBy, QueryParameter] = None,
         on_render=False,
         dot_access=False
     ):
