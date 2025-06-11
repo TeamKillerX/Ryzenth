@@ -143,3 +143,6 @@ class ModeratorSync:
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from antievalai {e}")
             raise WhatFuckError("[SYNC] Error fetching from antievalai") from e
+        except self.parent.httpx.ReadTimeout as e:
+            self.parent.logger.error(f"[SYNC] Error ReadTimeout from antievalai {e}")
+            raise WhatFuckError("[SYNC] Error ReadTimeout from antievalai") from e
