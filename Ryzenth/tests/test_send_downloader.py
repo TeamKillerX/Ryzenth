@@ -1,6 +1,7 @@
 from Ryzenth._synchisded import RyzenthXSync
 from Ryzenth.types import QueryParameter
 
+
 def test_send_downloader():
     ryz = RyzenthXSync("test", base_url="https://x-api-js.onrender.com/api")
     result = ryz.send_downloader(
