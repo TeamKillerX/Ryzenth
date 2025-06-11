@@ -57,6 +57,6 @@ class WhatSync:
             )
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
-        except httpx.HTTPError as e:
+        except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from deepseek {e}")
             raise WhatFuckError("[SYNC] Error fetching from deepseek") from e
