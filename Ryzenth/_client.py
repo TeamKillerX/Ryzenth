@@ -44,7 +44,7 @@ class ApiKeyFrom:
             api_key = "akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC" if is_ok else None
 
         self.api_key = api_key
-        self.base_url = base_url.rstrip("/")
+        self.base_url = base_url
         self.aio = RyzenthXAsync(api_key, self.base_url)
         self._sync = RyzenthXSync(api_key, self.base_url)
 
