@@ -21,6 +21,7 @@ import logging
 
 import httpx
 from box import Box
+from typing import Union
 
 from ._errors import InvalidModelError, WhatFuckError
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
@@ -65,7 +66,7 @@ class RyzenthXAsync:
         self,
         switch_name: str,
         *,
-        params: DownloaderBy = None,
+        params: Union[DownloaderBy, QueryParameter] = None,
         on_render=False,
         dot_access=False
     ):
@@ -87,7 +88,7 @@ class RyzenthXAsync:
     async def _client_message_get(self, client, params, model_param):
         return await client.get(
             f"{self.base_url}/v1/ai/akenox/{model_param}",
-            params=params.dict(),
+            params=params.model_dump(),
             headers=self.headers,
             timeout=self.timeout
         )
@@ -95,7 +96,7 @@ class RyzenthXAsync:
     async def _client_downloader_get(self, client, params, model_param):
         return await client.get(
             f"{self.base_url}/v1/dl/{model_param}",
-            params=params.dict(),
+            params=params.model_dump(),
             headers=self.headers,
             timeout=self.timeout
         )
