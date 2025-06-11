@@ -40,7 +40,7 @@ from .types import DownloaderBy, QueryParameter
 class RyzenthXAsync:
     def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
         self.api_key = api_key
-        self.base_url = base_url.rstrip("/")
+        self.base_url = base_url
         self.headers = {"x-api-key": self.api_key}
         self.timeout = 10
         self.params = {}
