@@ -40,7 +40,10 @@ class Decorators:
                         "Please provide a query after the command.", **kwargs
                     )
                 result = await self._clients_ai.aio.send_message(
-                    name, QueryParameter(query=query), dot_access=True
+                    model=name,
+                    params=QueryParameter(query=query),
+                    use_full_model_list=True,
+                    dot_access=True
                 )
                 await message.reply_text(result.results, **kwargs)
                 return await func(client, message, query, *args, **kwargs)
