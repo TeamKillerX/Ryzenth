@@ -5,10 +5,10 @@ permissions:
   pull-requests: write
 
 on:
+  workflow_dispatch:
   push:
-  pull_request:
-  schedule:
-    - cron: '0 0 * * 0' # Runs every Sunday at 00:00 UTC
+    branches:
+      - main
 
 jobs:
   build:
