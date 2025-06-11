@@ -38,7 +38,7 @@ from .types import DownloaderBy, QueryParameter
 
 
 class RyzenthXSync:
-    def __init__(self, api_key: str, base_url: str):
+    def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {"x-api-key": self.api_key}
