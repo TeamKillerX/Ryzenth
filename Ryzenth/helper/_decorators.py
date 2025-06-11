@@ -42,6 +42,7 @@ class Decorators:
                 result = await self._clients_ai.aio.send_message(
                     switch_name=name,
                     params=QueryParameter(query=query),
+                    use_full_model_list=True,
                     dot_access=True
                 )
                 await message.reply_text(result.results, **kwargs)
