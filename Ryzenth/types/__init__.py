@@ -29,6 +29,9 @@ class QueryParameter(BaseModel):
 class DownloaderBy(BaseModel):
     url: str
 
+class Username(BaseModel):
+    username: str
+
 class OpenaiWhisper(BaseModel):
     url: str
     language: Optional[str] = None
