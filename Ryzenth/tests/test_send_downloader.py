@@ -1,5 +1,5 @@
 from Ryzenth._synchisded import RyzenthXSync
-from Ryzenth.types import QueryParameter
+from Ryzenth.types import QueryParameter, Username
 
 
 def test_send_downloader():
@@ -8,6 +8,17 @@ def test_send_downloader():
         switch_name="tiktok-search",
         params=QueryParameter(
             query="cat coding"
+        ),
+        on_render=True
+    )
+    assert result is not None
+
+def test_yt_username():
+    ryz = RyzenthXSync("test", base_url="https://x-api-js.onrender.com/api")
+    result = ryz.send_downloader(
+        switch_name="yt-username",
+        params=Username(
+            username="AnimeNgoding"
         ),
         on_render=True
     )
