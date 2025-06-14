@@ -25,27 +25,36 @@ class ImagesAsync:
     def __init__(self, parent):
         self.parent = parent
 
-    async def generate(self, params: QueryParameter):
+    async def generate(self, params: QueryParameter) -> bytes:
         url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
         async with self.parent.httpx.AsyncClient() as client:
             try:
-                response = await client.get(url, params=params.dict(), headers=self.parent.headers, timeout=self.parent.timeout)
+                response = await client.get(
+                    url,
+                    params=params.model_dump(),
+                    headers=self.parent.headers,
+                    timeout=self.parent.timeout
+                )
                 response.raise_for_status()
                 return response.content
             except self.parent.httpx.HTTPError as e:
                 self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
+    async def to_save(self, params: QueryParameter, file_path="fluxai.jpg"):
+        content = await self.generate(params)
+        return ResponseFileImage(content).to_save(file_path)
+
 class ImagesSync:
     def __init__(self, parent):
         self.parent = parent
 
-    def generate(self, params: QueryParameter):
+    def generate(self, params: QueryParameter) -> bytes:
         url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
         try:
             response = self.parent.httpx.get(
                 url,
-                params=params.dict(),
+                params=params.model_dump(),
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
@@ -54,3 +63,17 @@ class ImagesSync:
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from images {e}")
             raise WhatFuckError("[SYNC] Error fetching from images") from e
+
+    def to_save(self, params: QueryParameter, file_path="fluxai.jpg"):
+        content = self.generate(params)
+        return ResponseFileImage(content).to_save(file_path)
+
+
+class ResponseFileImage:
+    def __init__(self, response_content: bytes):
+        self.response_content = response_content
+
+    def to_save(self, file_path="fluxai.jpg"):
+        with open(file_path, "wb") as f:
+            f.write(self.response_content)
+        return file_path
