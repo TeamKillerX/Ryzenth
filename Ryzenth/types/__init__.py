@@ -20,7 +20,7 @@
 
 from typing import Any, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class QueryParameter(BaseModel):
@@ -39,7 +39,7 @@ class OpenaiWhisper(BaseModel):
 
 class RequestXnxx(BaseModel):
     query: str
-    isDownload: bool = False
+    is_download: bool = Field(False, alias="isDownload")
     url: Optional[str] = None
 
 class RequestHumanizer(BaseModel):
