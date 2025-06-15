@@ -34,7 +34,7 @@ from .helper import (
     WhatAsync,
     WhisperAsync,
 )
-from .types import DownloaderBy, QueryParameter, Username
+from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 
 
 class RyzenthXAsync:
@@ -66,7 +66,13 @@ class RyzenthXAsync:
         self,
         switch_name: str,
         *,
-        params: Union[DownloaderBy, QueryParameter, Username] = None,
+        params: Union[
+        DownloaderBy,
+        QueryParameter,
+        Username,
+        RequestXnxx
+        ] = None,
+        params_only=True,
         on_render=False,
         dot_access=False
     ):
@@ -78,7 +84,12 @@ class RyzenthXAsync:
 
         async with httpx.AsyncClient() as client:
             try:
-                response = await self._client_downloader_get(client, params, model_name)
+                response = await self._client_downloader_get(
+                    client,
+                    params,
+                    params_only,
+                    model_name
+                )
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
@@ -93,10 +104,10 @@ class RyzenthXAsync:
             timeout=self.timeout
         )
 
-    async def _client_downloader_get(self, client, params, model_param):
+    async def _client_downloader_get(self, client, params, params_only, model_param):
         return await client.get(
             f"{self.base_url}/v1/dl/{model_param}",
-            params=params.model_dump(),
+            params=params.model_dump() if params_only else None,
             headers=self.headers,
             timeout=self.timeout
         )
