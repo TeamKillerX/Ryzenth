@@ -37,6 +37,11 @@ class OpenaiWhisper(BaseModel):
     language: Optional[str] = None
     task: Optional[str] = None
 
+class RequestXnxx(BaseModel):
+    query: str
+    isDownload: bool = False
+    url: Optional[str] = None
+
 class RequestHumanizer(BaseModel):
     text: str
     writing_style: str
