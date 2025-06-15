@@ -34,7 +34,7 @@ from .helper import (
     WhatSync,
     WhisperSync,
 )
-from .types import DownloaderBy, QueryParameter, Username, RequestXnxx
+from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 
 
 class RyzenthXSync:
