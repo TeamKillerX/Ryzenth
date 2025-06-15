@@ -34,7 +34,7 @@ from .helper import (
     WhatSync,
     WhisperSync,
 )
-from .types import DownloaderBy, QueryParameter, Username
+from .types import DownloaderBy, QueryParameter, Username, RequestXnxx
 
 
 class RyzenthXSync:
@@ -66,7 +66,12 @@ class RyzenthXSync:
         self,
         switch_name: str,
         *,
-        params: Union[DownloaderBy, QueryParameter, Username] = None,
+        params: Union[
+        DownloaderBy,
+        QueryParameter,
+        Username,
+        RequestXnxx
+        ] = None,
         on_render=False,
         dot_access=False
     ):
