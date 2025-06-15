@@ -15,7 +15,8 @@ BASE_DICT_RENDER = {
     "pinterest-search": "pinterest-search-dl", #query #render
     "tiktok-search": "tiktok-search-dl", #query #render
     "yt-username": "yt-username", #username #render
-    "tiktok-username": "tiktok-username" #username #render
+    "tiktok-username": "tiktok-username", #username #render
+    "xnxx-dl": "xnxx-dl" #types optional #render
 }
 
 BASE_DICT_OFFICIAL = {
