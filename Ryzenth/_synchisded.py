@@ -72,6 +72,7 @@ class RyzenthXSync:
         Username,
         RequestXnxx
         ] = None,
+        params_only=True,
         on_render=False,
         dot_access=False
     ):
@@ -82,7 +83,7 @@ class RyzenthXSync:
         try:
             response = httpx.get(
                 f"{self.base_url}/v1/dl/{model_name}",
-                params=params.model_dump(),
+                params=params.model_dump() if params_only else None,
                 headers=self.headers,
                 timeout=self.timeout
             )
