@@ -80,7 +80,7 @@ class RyzenthApiClient:
         if not api_key:
             raise WhatFuckError("API Key cannot be empty.")
         self._api_key: str = api_key
-        self._is_itzpire: bool = is_itzpire
+        self._use_itzpire: bool = use_itzpire
         self._use_default_headers: bool = use_default_headers
         self._session: aiohttp.ClientSession = aiohttp.ClientSession(
             headers={"User-Agent": get_user_agent(), "x-api-key": f"{self._api_key}"} if self._use_default_headers else {"User-Agent": get_user_agent()}
@@ -100,7 +100,7 @@ class RyzenthApiClient:
             raise InternalError("Error requests status code 5000")
 
     async def get(self, path: str, params: t.Optional[dict] = None) -> dict:
-        url = f"{self.BASE_V2_URL}{path}" if self._is_itzpire else f"{self.BASE_URL}{path}"
+        url = f"{self.BASE_V2_URL}{path}" if self._use_itzpire else f"{self.BASE_URL}{path}"
         try:
             async with self._session.get(url, params=params) as resp:
                 await self._status_resp_error(resp)
@@ -114,7 +114,7 @@ class RyzenthApiClient:
             return {"error": str(e)}
 
     async def post(self, path: str, data: t.Optional[dict] = None, json: t.Optional[dict] = None) -> dict:
-        url = f"{self.BASE_V2_URL}{path}" if self._is_itzpire else f"{self.BASE_URL}{path}"
+        url = f"{self.BASE_V2_URL}{path}" if self._use_itzpire else f"{self.BASE_URL}{path}"
         try:
             async with self._session.post(url, data=data, json=json) as resp:
                 await self._status_resp_error(resp)
