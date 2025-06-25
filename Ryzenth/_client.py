@@ -65,26 +65,39 @@ class SmallConvertDot:
     def to_dot(self):
         return Box(self.obj if self.obj is not None else {})
 
+TOOL_DOMAIN_MAP = {
+    "itzpire": "https://itzpire.com",
+    "ryzenth": "https://randydev-ryu-js.hf.space",
+}
 
 class RyzenthApiClient:
-    BASE_URL = "https://randydev-ryu-js.hf.space"
-    BASE_V2_URL = "https://itzpire.com"
-
     def __init__(
         self,
         *,
         api_key: str,
-        use_itzpire: bool = False,
+        tools_name: list[str],
         use_default_headers: bool = False
     ) -> None:
         if not api_key:
             raise WhatFuckError("API Key cannot be empty.")
+        if not tools_name:
+            raise WhatFuckError("Tools name must be provided.")
+
         self._api_key: str = api_key
-        self._use_itzpire: bool = use_itzpire
         self._use_default_headers: bool = use_default_headers
         self._session: aiohttp.ClientSession = aiohttp.ClientSession(
-            headers={"User-Agent": get_user_agent(), "x-api-key": f"{self._api_key}"} if self._use_default_headers else {"User-Agent": get_user_agent()}
+            headers={
+                "User-Agent": get_user_agent(),
+                **({"x-api-key": self._api_key} if self._use_default_headers else {})
+            }
         )
+        self._tools: dict[str, str] = {
+            name: TOOL_DOMAIN_MAP.get(name, f"https://unknown-{name}.com")
+            for name in tools_name
+        }
+
+    def get_base_url(self, tool: str) -> str:
+        return self._tools.get(tool, "https://default-fallback.com")
 
     @classmethod
     def from_env(cls) -> "RyzenthApiClient":
@@ -99,8 +112,14 @@ class RyzenthApiClient:
         if resp.status == 500:
             raise InternalError("Error requests status code 5000")
 
-    async def get(self, path: str, params: t.Optional[dict] = None) -> dict:
-        url = f"{self.BASE_V2_URL}{path}" if self._use_itzpire else f"{self.BASE_URL}{path}"
+    async def get(
+        self,
+        tool: str,
+        path: str,
+        params: t.Optional[dict] = None
+    ) -> dict:
+        base_url = self.get_base_url(tool)
+        url = f"{base_url}{path}"
         try:
             async with self._session.get(url, params=params) as resp:
                 await self._status_resp_error(resp)
@@ -113,8 +132,15 @@ class RyzenthApiClient:
         except Exception as e:
             return {"error": str(e)}
 
-    async def post(self, path: str, data: t.Optional[dict] = None, json: t.Optional[dict] = None) -> dict:
-        url = f"{self.BASE_V2_URL}{path}" if self._use_itzpire else f"{self.BASE_URL}{path}"
+    async def post(
+        self,
+        tool: str,
+        path: str,
+        data: t.Optional[dict] = None,
+        json: t.Optional[dict] = None
+    ) -> dict:
+        base_url = self.get_base_url(tool)
+        url = f"{base_url}{path}"
         try:
             async with self._session.post(url, data=data, json=json) as resp:
                 await self._status_resp_error(resp)
