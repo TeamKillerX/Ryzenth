@@ -1,5 +1,6 @@
 import platform
 
+
 def get_user_agent() -> str:
     return f"Ryzenth/Python-{platform.python_version()}"
 
