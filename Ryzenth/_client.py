@@ -108,6 +108,8 @@ class RyzenthApiClient:
     async def _status_resp_error(self, resp):
         if resp.status == 403:
             raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+        if resp.status == 401:
+            raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
         if resp.status == 500:
             raise InternalError("Error requests status code 5000")
 
