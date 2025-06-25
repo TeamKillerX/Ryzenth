@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+import platform
 from typing import Union
 
 import httpx
@@ -42,7 +43,7 @@ class RyzenthXAsync:
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {
-            "User-Agent": "Ryzenth/Python-3.11",
+            "User-Agent": f"Ryzenth/Python-{platform.python_version()}",
             "x-api-key": self.api_key
         }
         self.timeout = 10
