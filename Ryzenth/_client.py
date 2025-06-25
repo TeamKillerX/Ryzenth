@@ -26,7 +26,7 @@ from box import Box
 
 from .__version__ import get_user_agent
 from ._asynchisded import RyzenthXAsync
-from ._errors import ForbiddenError, WhatFuckError
+from ._errors import ForbiddenError, InternalError, WhatFuckError
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
@@ -68,16 +68,22 @@ class SmallConvertDot:
 
 class RyzenthApiClient:
     BASE_URL = "https://randydev-ryu-js.hf.space"
+    BASE_V2_URL = "https://itzpire.com"
 
-    def __init__(self, *, api_key: str) -> None:
+    def __init__(
+        self,
+        *,
+        api_key: str,
+        use_itzpire: bool = False,
+        use_default_headers: bool = False
+    ) -> None:
         if not api_key:
             raise WhatFuckError("API Key cannot be empty.")
         self._api_key: str = api_key
+        self._is_itzpire: bool = is_itzpire
+        self._use_default_headers: bool = use_default_headers
         self._session: aiohttp.ClientSession = aiohttp.ClientSession(
-            headers={
-                "User-Agent": get_user_agent(),
-                "x-api-key": f"{self._api_key}"
-            }
+            headers={"User-Agent": get_user_agent(), "x-api-key": f"{self._api_key}"} if self._use_default_headers else {"User-Agent": get_user_agent()}
         )
 
     @classmethod
@@ -87,12 +93,17 @@ class RyzenthApiClient:
             raise WhatFuckError("API Key cannot be empty.")
         return cls(api_key=api_key)
 
+    async def _status_resp_error(self, resp):
+        if resp.status == 403:
+            raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+        if resp.status == 500:
+            raise InternalError("Error requests status code 5000")
+
     async def get(self, path: str, params: t.Optional[dict] = None) -> dict:
-        url = f"{self.BASE_URL}{path}"
+        url = f"{self.BASE_V2_URL}{path}" if self._is_itzpire else f"{self.BASE_URL}{path}"
         try:
             async with self._session.get(url, params=params) as resp:
-                if resp.status == 403:
-                    raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+                await self._status_resp_error(resp)
                 resp.raise_for_status()
                 return await resp.json()
         except ForbiddenError as e:
@@ -103,11 +114,10 @@ class RyzenthApiClient:
             return {"error": str(e)}
 
     async def post(self, path: str, data: t.Optional[dict] = None, json: t.Optional[dict] = None) -> dict:
-        url = f"{self.BASE_URL}{path}"
+        url = f"{self.BASE_V2_URL}{path}" if self._is_itzpire else f"{self.BASE_URL}{path}"
         try:
             async with self._session.post(url, data=data, json=json) as resp:
-                if resp.status == 403:
-                    raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+                await self._status_resp_error(resp)
                 resp.raise_for_status()
                 return await resp.json()
         except ForbiddenError as e:

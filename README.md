@@ -70,11 +70,15 @@ You can skip passing the API key directly by setting it via environment:
 export RYZENTH_API_KEY=your-api-key
 ```
 
+## Web scrapers
+* [`itzpire`](https://itzpire.com) - Team Developer
+
 ## Credits
 
 * Built with love by [xtdevs](https://t.me/xtdevs)
 * Inspired by early work on AkenoX API
 * Thanks to Google Dev tools for AI integration concepts
+* All Web scraper original
 
 ## License
 
