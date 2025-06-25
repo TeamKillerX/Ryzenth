@@ -18,12 +18,15 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
-
+import aiohttp
 
 class WhatFuckError(Exception):
     pass
 
 class ParamsRequiredError(ValueError):
+    pass
+
+class ForbiddenError(aiohttp.client_exceptions.ClientResponseError):
     pass
 
 class RequiredError(ValueError):
@@ -46,6 +49,7 @@ class InvalidEmptyError(ValueError):
 
 __all__ = [
     "WhatFuckError",
+    "ForbiddenError",
     "ParamsRequiredError",
     "InvalidVersionError",
     "InvalidJSONDecodeError",
