@@ -83,7 +83,7 @@ export RYZENTH_API_KEY=your-api-key
 ## Donation
 * Your donation helps us continue our work!
 
-To send payments via DANA use the following mobile number bank id:
+To send payments via DANA, use the following Bank Jago account number:
 
 Bank Jago: `100201327349`
 
