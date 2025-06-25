@@ -18,7 +18,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
-import aiohttp
 
 class WhatFuckError(Exception):
     pass
@@ -26,7 +25,8 @@ class WhatFuckError(Exception):
 class ParamsRequiredError(ValueError):
     pass
 
-class ForbiddenError(aiohttp.client_exceptions.ClientResponseError):
+class ForbiddenError(Exception):
+    """Custom exception for 403 Forbidden"""
     pass
 
 class RequiredError(ValueError):
