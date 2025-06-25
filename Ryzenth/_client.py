@@ -24,10 +24,10 @@ import typing as t
 import aiohttp
 from box import Box
 
+from .__version__ import get_user_agent
 from ._asynchisded import RyzenthXAsync
 from ._errors import ForbiddenError, WhatFuckError
 from ._synchisded import RyzenthXSync
-from .__version__ import get_user_agent
 from .helper import Decorators
 
 

@@ -24,9 +24,9 @@ from typing import Union
 import httpx
 from box import Box
 
+from .__version__ import get_user_agent
 from ._errors import InvalidModelError, WhatFuckError
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
-from .__version__ import get_user_agent
 from .helper import (
     FbanAsync,
     FontsAsync,
