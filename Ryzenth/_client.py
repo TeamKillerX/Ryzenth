@@ -92,12 +92,15 @@ class RyzenthApiClient:
             }
         )
         self._tools: dict[str, str] = {
-            name: TOOL_DOMAIN_MAP.get(name, f"https://unknown-{name}.com")
+            name: TOOL_DOMAIN_MAP.get(name, None)
             for name in tools_name
         }
 
     def get_base_url(self, tool: str) -> str:
-        return self._tools.get(tool, "https://default-fallback.com")
+        check_ok = self._tools.get(tool, None)
+        if not check_ok:
+            raise WhatFuckError("Cannot empty None")
+        return check_ok
 
     @classmethod
     def from_env(cls) -> "RyzenthApiClient":
