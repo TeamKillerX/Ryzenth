@@ -25,6 +25,7 @@ from box import Box
 
 from ._asynchisded import RyzenthXAsync
 from ._synchisded import RyzenthXSync
+from ._errors import WhatFuckError
 from .helper import Decorators
 
 
@@ -65,8 +66,10 @@ class SmallConvertDot:
 class RyzenthApiClient:
     BASE_URL = "https://randydev-ryu-js.hf.space"
 
-    def __init__(self, *, api_key: str = None, is_ok: bool = False) -> None:
-        self._api_key: str = "akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC" if is_ok else api_key
+    def __init__(self, *, api_key: str) -> None:
+        if not api_key:
+            raise WhatFuckError("API Key cannot be empty.")
+        self._api_key: str = api_key
         self._session: aiohttp.ClientSession = aiohttp.ClientSession(
             headers={"x-api-key": f"{self._api_key}"}
         )
@@ -75,7 +78,7 @@ class RyzenthApiClient:
     def from_env(cls) -> "RyzenthApiClient":
         api_key: t.Optional[str] = os.environ.get("RYZENTH_API_KEY")
         if not api_key:
-            raise Exception("API Key cannot be empty.")
+            raise WhatFuckError("API Key cannot be empty.")
         return cls(api_key=api_key)
 
     async def get(self, path: str, params: t.Optional[dict] = None) -> dict:
