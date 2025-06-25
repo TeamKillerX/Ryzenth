@@ -27,6 +27,7 @@ from box import Box
 from ._asynchisded import RyzenthXAsync
 from ._errors import ForbiddenError, WhatFuckError
 from ._synchisded import RyzenthXSync
+from .__version__ import get_user_agent
 from .helper import Decorators
 
 
@@ -74,7 +75,7 @@ class RyzenthApiClient:
         self._api_key: str = api_key
         self._session: aiohttp.ClientSession = aiohttp.ClientSession(
             headers={
-                "User-Agent": f"Ryzenth/Python-{platform.python_version()}",
+                "User-Agent": get_user_agent(),
                 "x-api-key": f"{self._api_key}"
             }
         )
