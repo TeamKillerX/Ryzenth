@@ -59,7 +59,7 @@ class UrHellFrom:
     def something(self):
         pass
 
-class SmallConvertDot:
+class FromConvertDot:
     def __init__(self, obj):
         self.obj = obj
 
