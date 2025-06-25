@@ -26,7 +26,7 @@ from box import Box
 
 from .__version__ import get_user_agent
 from ._asynchisded import RyzenthXAsync
-from ._errors import ForbiddenError, InternalError, WhatFuckError, ToolNotFoundError
+from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
@@ -98,7 +98,7 @@ class RyzenthApiClient:
 
     def get_base_url(self, tool: str) -> str:
         check_ok = self._tools.get(tool, None)
-        if not check_ok:
+        if check_ok is None:
             raise ToolNotFoundError(f"Base URL for tool '{tool}' not found.")
         return check_ok
 

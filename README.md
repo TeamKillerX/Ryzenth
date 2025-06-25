@@ -80,6 +80,13 @@ export RYZENTH_API_KEY=your-api-key
 * Thanks to Google Dev tools for AI integration concepts
 * All Web scraper original
 
+## Donation
+* Your donation helps us continue our work!
+
+To send payments via DANA, use the following Bank Jago account number:
+
+Bank Jago: `100201327349`
+
 ## License
 
 You can now access the [`Ryzenth API V2 (Typescript)`](https://github.com/xtsea/akenox-ts-dev/blob/main/ryzenth-api.md#-existing-api-still-alive)
