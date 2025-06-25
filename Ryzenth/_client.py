@@ -89,19 +89,31 @@ class RyzenthApiClient:
         url = f"{self.BASE_URL}{path}"
         try:
             async with self._session.get(url, params=params) as resp:
+                if resp.status == 403:
+                    raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
                 resp.raise_for_status()
                 return await resp.json()
-        except ForbiddenError:
-            return "ForbiddenError Banned"
+        except ForbiddenError as e:
+            return {"error": str(e)}
+        except aiohttp.ClientResponseError as e:
+            return {"error": f"HTTP Error: {e.status} {e.message}"}
+        except Exception as e:
+            return {"error": str(e)}
 
     async def post(self, path: str, data: t.Optional[dict] = None, json: t.Optional[dict] = None) -> dict:
         url = f"{self.BASE_URL}{path}"
         try:
             async with self._session.post(url, data=data, json=json) as resp:
-            resp.raise_for_status()
-            return await resp.json()
-        except ForbiddenError:
-            return "ForbiddenError Banned"
+                if resp.status == 403:
+                    raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+                resp.raise_for_status()
+                return await resp.json()
+        except ForbiddenError as e:
+            return {"error": str(e)}
+        except aiohttp.ClientResponseError as e:
+            return {"error": f"HTTP Error: {e.status} {e.message}"}
+        except Exception as e:
+            return {"error": str(e)}
 
     async def close(self):
         await self._session.close()
