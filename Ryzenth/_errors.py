@@ -30,6 +30,10 @@ class ForbiddenError(Exception):
     """Custom exception for 403 Forbidden"""
     pass
 
+class ToolNotFoundError(Exception):
+    """Raised when a base URL for a requested tool cannot be found."""
+    pass
+
 class InternalError(Exception):
     """Custom exception for 500 Error"""
     pass
@@ -56,6 +60,7 @@ __all__ = [
     "WhatFuckError",
     "ForbiddenError",
     "InternalError",
+    "ToolNotFoundError",
     "ParamsRequiredError",
     "InvalidVersionError",
     "InvalidJSONDecodeError",
