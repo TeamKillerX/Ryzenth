@@ -24,7 +24,7 @@ import aiohttp
 from box import Box
 
 from ._asynchisded import RyzenthXAsync
-from ._errors import WhatFuckError
+from ._errors import WhatFuckError, ForbiddenError
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
@@ -63,6 +63,7 @@ class SmallConvertDot:
     def to_dot(self):
         return Box(self.obj if self.obj is not None else {})
 
+
 class RyzenthApiClient:
     BASE_URL = "https://randydev-ryu-js.hf.space"
 
@@ -71,7 +72,10 @@ class RyzenthApiClient:
             raise WhatFuckError("API Key cannot be empty.")
         self._api_key: str = api_key
         self._session: aiohttp.ClientSession = aiohttp.ClientSession(
-            headers={"x-api-key": f"{self._api_key}"}
+            headers={
+                "User-Agent": "Ryzenth/Python-3.11",
+                "x-api-key": f"{self._api_key}"
+            }
         )
 
     @classmethod
@@ -83,15 +87,21 @@ class RyzenthApiClient:
 
     async def get(self, path: str, params: t.Optional[dict] = None) -> dict:
         url = f"{self.BASE_URL}{path}"
-        async with self._session.get(url, params=params) as resp:
-            resp.raise_for_status()
-            return await resp.json()
+        try:
+            async with self._session.get(url, params=params) as resp:
+                resp.raise_for_status()
+                return await resp.json()
+        except ForbiddenError:
+            return "ForbiddenError Banned"
 
     async def post(self, path: str, data: t.Optional[dict] = None, json: t.Optional[dict] = None) -> dict:
         url = f"{self.BASE_URL}{path}"
-        async with self._session.post(url, data=data, json=json) as resp:
+        try:
+            async with self._session.post(url, data=data, json=json) as resp:
             resp.raise_for_status()
             return await resp.json()
+        except ForbiddenError:
+            return "ForbiddenError Banned"
 
     async def close(self):
         await self._session.close()
