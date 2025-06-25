@@ -24,6 +24,7 @@ from typing import Union
 import httpx
 from box import Box
 
+from .__version__ import get_user_agent
 from ._errors import InvalidModelError, WhatFuckError
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
 from .helper import (
@@ -43,7 +44,7 @@ class RyzenthXSync:
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {
-            "User-Agent": f"Ryzenth/Python-{platform.python_version()}",
+            "User-Agent": get_user_agent(),
             "x-api-key": self.api_key
         }
         self.timeout = 10
