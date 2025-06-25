@@ -111,7 +111,7 @@ class RyzenthApiClient:
         if resp.status == 401:
             raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
         if resp.status == 500:
-            raise InternalError("Error requests status code 5000")
+            raise InternalError("Error requests status code 500")
 
     async def get(
         self,
