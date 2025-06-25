@@ -26,7 +26,7 @@ from box import Box
 
 from .__version__ import get_user_agent
 from ._asynchisded import RyzenthXAsync
-from ._errors import ForbiddenError, InternalError, WhatFuckError, ToolNotFoundError
+from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
