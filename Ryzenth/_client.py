@@ -24,7 +24,7 @@ import aiohttp
 from box import Box
 
 from ._asynchisded import RyzenthXAsync
-from ._errors import WhatFuckError, ForbiddenError
+from ._errors import ForbiddenError, WhatFuckError
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
