@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import platform
 import typing as t
 
 import aiohttp
@@ -73,7 +74,7 @@ class RyzenthApiClient:
         self._api_key: str = api_key
         self._session: aiohttp.ClientSession = aiohttp.ClientSession(
             headers={
-                "User-Agent": "Ryzenth/Python-3.11",
+                "User-Agent": f"Ryzenth/Python-{platform.python_version()}",
                 "x-api-key": f"{self._api_key}"
             }
         )
