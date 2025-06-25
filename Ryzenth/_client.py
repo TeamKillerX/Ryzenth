@@ -98,7 +98,7 @@ class RyzenthApiClient:
 
     def get_base_url(self, tool: str) -> str:
         check_ok = self._tools.get(tool, None)
-        if not check_ok:
+        if check_ok is None:
             raise ToolNotFoundError(f"Base URL for tool '{tool}' not found.")
         return check_ok
 
