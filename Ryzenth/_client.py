@@ -81,7 +81,7 @@ class RyzenthApiClient:
         if not api_key:
             raise WhatFuckError("API Key cannot be empty.")
         if not tools_name:
-            raise WhatFuckError("Tools name must be provided.")
+            raise WhatFuckError("A non-empty list of tool names must be provided for 'tools_name'.")
 
         self._api_key: str = api_key
         self._use_default_headers: bool = use_default_headers
