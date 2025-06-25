@@ -26,7 +26,7 @@ from box import Box
 
 from .__version__ import get_user_agent
 from ._asynchisded import RyzenthXAsync
-from ._errors import ForbiddenError, InternalError, WhatFuckError
+from ._errors import ForbiddenError, InternalError, WhatFuckError, ToolNotFoundError
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
@@ -92,14 +92,14 @@ class RyzenthApiClient:
             }
         )
         self._tools: dict[str, str] = {
-            name: TOOL_DOMAIN_MAP.get(name, None)
+            name: TOOL_DOMAIN_MAP.get(name)
             for name in tools_name
         }
 
     def get_base_url(self, tool: str) -> str:
         check_ok = self._tools.get(tool, None)
         if not check_ok:
-            raise WhatFuckError("Cannot empty None")
+            raise ToolNotFoundError(f"Base URL for tool '{tool}' not found.")
         return check_ok
 
     @classmethod
