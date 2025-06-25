@@ -26,6 +26,10 @@ class WhatFuckError(Exception):
 class ParamsRequiredError(ValueError):
     pass
 
+class ForbiddenError(Exception):
+    """Custom exception for 403 Forbidden"""
+    pass
+
 class RequiredError(ValueError):
     pass
 
@@ -46,6 +50,7 @@ class InvalidEmptyError(ValueError):
 
 __all__ = [
     "WhatFuckError",
+    "ForbiddenError",
     "ParamsRequiredError",
     "InvalidVersionError",
     "InvalidJSONDecodeError",
