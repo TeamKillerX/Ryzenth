@@ -1,3 +1,9 @@
+TOOL_DOMAIN_MAP = {
+    "itzpire": "https://itzpire.com",
+    "ryzenth": "https://randydev-ryu-js.hf.space",
+    "onrender": "https://x-api-js.onrender.com",
+}
+
 # this API is different
 
 BASE_DICT_RENDER = {
