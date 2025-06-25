@@ -27,6 +27,7 @@ from box import Box
 from .__version__ import get_user_agent
 from ._asynchisded import RyzenthXAsync
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
+from ._shared import TOOL_DOMAIN_MAP
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
@@ -64,11 +65,6 @@ class SmallConvertDot:
 
     def to_dot(self):
         return Box(self.obj if self.obj is not None else {})
-
-TOOL_DOMAIN_MAP = {
-    "itzpire": "https://itzpire.com",
-    "ryzenth": "https://randydev-ryu-js.hf.space",
-}
 
 class RyzenthApiClient:
     def __init__(
