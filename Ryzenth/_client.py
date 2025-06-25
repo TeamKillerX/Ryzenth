@@ -18,10 +18,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import typing as t
 
+import aiohttp
 from box import Box
 
 from ._asynchisded import RyzenthXAsync
+from ._errors import WhatFuckError
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
@@ -59,3 +62,36 @@ class SmallConvertDot:
 
     def to_dot(self):
         return Box(self.obj if self.obj is not None else {})
+
+class RyzenthApiClient:
+    BASE_URL = "https://randydev-ryu-js.hf.space"
+
+    def __init__(self, *, api_key: str) -> None:
+        if not api_key:
+            raise WhatFuckError("API Key cannot be empty.")
+        self._api_key: str = api_key
+        self._session: aiohttp.ClientSession = aiohttp.ClientSession(
+            headers={"x-api-key": f"{self._api_key}"}
+        )
+
+    @classmethod
+    def from_env(cls) -> "RyzenthApiClient":
+        api_key: t.Optional[str] = os.environ.get("RYZENTH_API_KEY")
+        if not api_key:
+            raise WhatFuckError("API Key cannot be empty.")
+        return cls(api_key=api_key)
+
+    async def get(self, path: str, params: t.Optional[dict] = None) -> dict:
+        url = f"{self.BASE_URL}{path}"
+        async with self._session.get(url, params=params) as resp:
+            resp.raise_for_status()
+            return await resp.json()
+
+    async def post(self, path: str, data: t.Optional[dict] = None, json: t.Optional[dict] = None) -> dict:
+        url = f"{self.BASE_URL}{path}"
+        async with self._session.post(url, data=data, json=json) as resp:
+            resp.raise_for_status()
+            return await resp.json()
+
+    async def close(self):
+        await self._session.close()
