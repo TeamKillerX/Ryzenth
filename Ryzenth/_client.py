@@ -32,6 +32,7 @@ from .__version__ import get_user_agent
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._shared import TOOL_DOMAIN_MAP
 from .helper import AutoRetry
+from .tl import LoggerService
 
 class RyzenthApiClient:
     def __init__(
@@ -42,7 +43,8 @@ class RyzenthApiClient:
         rate_limit: int = 5,
         use_default_headers: bool = False,
         use_httpx: bool = False,
-        settings: dict = None
+        settings: dict = None,
+        logger: t.Optional[LoggerService] = None
     ) -> None:
         if not isinstance(api_key, dict) or not api_key:
             raise WhatFuckError("API Key must be a non-empty dict of tool_name → list of headers")
@@ -56,6 +58,7 @@ class RyzenthApiClient:
         self._last_reset = time.monotonic()
         self._use_httpx = use_httpx
         self._settings = settings or {}
+        self._logger = logger
         self._init_logging()
 
         self._tools: dict[str, str] = {
@@ -166,12 +169,16 @@ class RyzenthApiClient:
             resp = await self._session.get(url, params=params, headers=headers)
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
-            return resp.content if use_image_content else resp.json()
+            data = resp.content if use_image_content else resp.json()
         else:
             async with self._session.get(url, params=params, headers=headers) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
-                return await resp.read() if use_image_content else await resp.json()
+                data = await resp.read() if use_image_content else await resp.json()
+
+        if self._logger:
+            await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
+        return data
 
     @AutoRetry(max_retries=3, delay=1.5)
     async def post(
@@ -191,12 +198,16 @@ class RyzenthApiClient:
             resp = await self._session.post(url, data=data, json=json, headers=headers)
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
-            return resp.content if use_image_content else resp.json()
+            data = resp.content if use_image_content else resp.json()
         else:
             async with self._session.post(url, data=data, json=json, headers=headers) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
-                return await resp.read() if use_image_content else await resp.json()
+                data = await resp.read() if use_image_content else await resp.json()
+
+        if self._logger:
+            await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
+        return data
 
     async def close(self):
         if self._use_httpx:
