@@ -1,3 +1,5 @@
+RYZENTH_AI_API_KEY_FREE = "akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC"
+
 TOOL_DOMAIN_MAP = {
     "itzpire": "https://itzpire.com",
     "ryzenth": "https://randydev-ryu-js.hf.space",

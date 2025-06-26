@@ -207,7 +207,7 @@ class RyzenthApiClient:
                 data = await resp.read() if use_image_content else await resp.json()
 
         if self._logger:
-            await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
+            await self._logger.log(f"[POST {tool}] ✅ Success: {url}")
         return data
 
     async def close(self):

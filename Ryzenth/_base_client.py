@@ -23,13 +23,14 @@ from os import environ
 from box import Box
 
 from ._asynchisded import RyzenthXAsync
+from ._shared import RYZENTH_AI_API_KEY_FREE
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
 
 class ApiKeyFrom:
     def __init__(self, api_key: str = None, is_ok=False):
-        if api_key is Ellipsis:
+        if api_key == Ellipsis:
             is_ok = True
             api_key = None
 
@@ -37,7 +38,7 @@ class ApiKeyFrom:
             api_key = environ.get("RYZENTH_API_KEY")
 
         if not api_key:
-            api_key = "akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC" if is_ok else None
+            api_key = RYZENTH_AI_API_KEY_FREE if is_ok else None
 
         self.api_key = api_key
         self.aio = RyzenthXAsync(api_key)
