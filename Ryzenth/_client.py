@@ -174,7 +174,8 @@ class RyzenthApiClient:
         self,
         tool: str,
         path: str,
-        params: t.Optional[dict] = None
+        params: t.Optional[dict] = None,
+        use_image_content: t.Optional[bool] = False
     ) -> dict:
         await self._throttle()
         base_url = self.get_base_url(tool)
@@ -185,12 +186,12 @@ class RyzenthApiClient:
             resp = await self._session.get(url, params=params, headers=headers)
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
-            return resp.json()
+            return resp.content if use_image_content else resp.json()
         else:
             async with self._session.get(url, params=params, headers=headers) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
-                return await resp.json()
+                return await resp.read() if use_image_content else await resp.json()
 
     @AutoRetry(max_retries=3, delay=1.5)
     async def post(
@@ -198,7 +199,8 @@ class RyzenthApiClient:
         tool: str,
         path: str,
         data: t.Optional[dict] = None,
-        json: t.Optional[dict] = None
+        json: t.Optional[dict] = None,
+        use_image_content: t.Optional[bool] = False
     ) -> dict:
         await self._throttle()
         base_url = self.get_base_url(tool)
@@ -209,12 +211,12 @@ class RyzenthApiClient:
             resp = await self._session.post(url, data=data, json=json, headers=headers)
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
-            return resp.json()
+            return resp.content if use_image_content else resp.json()
         else:
             async with self._session.post(url, data=data, json=json, headers=headers) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
-                return await resp.json()
+                return await resp.read() if use_image_content else await resp.json()
 
     async def close(self):
         await self._session.close()
