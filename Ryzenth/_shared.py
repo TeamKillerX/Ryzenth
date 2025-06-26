@@ -2,6 +2,8 @@ TOOL_DOMAIN_MAP = {
     "itzpire": "https://itzpire.com",
     "ryzenth": "https://randydev-ryu-js.hf.space",
     "onrender": "https://x-api-js.onrender.com",
+    "openai": "https://api.openai.com/v1",
+    "gemini": "https://generativelanguage.googleapis.com/v1"
 }
 
 # this API is different
