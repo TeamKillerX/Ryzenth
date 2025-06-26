@@ -18,9 +18,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
+import logging
 import os
 import uuid
-import logging
 
 from .._errors import WhatFuckError
 from ..types import QueryParameter
