@@ -18,10 +18,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-from .._errors import InternalError, ForbiddenError
 from datetime import datetime as dt
 
 import httpx
+
+from .._errors import ForbiddenError, InternalError
 
 
 class LoggerService:
