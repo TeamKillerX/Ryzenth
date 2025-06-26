@@ -1,4 +1,4 @@
-RYZENTH_AI_API_KEY_FREE = "akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC"
+UNKNOWN_TEST = "YWtlbm9fVUtRRVFNdDk5MWtoMkVoaDdKcUpZS2FweDhDQ3llQw=="
 
 TOOL_DOMAIN_MAP = {
     "itzpire": "https://itzpire.com",
