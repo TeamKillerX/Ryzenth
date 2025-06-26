@@ -22,6 +22,8 @@ from datetime import datetime as dt
 
 import httpx
 
+from .._errors import ForbiddenError, InternalError
+
 
 class LoggerService:
     def __init__(self, config: dict):
@@ -48,5 +50,17 @@ class LoggerService:
         chat_id = self.config["telegram"]["chat_id"]
         url = f"https://api.telegram.org/bot{token}/sendMessage"
 
-        async with httpx.AsyncClient() as client:
-            await client.post(url, data={"chat_id": chat_id, "text": text})
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.post(url, data={"chat_id": chat_id, "text": text})
+                if resp.status_code == 200:
+                    logging.info("[Logger] Telegram log success")
+                elif resp.status_code == 403:
+                    raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+                elif resp.status_code == 401:
+                    raise ForbiddenError("Access Forbidden: Required bot token or invalid params.")
+                elif resp.status_code == 500:
+                    raise InternalError("Error requests status code 500")
+        except Exception as e:
+            logging.info(f"[Logger] httpx failed: {e}")
+            raise e
