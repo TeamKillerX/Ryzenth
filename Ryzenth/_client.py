@@ -78,7 +78,7 @@ class RyzenthApiClient:
         tools_name: list[str],
         api_key: dict[str, list[dict]],
         rate_limit: int = 5,
-        use_default_headers: bool = False
+        use_default_headers: bool = False,
         use_httpx: bool = False
     ) -> None:
         if not isinstance(api_key, dict) or not api_key:
@@ -91,6 +91,7 @@ class RyzenthApiClient:
         self._rate_limit = rate_limit
         self._request_counter = 0
         self._last_reset = time.monotonic()
+        self._use_httpx = use_httpx
 
         self._tools: dict[str, str] = {
             name: TOOL_DOMAIN_MAP.get(name)
@@ -205,12 +206,12 @@ class RyzenthApiClient:
         headers = self._get_headers_for_tool(tool)
 
         if self._use_httpx:
-            resp = await self._session.post(url, json=json, headers=headers)
+            resp = await self._session.post(url, data=data, json=json, headers=headers)
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
             return resp.json()
         else:
-            async with self._session.post(url, json=json, headers=headers) as resp:
+            async with self._session.post(url, data=data, json=json, headers=headers) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
                 return await resp.json()
