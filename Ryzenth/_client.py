@@ -175,8 +175,8 @@ class RyzenthApiClient:
         tool: str,
         path: str,
         params: t.Optional[dict] = None,
-        use_image_content: t.Optional[bool] = False
-    ) -> dict:
+        use_image_content: bool = False
+    ) -> t.Union[dict, bytes]:
         await self._throttle()
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
@@ -200,8 +200,8 @@ class RyzenthApiClient:
         path: str,
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None,
-        use_image_content: t.Optional[bool] = False
-    ) -> dict:
+        use_image_content: bool = False
+    ) -> t.Union[dict, bytes]:
         await self._throttle()
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
