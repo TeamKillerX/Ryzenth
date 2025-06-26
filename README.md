@@ -11,7 +11,17 @@
     <a href="https://github.com/TeamKillerX/Ryzenth/workflows/"><img src="https://github.com/TeamKillerX/Ryzenth/actions/workflows/sync-tests.yml/badge.svg" alt="API Tests"/></a>
 </div>
 
-**Ryzenth** is a powerful and flexible Python SDK for interacting with the new **Ryzenth API V1**  a successor to the Ryzenth API V1 supporting both synchronous and asynchronous workflows out of the box.
+---
+
+![Image](https://github.com/user-attachments/assets/ebb42582-4d5d-4f6a-8e8b-78d737810510)
+
+---
+
+**Ryzenth** is a flexible Multi-API SDK with built-in support for API key management and database integration.
+
+It supports both **synchronous and asynchronous** workflows out of the box, making it ideal for modern use cases such as AI APIs, Telegram bots, REST services, and automation tools.
+
+With native integration for `httpx`, `aiohttp`, advanced logging (including optional Telegram alerts), and support for database storage like MongoDB, Ryzenth is designed for developers who need a lightweight, scalable, and customizable API client.
 
 > Note: Ryzenth API V1 (**javascript**) is still alive and supported, but Ryzenth is the next generation.
 
@@ -21,6 +31,7 @@
 - Built-in API Key management
 - Support for modern AI endpoints (image generation, search, text, and more)
 - Designed for speed with `httpx`
+- Etc
 
 ## Installation
 
