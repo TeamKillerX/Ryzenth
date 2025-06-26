@@ -26,6 +26,7 @@ import typing as t
 from os import environ, getenv
 
 import aiohttp
+import httpx
 from box import Box
 
 from .__version__ import get_user_agent
