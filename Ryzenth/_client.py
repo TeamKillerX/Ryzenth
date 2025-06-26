@@ -18,11 +18,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
-import os
+import json
 import platform
 import random
 import time
 import typing as t
+from os import environ, getenv
 
 import aiohttp
 from box import Box
@@ -42,7 +43,7 @@ class ApiKeyFrom:
             api_key = None
 
         if not api_key:
-            api_key = os.environ.get("RYZENTH_API_KEY")
+            api_key = environ.get("RYZENTH_API_KEY")
 
         if not api_key:
             api_key = "akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC" if is_ok else None
@@ -75,8 +76,8 @@ class RyzenthApiClient:
         *,
         tools_name: list[str],
         api_key: dict[str, list[dict]],
-        use_default_headers: bool = False,
         rate_limit: int = 5
+        use_default_headers: bool = False,
     ) -> None:
         if not isinstance(api_key, dict) or not api_key:
             raise WhatFuckError("API Key must be a non-empty dict of tool_name → list of headers")
@@ -122,10 +123,24 @@ class RyzenthApiClient:
 
     @classmethod
     def from_env(cls) -> "RyzenthApiClient":
-        api_key: t.Optional[str] = os.environ.get("RYZENTH_API_KEY")
-        if not api_key:
-            raise WhatFuckError("API Key cannot be empty.")
-        return cls(api_key=api_key)
+        tools_raw = getenv("RYZENTH_TOOLS")
+        api_key_raw = getenv("RYZENTH_API_KEY_JSON")
+        rate_limit_raw = getenv("RYZENTH_RATE_LIMIT", "5")
+        use_headers = getenv("RYZENTH_USE_HEADERS", "true")
+        if not tools_raw or not api_key_raw:
+            raise WhatFuckError("Environment variables RYZENTH_TOOLS and RYZENTH_API_KEY_JSON are required.")
+
+        tools = [t.strip() for t in tools_raw.split(",")]
+        api_keys = json.loads(api_key_raw)
+        rate_limit = int(rate_limit_raw)
+        use_default_headers = use_headers.lower() == "true"
+
+        return cls(
+            tools_name=tools,
+            api_key=api_keys,
+            rate_limit=rate_limit,
+            use_default_headers=use_default_headers
+        )
 
     async def _status_resp_error(self, resp):
         if resp.status == 403:
