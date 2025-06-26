@@ -22,6 +22,7 @@ import json
 import platform
 import random
 import time
+import logging
 import typing as t
 from os import environ, getenv
 
@@ -79,7 +80,8 @@ class RyzenthApiClient:
         api_key: dict[str, list[dict]],
         rate_limit: int = 5,
         use_default_headers: bool = False,
-        use_httpx: bool = False
+        use_httpx: bool = False,
+        settings: dict = None
     ) -> None:
         if not isinstance(api_key, dict) or not api_key:
             raise WhatFuckError("API Key must be a non-empty dict of tool_name → list of headers")
@@ -92,6 +94,8 @@ class RyzenthApiClient:
         self._request_counter = 0
         self._last_reset = time.monotonic()
         self._use_httpx = use_httpx
+        self._settings = settings or {}
+        self._init_logging()
 
         self._tools: dict[str, str] = {
             name: TOOL_DOMAIN_MAP.get(name)
@@ -102,6 +106,21 @@ class RyzenthApiClient:
             if use_httpx else
             aiohttp.ClientSession()
         )
+
+    def _init_logging(self):
+        log_level = "WARNING"
+        disable_httpx_log = False
+
+        for entry in self._settings.get("logging", []):
+            if "level" in entry:
+                log_level = entry["level"].upper()
+            if "httpx_log" in entry:
+                disable_httpx_log = not entry["httpx_log"]
+
+        logging.basicConfig(level=getattr(logging, log_level, logging.WARNING))
+        if disable_httpx_log:
+            logging.getLogger("httpx").setLevel(logging.CRITICAL)
+            logging.getLogger("httpcore").setLevel(logging.CRITICAL)
 
     def get_base_url(self, tool: str) -> str:
         check_ok = self._tools.get(tool, None)
@@ -219,4 +238,7 @@ class RyzenthApiClient:
                 return await resp.read() if use_image_content else await resp.json()
 
     async def close(self):
-        await self._session.close()
+        if self._use_httpx:
+            await self._session.aclose()
+        else:
+            await self._session.close()
