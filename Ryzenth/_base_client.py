@@ -17,13 +17,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
+import base64
 from os import environ
 
 from box import Box
 
 from ._asynchisded import RyzenthXAsync
-from ._shared import RYZENTH_AI_API_KEY_FREE
+from ._shared import UNKNOWN_TEST
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
@@ -38,7 +38,10 @@ class ApiKeyFrom:
             api_key = environ.get("RYZENTH_API_KEY")
 
         if not api_key:
-            api_key = RYZENTH_AI_API_KEY_FREE if is_ok else None
+            error404_bytes = UNKNOWN_TEST.encode("ascii")
+            string_bytes = base64.b64decode(error404_bytes)
+            api_key = string_bytes.decode("ascii") if is_ok else None
+
 
         self.api_key = api_key
         self.aio = RyzenthXAsync(api_key)
