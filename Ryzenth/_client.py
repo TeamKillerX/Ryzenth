@@ -23,9 +23,9 @@ import platform
 import random
 import time
 import typing as t
+from os import environ, getenv
 
 import aiohttp
-from os import getenv, environ
 from box import Box
 
 from .__version__ import get_user_agent
