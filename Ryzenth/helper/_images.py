@@ -20,6 +20,7 @@
 import asyncio
 import os
 import uuid
+import logging
 
 from .._errors import WhatFuckError
 from ..types import QueryParameter
@@ -80,6 +81,7 @@ class ResponseFileImage:
     def sync_to_save(self, file_path="fluxai.jpg"):
         with open(file_path, "wb") as f:
             f.write(self.response_content)
+        logging.info(f"File saved: {file_path}")
         return file_path
 
     async def to_save(self, file_path: str = None, auto_delete: bool = False, delay: int = 5):
@@ -88,7 +90,7 @@ class ResponseFileImage:
 
         with open(file_path, "wb") as f:
             f.write(self.response_content)
-            print(f"File saved: {file_path}")
+        logging.info(f"File saved: {file_path}")
 
         if auto_delete:
             await asyncio.sleep(delay)
