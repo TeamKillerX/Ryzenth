@@ -18,11 +18,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
-import httpx
-import aiohttp
 from functools import wraps
 
+import aiohttp
+import httpx
+
 from ..types import QueryParameter
+
 
 def AutoRetry(max_retries: int = 3, delay: float = 1.5):
     def decorator(func):

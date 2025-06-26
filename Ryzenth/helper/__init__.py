@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from ._decorators import Decorators, AutoRetry
+from ._decorators import AutoRetry, Decorators
 from ._federation import FbanAsync, FbanSync
 from ._fonts import FontsAsync, FontsSync
 from ._images import ImagesAsync, ImagesSync
