@@ -27,6 +27,7 @@ from ._shared import UNKNOWN_TEST
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
+
 class ApiKeyFrom:
     def __init__(self, api_key: str = None, is_ok=False):
         if api_key == Ellipsis:
@@ -40,7 +41,7 @@ class ApiKeyFrom:
             error404_bytes = UNKNOWN_TEST.encode("ascii")
             string_bytes = base64.b64decode(error404_bytes)
             api_key = string_bytes.decode("ascii") if is_ok else None
-            
+
 
         self.api_key = api_key
         self.aio = RyzenthXAsync(api_key)
