@@ -23,8 +23,8 @@ from os import environ
 from box import Box
 
 from ._asynchisded import RyzenthXAsync
-from ._synchisded import RyzenthXSync
 from ._shared import RYZENTH_AI_API_KEY_FREE
+from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
 
