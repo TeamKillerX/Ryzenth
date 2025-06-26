@@ -76,8 +76,8 @@ class RyzenthApiClient:
         *,
         tools_name: list[str],
         api_key: dict[str, list[dict]],
-        use_default_headers: bool = False,
         rate_limit: int = 5
+        use_default_headers: bool = False,
     ) -> None:
         if not isinstance(api_key, dict) or not api_key:
             raise WhatFuckError("API Key must be a non-empty dict of tool_name → list of headers")
