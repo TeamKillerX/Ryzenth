@@ -17,6 +17,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import asyncio
+import os
+import uuid
+
 from .._errors import WhatFuckError
 from ..types import QueryParameter
 
@@ -43,7 +47,7 @@ class ImagesAsync:
 
     async def to_save(self, params: QueryParameter, file_path="fluxai.jpg"):
         content = await self.generate(params)
-        return ResponseFileImage(content).to_save(file_path)
+        return await ResponseFileImage(content).to_save(file_path)
 
 class ImagesSync:
     def __init__(self, parent):
@@ -66,14 +70,31 @@ class ImagesSync:
 
     def to_save(self, params: QueryParameter, file_path="fluxai.jpg"):
         content = self.generate(params)
-        return ResponseFileImage(content).to_save(file_path)
+        return ResponseFileImage(content).sync_to_save(file_path)
 
 
 class ResponseFileImage:
     def __init__(self, response_content: bytes):
         self.response_content = response_content
 
-    def to_save(self, file_path="fluxai.jpg"):
+    def sync_to_save(self, file_path="fluxai.jpg"):
         with open(file_path, "wb") as f:
             f.write(self.response_content)
+        return file_path
+
+    async def to_save(self, file_path: str = None, auto_delete: bool = False, delay: int = 5):
+        if file_path is None:
+            file_path = f"{uuid.uuid4().hex}.jpg"
+
+        with open(file_path, "wb") as f:
+            f.write(self.response_content)
+            print(f"File saved: {file_path}")
+
+        if auto_delete:
+            await asyncio.sleep(delay)
+            try:
+                os.remove(file_path)
+                return True
+            except FileNotFoundError:
+                return False
         return file_path
