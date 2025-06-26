@@ -25,7 +25,7 @@ import time
 import typing as t
 
 import aiohttp
-from os import getenv
+from os import getenv, environ
 from box import Box
 
 from .__version__ import get_user_agent
@@ -43,7 +43,7 @@ class ApiKeyFrom:
             api_key = None
 
         if not api_key:
-            api_key = os.environ.get("RYZENTH_API_KEY")
+            api_key = environ.get("RYZENTH_API_KEY")
 
         if not api_key:
             api_key = "akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC" if is_ok else None
