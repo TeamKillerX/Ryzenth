@@ -210,7 +210,4 @@ class RyzenthApiClient:
         return data
 
     async def close(self):
-        if self._use_httpx:
-            await self._session.aclose()
-        else:
-            await self._session.close()
+        return await self._session.aclose() if self._use_httpx else await self._session.close()
