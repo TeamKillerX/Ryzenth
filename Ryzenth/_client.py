@@ -26,6 +26,7 @@ import typing as t
 from os import environ, getenv
 
 import aiohttp
+import httpx
 from box import Box
 
 from .__version__ import get_user_agent
@@ -33,7 +34,7 @@ from ._asynchisded import RyzenthXAsync
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._shared import TOOL_DOMAIN_MAP
 from ._synchisded import RyzenthXSync
-from .helper import Decorators
+from .helper import AutoRetry, Decorators
 
 
 class ApiKeyFrom:
@@ -77,7 +78,8 @@ class RyzenthApiClient:
         tools_name: list[str],
         api_key: dict[str, list[dict]],
         rate_limit: int = 5,
-        use_default_headers: bool = False
+        use_default_headers: bool = False,
+        use_httpx: bool = False
     ) -> None:
         if not isinstance(api_key, dict) or not api_key:
             raise WhatFuckError("API Key must be a non-empty dict of tool_name → list of headers")
@@ -89,12 +91,17 @@ class RyzenthApiClient:
         self._rate_limit = rate_limit
         self._request_counter = 0
         self._last_reset = time.monotonic()
+        self._use_httpx = use_httpx
 
         self._tools: dict[str, str] = {
             name: TOOL_DOMAIN_MAP.get(name)
             for name in tools_name
         }
-        self._session = aiohttp.ClientSession()
+        self._session = (
+            httpx.AsyncClient()
+            if use_httpx else
+            aiohttp.ClientSession()
+        )
 
     def get_base_url(self, tool: str) -> str:
         check_ok = self._tools.get(tool, None)
@@ -127,6 +134,8 @@ class RyzenthApiClient:
         api_key_raw = getenv("RYZENTH_API_KEY_JSON")
         rate_limit_raw = getenv("RYZENTH_RATE_LIMIT", "5")
         use_headers = getenv("RYZENTH_USE_HEADERS", "true")
+        use_httpx = getenv("RYZENTH_USE_HTTPX", "false")
+
         if not tools_raw or not api_key_raw:
             raise WhatFuckError("Environment variables RYZENTH_TOOLS and RYZENTH_API_KEY_JSON are required.")
 
@@ -134,22 +143,33 @@ class RyzenthApiClient:
         api_keys = json.loads(api_key_raw)
         rate_limit = int(rate_limit_raw)
         use_default_headers = use_headers.lower() == "true"
+        httpx_flag = use_httpx.lower() == "true"
 
         return cls(
             tools_name=tools,
             api_key=api_keys,
             rate_limit=rate_limit,
-            use_default_headers=use_default_headers
+            use_default_headers=use_default_headers,
+            use_httpx=httpx_flag
         )
 
-    async def _status_resp_error(self, resp):
-        if resp.status == 403:
-            raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
-        if resp.status == 401:
-            raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
-        if resp.status == 500:
-            raise InternalError("Error requests status code 500")
+    async def _status_resp_error(self, resp, status_httpx=False):
+        if status_httpx:
+            if resp.status_code == 403:
+                raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+            elif resp.status_code == 401:
+                raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
+            elif resp.status_code == 500:
+                raise InternalError("Error requests status code 500")
+        else:
+            if resp.status == 403:
+                raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+            elif resp.status == 401:
+                raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
+            elif resp.status == 500:
+                raise InternalError("Error requests status code 500")
 
+    @AutoRetry(max_retries=3, delay=1.5)
     async def get(
         self,
         tool: str,
@@ -160,18 +180,19 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        try:
+
+        if self._use_httpx:
+            resp = await self._session.get(url, params=params, headers=headers)
+            await self._status_resp_error(resp, status_httpx=True)
+            resp.raise_for_status()
+            return resp.json()
+        else:
             async with self._session.get(url, params=params, headers=headers) as resp:
-                await self._status_resp_error(resp)
+                await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
                 return await resp.json()
-        except ForbiddenError as e:
-            return {"error": str(e)}
-        except aiohttp.ClientResponseError as e:
-            return {"error": f"HTTP Error: {e.status} {e.message}"}
-        except Exception as e:
-            return {"error": str(e)}
 
+    @AutoRetry(max_retries=3, delay=1.5)
     async def post(
         self,
         tool: str,
@@ -183,17 +204,17 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        try:
+
+        if self._use_httpx:
+            resp = await self._session.post(url, data=data, json=json, headers=headers)
+            await self._status_resp_error(resp, status_httpx=True)
+            resp.raise_for_status()
+            return resp.json()
+        else:
             async with self._session.post(url, data=data, json=json, headers=headers) as resp:
-                await self._status_resp_error(resp)
+                await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
                 return await resp.json()
-        except ForbiddenError as e:
-            return {"error": str(e)}
-        except aiohttp.ClientResponseError as e:
-            return {"error": f"HTTP Error: {e.status} {e.message}"}
-        except Exception as e:
-            return {"error": str(e)}
 
     async def close(self):
         await self._session.close()
