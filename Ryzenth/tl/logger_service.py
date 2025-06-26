@@ -18,8 +18,10 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-import httpx
 from datetime import datetime as dt
+
+import httpx
+
 
 class LoggerService:
     def __init__(self, config: dict):

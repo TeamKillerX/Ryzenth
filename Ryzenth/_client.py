@@ -19,9 +19,9 @@
 
 import asyncio
 import json
+import logging
 import random
 import time
-import logging
 import typing as t
 from os import getenv
 
@@ -33,6 +33,7 @@ from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckE
 from ._shared import TOOL_DOMAIN_MAP
 from .helper import AutoRetry
 from .tl import LoggerService
+
 
 class RyzenthApiClient:
     def __init__(

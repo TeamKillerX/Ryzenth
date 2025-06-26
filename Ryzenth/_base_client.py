@@ -18,11 +18,14 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from box import Box
 from os import environ
+
+from box import Box
+
 from ._asynchisded import RyzenthXAsync
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
+
 
 class ApiKeyFrom:
     def __init__(self, api_key: str = None, is_ok=False):
