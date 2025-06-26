@@ -19,7 +19,8 @@
 
 from . import *
 from .__version__ import __version__
-from ._client import ApiKeyFrom, FromConvertDot, RyzenthApiClient, UrHellFrom
+from ._client import RyzenthApiClient
+from ._base_client import ApiKeyFrom, FromConvertDot, UrHellFrom
 
 __all__ = [
   "ApiKeyFrom",
