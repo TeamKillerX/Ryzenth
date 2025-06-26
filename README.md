@@ -73,6 +73,11 @@ export RYZENTH_API_KEY=your-api-key
 ## Web scrapers
 * [`itzpire`](https://itzpire.com) - Team Developer
 
+## Tool Developer
+~ Artificial Intelligence
+- [`OpenAI`](https://platform.openai.com/docs) - OpenAI Docs
+- [`Gemini AI`](https://ai.google.dev) - Gemini AI Docs
+
 ## Credits
 
 * Built with love by [xtdevs](https://t.me/xtdevs)
