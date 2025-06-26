@@ -20,6 +20,7 @@
 import asyncio
 import os
 import uuid
+
 from .._errors import WhatFuckError
 from ..types import QueryParameter
 
