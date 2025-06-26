@@ -54,7 +54,7 @@ class LoggerService:
             async with httpx.AsyncClient() as client:
                 resp = await client.post(url, data={"chat_id": chat_id, "text": text})
                 if resp.status_code == 200:
-                    logging.info(f"[Logger] Telegram log success")
+                    logging.info("[Logger] Telegram log success")
                 elif resp.status_code == 403:
                     raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
                 elif resp.status_code == 401:
