@@ -19,57 +19,21 @@
 
 import asyncio
 import json
-import platform
+import logging
 import random
 import time
 import typing as t
-from os import environ, getenv
+from os import getenv
 
 import aiohttp
 import httpx
-from box import Box
 
 from .__version__ import get_user_agent
-from ._asynchisded import RyzenthXAsync
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._shared import TOOL_DOMAIN_MAP
-from ._synchisded import RyzenthXSync
-from .helper import AutoRetry, Decorators
+from .helper import AutoRetry
+from .tl import LoggerService
 
-
-class ApiKeyFrom:
-    def __init__(self, api_key: str = None, is_ok=False):
-        if api_key is Ellipsis:
-            is_ok = True
-            api_key = None
-
-        if not api_key:
-            api_key = environ.get("RYZENTH_API_KEY")
-
-        if not api_key:
-            api_key = "akeno_UKQEQMt991kh2Ehh7JqJYKapx8CCyeC" if is_ok else None
-
-        self.api_key = api_key
-        self.aio = RyzenthXAsync(api_key)
-        self._sync = RyzenthXSync(api_key)
-
-    def something(self):
-        pass
-
-class UrHellFrom:
-    def __init__(self, name: str, only_author=False):
-        self.decorators = Decorators(ApiKeyFrom)
-        self.ai = self.decorators.send_ai(name=name, only_author=only_author)
-
-    def something(self):
-        pass
-
-class FromConvertDot:
-    def __init__(self, obj):
-        self.obj = obj
-
-    def to_dot(self):
-        return Box(self.obj if self.obj is not None else {})
 
 class RyzenthApiClient:
     def __init__(
@@ -79,7 +43,9 @@ class RyzenthApiClient:
         api_key: dict[str, list[dict]],
         rate_limit: int = 5,
         use_default_headers: bool = False,
-        use_httpx: bool = False
+        use_httpx: bool = False,
+        settings: dict = None,
+        logger: t.Optional[LoggerService] = None
     ) -> None:
         if not isinstance(api_key, dict) or not api_key:
             raise WhatFuckError("API Key must be a non-empty dict of tool_name → list of headers")
@@ -92,6 +58,9 @@ class RyzenthApiClient:
         self._request_counter = 0
         self._last_reset = time.monotonic()
         self._use_httpx = use_httpx
+        self._settings = settings or {}
+        self._logger = logger
+        self._init_logging()
 
         self._tools: dict[str, str] = {
             name: TOOL_DOMAIN_MAP.get(name)
@@ -102,6 +71,21 @@ class RyzenthApiClient:
             if use_httpx else
             aiohttp.ClientSession()
         )
+
+    def _init_logging(self):
+        log_level = "WARNING"
+        disable_httpx_log = False
+
+        for entry in self._settings.get("logging", []):
+            if "level" in entry:
+                log_level = entry["level"].upper()
+            if "httpx_log" in entry:
+                disable_httpx_log = not entry["httpx_log"]
+
+        logging.basicConfig(level=getattr(logging, log_level, logging.WARNING))
+        if disable_httpx_log:
+            logging.getLogger("httpx").setLevel(logging.CRITICAL)
+            logging.getLogger("httpcore").setLevel(logging.CRITICAL)
 
     def get_base_url(self, tool: str) -> str:
         check_ok = self._tools.get(tool, None)
@@ -186,12 +170,16 @@ class RyzenthApiClient:
             resp = await self._session.get(url, params=params, headers=headers)
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
-            return resp.content if use_image_content else resp.json()
+            data = resp.content if use_image_content else resp.json()
         else:
             async with self._session.get(url, params=params, headers=headers) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
-                return await resp.read() if use_image_content else await resp.json()
+                data = await resp.read() if use_image_content else await resp.json()
+
+        if self._logger:
+            await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
+        return data
 
     @AutoRetry(max_retries=3, delay=1.5)
     async def post(
@@ -211,12 +199,16 @@ class RyzenthApiClient:
             resp = await self._session.post(url, data=data, json=json, headers=headers)
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
-            return resp.content if use_image_content else resp.json()
+            data = resp.content if use_image_content else resp.json()
         else:
             async with self._session.post(url, data=data, json=json, headers=headers) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
-                return await resp.read() if use_image_content else await resp.json()
+                data = await resp.read() if use_image_content else await resp.json()
+
+        if self._logger:
+            await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
+        return data
 
     async def close(self):
-        await self._session.close()
+        return await self._session.aclose() if self._use_httpx else await self._session.close()
