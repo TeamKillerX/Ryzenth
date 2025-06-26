@@ -13,6 +13,10 @@
 
 ---
 
+![Image](https://github.com/user-attachments/assets/ebb42582-4d5d-4f6a-8e8b-78d737810510)
+
+---
+
 **Ryzenth** is a flexible Multi-API SDK with built-in support for API key management and database integration.
 
 It supports both **synchronous and asynchronous** workflows out of the box, making it ideal for modern use cases such as AI APIs, Telegram bots, REST services, and automation tools.
