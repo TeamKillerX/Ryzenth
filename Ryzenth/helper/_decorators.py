@@ -28,7 +28,7 @@ from ..types import QueryParameter
 
 def AutoRetry(max_retries: int = 3, delay: float = 1.5):
     def decorator(func):
-        wraps(func)
+        @wraps(func)
         async def wrapper(*args, **kwargs):
             for attempt in range(max_retries):
                 try:
