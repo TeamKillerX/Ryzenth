@@ -17,10 +17,30 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import asyncio
+import httpx
+import aiohttp
 from functools import wraps
 
 from ..types import QueryParameter
 
+def AutoRetry(max_retries: int = 3, delay: float = 1.5):
+    def decorator(func):
+        wraps(func)
+        async def wrapper(*args, **kwargs):
+            for attempt in range(max_retries):
+                try:
+                    return await func(*args, **kwargs)
+                except (
+                    httpx.HTTPError,
+                    aiohttp.ClientError,
+                    asyncio.TimeoutError
+                ) as e:
+                    if attempt == max_retries - 1:
+                        raise e
+                    await asyncio.sleep(delay)
+        return wrapper
+    return decorator
 
 class Decorators:
     def __init__(self, class_func):
