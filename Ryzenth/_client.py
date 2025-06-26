@@ -17,8 +17,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import asyncio
 import os
 import platform
+import random
+import time
 import typing as t
 
 import aiohttp
@@ -70,33 +73,52 @@ class RyzenthApiClient:
     def __init__(
         self,
         *,
-        api_key: str,
         tools_name: list[str],
-        use_default_headers: bool = False
+        api_key: dict[str, list[dict]],
+        use_default_headers: bool = False,
+        rate_limit: int = 5
     ) -> None:
-        if not api_key:
-            raise WhatFuckError("API Key cannot be empty.")
+        if not isinstance(api_key, dict):
+            raise WhatFuckError("API Key must be a dict of tool_name → list of headers")
         if not tools_name:
             raise WhatFuckError("A non-empty list of tool names must be provided for 'tools_name'.")
 
         self._api_key: str = api_key
         self._use_default_headers: bool = use_default_headers
-        self._session: aiohttp.ClientSession = aiohttp.ClientSession(
-            headers={
-                "User-Agent": get_user_agent(),
-                **({"x-api-key": self._api_key} if self._use_default_headers else {})
-            }
-        )
+        self._rate_limit = rate_limit
+        self._request_counter = 0
+        self._last_reset = time.monotonic()
+
         self._tools: dict[str, str] = {
             name: TOOL_DOMAIN_MAP.get(name)
             for name in tools_name
         }
+        self._session = aiohttp.ClientSession()
 
     def get_base_url(self, tool: str) -> str:
         check_ok = self._tools.get(tool, None)
         if check_ok is None:
             raise ToolNotFoundError(f"Base URL for tool '{tool}' not found.")
         return check_ok
+
+    def _get_headers_for_tool(self, tool: str) -> dict:
+        base = {"User-Agent": get_user_agent()}
+        if self._use_default_headers and tool in self._api_keys:
+            base.update(random.choice(self._api_keys[tool]))
+        return base
+
+    async def _throttle(self):
+        now = time.monotonic()
+        if now - self._last_reset >= 1:
+            self._last_reset = now
+            self._request_counter = 0
+
+        if self._request_counter >= self._rate_limit:
+            await asyncio.sleep(1 - (now - self._last_reset))
+            self._last_reset = time.monotonic()
+            self._request_counter = 0
+
+        self._request_counter += 1
 
     @classmethod
     def from_env(cls) -> "RyzenthApiClient":
@@ -119,10 +141,12 @@ class RyzenthApiClient:
         path: str,
         params: t.Optional[dict] = None
     ) -> dict:
+        await self._throttle()
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
+        headers = self._get_headers_for_tool(tool)
         try:
-            async with self._session.get(url, params=params) as resp:
+            async with self._session.get(url, params=params, headers=headers) as resp:
                 await self._status_resp_error(resp)
                 resp.raise_for_status()
                 return await resp.json()
@@ -140,10 +164,12 @@ class RyzenthApiClient:
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None
     ) -> dict:
+        await self._throttle()
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
+        headers = self._get_headers_for_tool(tool)
         try:
-            async with self._session.post(url, data=data, json=json) as resp:
+            async with self._session.post(url, data=data, json=json, headers=headers) as resp:
                 await self._status_resp_error(resp)
                 resp.raise_for_status()
                 return await resp.json()
