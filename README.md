@@ -82,12 +82,24 @@ export RYZENTH_API_KEY=your-api-key
 ```
 
 ## Web scrapers
-* [`itzpire`](https://itzpire.com) - Team Developer
+> Without authentication
+>
+> Free unlimited
+- [`itzpire`](https://itzpire.com) - Team Developer
+- [`x-api-js`](https://x-api-js.onrender.com/docs) - Ryzenth Developer
 
 ## Tool Developer
 ~ Artificial Intelligence
 - [`OpenAI`](https://platform.openai.com/docs) - OpenAI Docs
 - [`Gemini AI`](https://ai.google.dev) - Gemini AI Docs
+- [`Cohere AI`](https://docs.cohere.com/) - Cohere AI Docs
+- [`Qwen AI`](https://www.alibabacloud.com/help/en/model-studio/use-qwen-by-calling-api) - Alibaba AI Docs
+
+## How to get api key?
+- [`Ryzenth API key`](https://t.me/RyzenthKeyBot) - Telegram bot
+- [`Openai API key`](https://platform.openai.com/api-keys) - Website official
+- [`Cohere API key`](https://dashboard.cohere.com/api-keys) - Website official
+- [`Alibaba API key`](https://bailian.console.alibabacloud.com/?tab=playground#/api-key) - Website official
 
 ## Credits
 
