@@ -154,6 +154,11 @@ class RyzenthApiClient:
                 raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
             elif resp.status == 500:
                 raise InternalError("Error requests status code 500")
+
+    def request(self, method, url, **kwargs):
+        with self._sync_session as session:
+            return session.request(method=method, url=url, **kwargs)
+
     def get(
         self,
         tool: str,
@@ -164,7 +169,7 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        resp = self._sync_session.get(url, params=params, headers=headers)
+        resp = self.request("get", url, params=params, headers=headers)
         if resp.status_code == 403:
             raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
         elif resp.status_code == 401:
@@ -213,7 +218,7 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        resp = self._sync_session.post(url, data=data, json=json, headers=headers)
+        resp = self.request("post", url, data=data, json=json, headers=headers))
         if resp.status_code == 403:
             raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
         elif resp.status_code == 401:
