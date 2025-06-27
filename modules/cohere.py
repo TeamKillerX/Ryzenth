@@ -5,11 +5,7 @@ API_KEY_COHERE = "api_key"
 
 clients = RyzenthApiClient(
     tools_name=["cohere"],
-    api_key={
-        "cohere": [
-            {"Authorization": f"Bearer {API_KEY_COHERE}"}
-        ]
-    },
+    api_key={"cohere": [{"Authorization": f"Bearer {API_KEY_COHERE}"}]},
     rate_limit=20,
     use_default_headers=True,
     use_httpx=True,
@@ -22,7 +18,7 @@ clients = RyzenthApiClient(
 )
 
 async def main():
-    clients = await clients.post(
+    resp = await clients.post(
         tool="cohere",
         path="/chat",
         json={
@@ -32,3 +28,4 @@ async def main():
         },
         use_type=ResponseType.JSON
     )
+    print(resp)
