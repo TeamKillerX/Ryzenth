@@ -5,7 +5,8 @@ TOOL_DOMAIN_MAP = {
     "ryzenth": "https://randydev-ryu-js.hf.space",
     "onrender": "https://x-api-js.onrender.com",
     "openai": "https://api.openai.com/v1",
-    "gemini": "https://generativelanguage.googleapis.com/v1"
+    "gemini": "https://generativelanguage.googleapis.com/v1beta",
+    "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai"
 }
 
 # this API is different
