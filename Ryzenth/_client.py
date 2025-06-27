@@ -259,6 +259,6 @@ class RyzenthApiClient:
 
     def close(self):
         return self._sync_session.close()
-        
+
     async def close(self):
         return await self._session.aclose() if self._use_httpx else await self._session.close()
