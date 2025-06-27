@@ -4,9 +4,7 @@ from Ryzenth.enums import ResponseType
 clients = RyzenthApiClient(
     tools_name=["itzpire"],
     api_key={"itzpire": [{}]},
-    rate_limit=100,
-    use_default_headers=False,
-    use_httpx=True
+    rate_limit=100
 )
 
 def test_itzpire():
