@@ -92,7 +92,9 @@ export RYZENTH_API_KEY=your-api-key
 - [`Qwen AI`](https://www.alibabacloud.com/help/en/model-studio/use-qwen-by-calling-api) - Alibaba AI Docs
 
 ## How to get api key?
-
+- [`Ryzenth API key`](https://t.me/RyzenthKeyBot) - By Ryzenth
+- [`Openai API key`](https://platform.openai.com/api-keys) - By Openai
+- [`Cohere API key`](https://dashboard.cohere.com/api-keys) - By Cohere
 
 ## Credits
 
