@@ -27,6 +27,7 @@ from os import getenv
 
 import aiohttp
 import httpx
+import requests
 
 from .__version__ import get_user_agent
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
@@ -66,6 +67,7 @@ class RyzenthApiClient:
             name: TOOL_DOMAIN_MAP.get(name)
             for name in tools_name
         }
+        self._sync_session = requests.Session()
         self._session = (
             httpx.AsyncClient()
             if use_httpx else
@@ -152,6 +154,25 @@ class RyzenthApiClient:
                 raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
             elif resp.status == 500:
                 raise InternalError("Error requests status code 500")
+    def get(
+        self,
+        tool: str,
+        path: str,
+        params: t.Optional[dict] = None,
+        use_image_content: bool = False
+    ) -> t.Union[dict, bytes]:
+        base_url = self.get_base_url(tool)
+        url = f"{base_url}{path}"
+        headers = self._get_headers_for_tool(tool)
+        resp = self._sync_session.get(url, params=params, headers=headers)
+        if resp.status_code == 403:
+            raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+        elif resp.status_code == 401:
+            raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
+        elif resp.status_code == 500:
+            raise InternalError("Error requests status code 500")
+        resp.raise_for_status()
+        return resp.content if use_image_content else resp.json()
 
     @AutoRetry(max_retries=3, delay=1.5)
     async def get(
@@ -180,6 +201,27 @@ class RyzenthApiClient:
         if self._logger:
             await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
         return data
+
+    def post(
+        self,
+        tool: str,
+        path: str,
+        data: t.Optional[dict] = None,
+        json: t.Optional[dict] = None,
+        use_image_content: bool = False
+    ) -> t.Union[dict, bytes]:
+        base_url = self.get_base_url(tool)
+        url = f"{base_url}{path}"
+        headers = self._get_headers_for_tool(tool)
+        resp = self._sync_session.post(url, data=data, json=json, headers=headers)
+        if resp.status_code == 403:
+            raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+        elif resp.status_code == 401:
+            raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
+        elif resp.status_code == 500:
+            raise InternalError("Error requests status code 500")
+        resp.raise_for_status()
+        return resp.content if use_image_content else resp.json()
 
     @AutoRetry(max_retries=3, delay=1.5)
     async def post(
@@ -210,5 +252,8 @@ class RyzenthApiClient:
             await self._logger.log(f"[POST {tool}] ✅ Success: {url}")
         return data
 
+    def close(self):
+        return self._sync_session.close()
+        
     async def close(self):
         return await self._session.aclose() if self._use_httpx else await self._session.close()
