@@ -180,12 +180,10 @@ class RyzenthApiClient:
             raise InternalError("Error requests status code 500")
         resp.raise_for_status()
         if use_type == ResponseType.IMAGE:
-            data = resp.content
+            return resp.content
         elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-            data = resp.text
-        else:
-            data = resp.json()
-        return data
+            return resp.text
+        return resp.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -246,12 +244,10 @@ class RyzenthApiClient:
             raise InternalError("Error requests status code 500")
         resp.raise_for_status()
         if use_type == ResponseType.IMAGE:
-            data = resp.content
+            return resp.content
         elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-            data = resp.text
-        else:
-            data = resp.json()
-        return data
+            return resp.text
+        return resp.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
