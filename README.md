@@ -83,7 +83,7 @@ export RYZENTH_API_KEY=your-api-key
 
 ## Web scrapers
 > Without authentication
-> 
+>
 > Free unlimited
 - [`itzpire`](https://itzpire.com) - Team Developer
 - [`x-api-js`](https://x-api-js.onrender.com/docs) - Ryzenth Developer
