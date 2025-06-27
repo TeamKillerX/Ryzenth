@@ -1,16 +1,58 @@
+# Expired 2026 💀
 UNKNOWN_TEST = "YWtlbm9fVUtRRVFNdDk5MWtoMkVoaDdKcUpZS2FweDhDQ3llQw=="
 
 TOOL_DOMAIN_MAP = {
     "itzpire": "https://itzpire.com",
     "ryzenth": "https://randydev-ryu-js.hf.space",
     "onrender": "https://x-api-js.onrender.com",
+    "deepseek": "https://api.deepseek.com",
     "openai": "https://api.openai.com/v1",
+    "alibaba": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
     "gemini": "https://generativelanguage.googleapis.com/v1beta",
     "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai"
 }
 
-# this API is different
+###-------------AI-----------------###
+# ALIBABA
+"""
+headers = {
+    'Authorization': 'Bearer {api_key}',
+    'Content-Type': 'application/json'
+}
+alibaba_response = await clients.post(
+    tool="alibaba",
+    path="/chat/completions",
+    json={
+        "model": "qwen-plus",
+        "messages": [
+            {"role": "user", "content": "hello world!"}
+        ],
+        "temperature": 0.7
+    }
+)
+"""
 
+# DEEPSEEK
+"""
+headers = {
+    'Authorization': 'Bearer {api_key}',
+    'Content-Type': 'application/json'
+}
+deepseek_response = await clients.post(
+    tool="deepseek",
+    path="/chat/completions",
+    json={
+        "model": "deepseek-chat",
+        "messages": [
+            {"role": "user", "content": "hello world!"}
+        ],
+        "temperature": 0.7
+    }
+)
+"""
+###-------------END AI-----------------###
+
+# this API is different
 BASE_DICT_RENDER = {
     "transcript": "transcript-dl", #url #render
     "pinterest": "pinterest-dl", #url #render
