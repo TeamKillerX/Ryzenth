@@ -33,9 +33,9 @@ from .__version__ import get_user_agent
 from ._benchmark import Benchmark
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._shared import TOOL_DOMAIN_MAP
+from .enums import ResponseType
 from .helper import AutoRetry
 from .tl import LoggerService
-from .enums import ResponseType
 
 
 class RyzenthApiClient:

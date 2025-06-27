@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class ResponseType(str, Enum):
     JSON = "json"
     IMAGE = "image"
