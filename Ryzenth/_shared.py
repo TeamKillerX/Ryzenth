@@ -22,7 +22,7 @@ headers = {
     'Authorization': 'Bearer {api_key}',
     'Content-Type': 'application/json'
 }
-alibaba_response = await clients.post(
+cohere_response = await clients.post(
     tool="cohere",
     path="/chat",
     json={
