@@ -88,6 +88,11 @@ export RYZENTH_API_KEY=your-api-key
 ~ Artificial Intelligence
 - [`OpenAI`](https://platform.openai.com/docs) - OpenAI Docs
 - [`Gemini AI`](https://ai.google.dev) - Gemini AI Docs
+- [`Cohere AI`](https://docs.cohere.com/) - Cohere AI Docs
+- [`Qwen AI`](https://www.alibabacloud.com/help/en/model-studio/use-qwen-by-calling-api) - Alibaba AI Docs
+
+## How to get api key?
+
 
 ## Credits
 
