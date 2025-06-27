@@ -7,12 +7,32 @@ TOOL_DOMAIN_MAP = {
     "onrender": "https://x-api-js.onrender.com",
     "deepseek": "https://api.deepseek.com",
     "openai": "https://api.openai.com/v1",
+    "cohere": "https://api.cohere.com/v1",
     "alibaba": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
     "gemini": "https://generativelanguage.googleapis.com/v1beta",
     "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai"
 }
 
 ###-------------AI-----------------###
+
+# COHERE
+"""
+headers = {
+    'accept: application/json',
+    'Authorization': 'Bearer {api_key}',
+    'Content-Type': 'application/json'
+}
+alibaba_response = await clients.post(
+    tool="cohere",
+    path="/chat",
+    json={
+        "chat_history": [],
+        "message": "What year was he born?",
+        "connectors": [{"id": "web-search"}]
+    }
+)
+"""
+
 # ALIBABA
 """
 headers = {
