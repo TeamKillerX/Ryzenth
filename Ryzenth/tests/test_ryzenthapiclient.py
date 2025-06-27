@@ -4,7 +4,8 @@ from Ryzenth.enums import ResponseType
 clients = RyzenthApiClient(
     tools_name=["itzpire"],
     api_key={"itzpire": [{}]},
-    rate_limit=100
+    rate_limit=100,
+    use_httpx=True # Fixed Aiohttp RuntimeError: no running event loop
 )
 
 def test_itzpire():
