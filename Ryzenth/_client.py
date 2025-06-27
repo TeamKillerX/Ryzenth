@@ -159,7 +159,7 @@ class RyzenthApiClient:
     def request(self, method, url, **kwargs):
         return self._sync_session.request(method=method, url=url, **kwargs)
 
-    @Benchmark._sync
+    @Benchmark.sync(level=logging.DEBUG)
     def sync_get(
         self,
         tool: str,
@@ -180,7 +180,7 @@ class RyzenthApiClient:
         resp.raise_for_status()
         return resp.content if use_image_content else resp.json()
 
-    @Benchmark._performance
+    @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def get(
         self,
@@ -209,7 +209,7 @@ class RyzenthApiClient:
             await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
         return data
 
-    @Benchmark._sync
+    @Benchmark.sync(level=logging.DEBUG)
     def sync_post(
         self,
         tool: str,
@@ -231,7 +231,7 @@ class RyzenthApiClient:
         resp.raise_for_status()
         return resp.content if use_image_content else resp.json()
 
-    @Benchmark._performance
+    @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def post(
         self,
