@@ -156,10 +156,9 @@ class RyzenthApiClient:
                 raise InternalError("Error requests status code 500")
 
     def request(self, method, url, **kwargs):
-        with self._sync_session as session:
-            return session.request(method=method, url=url, **kwargs)
+        return self._sync_session.request(method=method, url=url, **kwargs)
 
-    def get(
+    def sync_get(
         self,
         tool: str,
         path: str,
@@ -207,7 +206,7 @@ class RyzenthApiClient:
             await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
         return data
 
-    def post(
+    def sync_post(
         self,
         tool: str,
         path: str,
@@ -218,7 +217,7 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        resp = self.request("post", url, data=data, json=json, headers=headers))
+        resp = self.request("post", url, data=data, json=json, headers=headers)
         if resp.status_code == 403:
             raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
         elif resp.status_code == 401:
@@ -257,7 +256,7 @@ class RyzenthApiClient:
             await self._logger.log(f"[POST {tool}] ✅ Success: {url}")
         return data
 
-    def close(self):
+    def sync_close(self):
         return self._sync_session.close()
 
     async def close(self):
