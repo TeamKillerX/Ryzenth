@@ -5,11 +5,7 @@ API_KEY_OPENAI = "api_key"
 
 clients = RyzenthApiClient(
     tools_name=["openai"],
-    api_key={
-        "openai": [
-            {"Authorization": f"Bearer {API_KEY_OPENAI}"}
-        ]
-    },
+    api_key={"openai": [{"Authorization": f"Bearer {API_KEY_OPENAI}"}]},
     rate_limit=20,
     use_default_headers=True,
     use_httpx=True,
@@ -34,3 +30,4 @@ async def main():
         },
         use_type=ResponseType.JSON
     )
+    print(resp)
