@@ -238,7 +238,7 @@ class RyzenthApiClient:
         path: str,
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None,
-        use_image_content: bool = False
+        use_type: ResponseType = ResponseType.JSON
     ) -> t.Union[dict, bytes, str]:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
