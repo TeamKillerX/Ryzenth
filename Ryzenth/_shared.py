@@ -8,6 +8,7 @@ TOOL_DOMAIN_MAP = {
     "deepseek": "https://api.deepseek.com",
     "openai": "https://api.openai.com/v1",
     "cohere": "https://api.cohere.com/v1",
+    "claude": "https://api.anthropic.com/v1",
     "alibaba": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
     "gemini": "https://generativelanguage.googleapis.com/v1beta",
     "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai"
