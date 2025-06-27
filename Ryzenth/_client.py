@@ -35,6 +35,7 @@ from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckE
 from ._shared import TOOL_DOMAIN_MAP
 from .helper import AutoRetry
 from .tl import LoggerService
+from .enums import ResponseType
 
 
 class RyzenthApiClient:
@@ -165,8 +166,8 @@ class RyzenthApiClient:
         tool: str,
         path: str,
         params: t.Optional[dict] = None,
-        use_image_content: bool = False
-    ) -> t.Union[dict, bytes]:
+        use_type: ResponseType = ResponseType.JSON
+    ) -> t.Union[dict, bytes, str]:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
@@ -178,7 +179,15 @@ class RyzenthApiClient:
         elif resp.status_code == 500:
             raise InternalError("Error requests status code 500")
         resp.raise_for_status()
-        return resp.content if use_image_content else resp.json()
+        if use_type == ResponseType.IMAGE:
+            data = resp.content
+        elif use_type == ResponseType.TEXT:
+            data = resp.text
+        elif use_type == ResponseType.HTML:
+            data = resp.text
+        else:
+            data = resp.json()
+        return data
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -187,8 +196,8 @@ class RyzenthApiClient:
         tool: str,
         path: str,
         params: t.Optional[dict] = None,
-        use_image_content: bool = False
-    ) -> t.Union[dict, bytes]:
+        use_type: ResponseType = ResponseType.JSON
+    ) -> t.Union[dict, bytes, str]:
         await self._throttle()
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
@@ -198,13 +207,26 @@ class RyzenthApiClient:
             resp = await self._session.get(url, params=params, headers=headers)
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
-            data = resp.content if use_image_content else resp.json()
+            if use_type == ResponseType.IMAGE:
+                data = resp.content
+            elif use_type == ResponseType.TEXT:
+                data = resp.text
+            elif use_type == ResponseType.HTML:
+                data = resp.text
+            else:
+                data = resp.json()
         else:
             async with self._session.get(url, params=params, headers=headers) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
-                data = await resp.read() if use_image_content else await resp.json()
-
+                if use_type == ResponseType.IMAGE:
+                    data = await resp.read()
+                elif use_type == ResponseType.TEXT:
+                    data = await resp.text()
+                elif use_type == ResponseType.HTML:
+                    data = await resp.text()
+                else:
+                    data = await resp.json()
         if self._logger:
             await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
         return data
@@ -217,7 +239,7 @@ class RyzenthApiClient:
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None,
         use_image_content: bool = False
-    ) -> t.Union[dict, bytes]:
+    ) -> t.Union[dict, bytes, str]:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
@@ -229,7 +251,15 @@ class RyzenthApiClient:
         elif resp.status_code == 500:
             raise InternalError("Error requests status code 500")
         resp.raise_for_status()
-        return resp.content if use_image_content else resp.json()
+        if use_type == ResponseType.IMAGE:
+            data = resp.content
+        elif use_type == ResponseType.TEXT:
+            data = resp.text
+        elif use_type == ResponseType.HTML:
+            data = resp.text
+        else:
+            data = resp.json()
+        return data
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -239,8 +269,8 @@ class RyzenthApiClient:
         path: str,
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None,
-        use_image_content: bool = False
-    ) -> t.Union[dict, bytes]:
+        use_type: ResponseType = ResponseType.JSON
+    ) -> t.Union[dict, bytes, str]:
         await self._throttle()
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
@@ -250,13 +280,26 @@ class RyzenthApiClient:
             resp = await self._session.post(url, data=data, json=json, headers=headers)
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
-            data = resp.content if use_image_content else resp.json()
+            if use_type == ResponseType.IMAGE:
+                data = resp.content
+            elif use_type == ResponseType.TEXT:
+                data = resp.text
+            elif use_type == ResponseType.HTML:
+                data = resp.text
+            else:
+                data = resp.json()
         else:
             async with self._session.post(url, data=data, json=json, headers=headers) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
-                data = await resp.read() if use_image_content else await resp.json()
-
+                if use_type == ResponseType.IMAGE:
+                    data = await resp.read()
+                elif use_type == ResponseType.TEXT:
+                    data = await resp.text()
+                elif use_type == ResponseType.HTML:
+                    data = await resp.text()
+                else:
+                    data = await resp.json()
         if self._logger:
             await self._logger.log(f"[POST {tool}] ✅ Success: {url}")
         return data
