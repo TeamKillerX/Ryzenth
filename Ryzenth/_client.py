@@ -30,7 +30,7 @@ import httpx
 import requests
 
 from .__version__ import get_user_agent
-from ._benchmark import log_performance
+from ._benchmark import log_performance, sync_log_performance
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._shared import TOOL_DOMAIN_MAP
 from .helper import AutoRetry
@@ -159,6 +159,7 @@ class RyzenthApiClient:
     def request(self, method, url, **kwargs):
         return self._sync_session.request(method=method, url=url, **kwargs)
 
+    @sync_log_performance
     def sync_get(
         self,
         tool: str,
@@ -208,6 +209,7 @@ class RyzenthApiClient:
             await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
         return data
 
+    @sync_log_performance
     def sync_post(
         self,
         tool: str,
