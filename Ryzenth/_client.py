@@ -181,9 +181,7 @@ class RyzenthApiClient:
         resp.raise_for_status()
         if use_type == ResponseType.IMAGE:
             data = resp.content
-        elif use_type == ResponseType.TEXT:
-            data = resp.text
-        elif use_type == ResponseType.HTML:
+        elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
             data = resp.text
         else:
             data = resp.json()
@@ -209,9 +207,7 @@ class RyzenthApiClient:
             resp.raise_for_status()
             if use_type == ResponseType.IMAGE:
                 data = resp.content
-            elif use_type == ResponseType.TEXT:
-                data = resp.text
-            elif use_type == ResponseType.HTML:
+            elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
                 data = resp.text
             else:
                 data = resp.json()
@@ -221,9 +217,7 @@ class RyzenthApiClient:
                 resp.raise_for_status()
                 if use_type == ResponseType.IMAGE:
                     data = await resp.read()
-                elif use_type == ResponseType.TEXT:
-                    data = await resp.text()
-                elif use_type == ResponseType.HTML:
+                elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
                     data = await resp.text()
                 else:
                     data = await resp.json()
@@ -253,9 +247,7 @@ class RyzenthApiClient:
         resp.raise_for_status()
         if use_type == ResponseType.IMAGE:
             data = resp.content
-        elif use_type == ResponseType.TEXT:
-            data = resp.text
-        elif use_type == ResponseType.HTML:
+        elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
             data = resp.text
         else:
             data = resp.json()
@@ -282,9 +274,7 @@ class RyzenthApiClient:
             resp.raise_for_status()
             if use_type == ResponseType.IMAGE:
                 data = resp.content
-            elif use_type == ResponseType.TEXT:
-                data = resp.text
-            elif use_type == ResponseType.HTML:
+            elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
                 data = resp.text
             else:
                 data = resp.json()
