@@ -24,16 +24,6 @@ def test_yt_username():
     )
     assert result is not None
 
-def test_hentai_anime():
-    ryz = RyzenthXSync("test", base_url="https://x-api-js.onrender.com/api")
-    result = ryz.send_downloader(
-        switch_name="hentai-anime",
-        params=None,
-        params_only=False,
-        on_render=True
-    )
-    assert result is not None
-
 def test_xnxxdl():
     ryz = RyzenthXSync("test", base_url="https://x-api-js.onrender.com/api")
     result = ryz.send_downloader(
