@@ -32,6 +32,7 @@ import requests
 from .__version__ import get_user_agent
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._shared import TOOL_DOMAIN_MAP
+from ._benchmark import log_performance
 from .helper import AutoRetry
 from .tl import LoggerService
 
@@ -178,6 +179,7 @@ class RyzenthApiClient:
         resp.raise_for_status()
         return resp.content if use_image_content else resp.json()
 
+    @log_performance
     @AutoRetry(max_retries=3, delay=1.5)
     async def get(
         self,
@@ -227,6 +229,7 @@ class RyzenthApiClient:
         resp.raise_for_status()
         return resp.content if use_image_content else resp.json()
 
+    @log_performance
     @AutoRetry(max_retries=3, delay=1.5)
     async def post(
         self,
