@@ -5,11 +5,7 @@ API_KEY_ALIBABA = "api_key"
 
 clients = RyzenthApiClient(
     tools_name=["alibaba"],
-    api_key={
-        "alibaba": [
-            {"Authorization": f"Bearer {API_KEY_ALIBABA}"}
-        ]
-    },
+    api_key={"alibaba": [{"Authorization": f"Bearer {API_KEY_ALIBABA}"}]},
     rate_limit=20,
     use_default_headers=True,
     use_httpx=True,
@@ -22,7 +18,7 @@ clients = RyzenthApiClient(
 )
 
 async def main():
-    clients = await clients.post(
+    resp = await clients.post(
         tool="alibaba",
         path="/chat/completions",
         json={
@@ -34,3 +30,4 @@ async def main():
         },
         use_type=ResponseType.JSON
     )
+    print(resp)
