@@ -2,6 +2,7 @@ import logging
 import time
 from functools import wraps
 
+
 def log_performance(func):
     @wraps(func)
     async def wrapper(*args, **kwargs):

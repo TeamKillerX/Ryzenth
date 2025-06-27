@@ -30,9 +30,9 @@ import httpx
 import requests
 
 from .__version__ import get_user_agent
+from ._benchmark import log_performance
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._shared import TOOL_DOMAIN_MAP
-from ._benchmark import log_performance
 from .helper import AutoRetry
 from .tl import LoggerService
 
