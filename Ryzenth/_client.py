@@ -30,7 +30,7 @@ import httpx
 import requests
 
 from .__version__ import get_user_agent
-from ._benchmark import log_performance, sync_log_test
+from ._benchmark import Benchmark
 from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
 from ._shared import TOOL_DOMAIN_MAP
 from .helper import AutoRetry
@@ -159,7 +159,7 @@ class RyzenthApiClient:
     def request(self, method, url, **kwargs):
         return self._sync_session.request(method=method, url=url, **kwargs)
 
-    @sync_log_test
+    @Benchmark._sync
     def sync_get(
         self,
         tool: str,
@@ -180,7 +180,7 @@ class RyzenthApiClient:
         resp.raise_for_status()
         return resp.content if use_image_content else resp.json()
 
-    @log_performance
+    @Benchmark._performance
     @AutoRetry(max_retries=3, delay=1.5)
     async def get(
         self,
@@ -209,7 +209,7 @@ class RyzenthApiClient:
             await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
         return data
 
-    @sync_log_test
+    @Benchmark._sync
     def sync_post(
         self,
         tool: str,
@@ -231,7 +231,7 @@ class RyzenthApiClient:
         resp.raise_for_status()
         return resp.content if use_image_content else resp.json()
 
-    @log_performance
+    @Benchmark._performance
     @AutoRetry(max_retries=3, delay=1.5)
     async def post(
         self,
