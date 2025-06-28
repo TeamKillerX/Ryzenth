@@ -1,3 +1,4 @@
+import asyncio
 from Ryzenth import RyzenthApiClient
 from Ryzenth.enums import ResponseType
 
@@ -29,3 +30,6 @@ async def main():
         use_type=ResponseType.JSON
     )
     print(resp)
+
+if __name__ == "__main__":
+    asyncio.run(main())
