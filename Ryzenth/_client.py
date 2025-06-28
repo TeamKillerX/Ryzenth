@@ -32,7 +32,14 @@ from box import Box
 
 from .__version__ import get_user_agent
 from ._benchmark import Benchmark
-from ._errors import ForbiddenError, InternalError, ToolNotFoundError, WhatFuckError
+from ._errors import (
+   ForbiddenError,
+   RateLimitError,
+   InternalServerError,
+   ToolNotFoundError,
+   AuthenticationError,
+   WhatFuckError
+)
 from ._shared import TOOL_DOMAIN_MAP
 from .enums import ResponseType
 from .helper import AutoRetry
@@ -151,18 +158,26 @@ class RyzenthApiClient:
     async def _status_resp_error(self, resp, status_httpx=False):
         if status_httpx:
             if resp.status_code == 403:
-                raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+                raise ForbiddenError("Access Forbidden status 403: You may be blocked or banned.")
             elif resp.status_code == 401:
-                raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
+                raise AuthenticationError("Access Forbidden status 401: Your API key or token was invalid, expired, or revoked.")
+            elif resp.status_code == 429:
+                raise RateLimitError("Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details")
             elif resp.status_code == 500:
-                raise InternalError("Error requests status code 500")
+                raise InternalServerError("Status 500: The server had an error while processing your request")
+            elif resp.status_code == 503:
+                raise InternalServerError("Status 503: Slow Down or The engine is currently overloaded, please try again later")
         else:
             if resp.status == 403:
-                raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+                raise ForbiddenError("Access Forbidden status 403: You may be blocked or banned.")
             elif resp.status == 401:
-                raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
+                raise AuthenticationError("Access Forbidden status 401: Your API key or token was invalid, expired, or revoked.")
+            elif resp.status == 429:
+                raise RateLimitError("Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details")
             elif resp.status == 500:
-                raise InternalError("Error requests status code 500")
+                raise InternalServerError("Status 500: The server had an error while processing your request")
+            elif resp.status == 503:
+                raise InternalServerError("Status 503: Slow Down or The engine is currently overloaded, please try again later")
 
     def request(self, method, url, **kwargs):
         return self._sync_session.request(method=method, url=url, **kwargs)
