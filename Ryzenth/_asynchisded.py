@@ -26,12 +26,12 @@ from box import Box
 
 from .__version__ import get_user_agent
 from ._errors import (
-   ForbiddenError,
-   RateLimitError,
-   InternalServerError,
-   AuthenticationError,
-   InvalidModelError,
-   WhatFuckError
+    AuthenticationError,
+    ForbiddenError,
+    InternalServerError,
+    InvalidModelError,
+    RateLimitError,
+    WhatFuckError,
 )
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
 from .helper import (

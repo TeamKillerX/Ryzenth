@@ -33,12 +33,12 @@ from box import Box
 from .__version__ import get_user_agent
 from ._benchmark import Benchmark
 from ._errors import (
-   ForbiddenError,
-   RateLimitError,
-   InternalServerError,
-   ToolNotFoundError,
-   AuthenticationError,
-   WhatFuckError
+    AuthenticationError,
+    ForbiddenError,
+    InternalServerError,
+    RateLimitError,
+    ToolNotFoundError,
+    WhatFuckError,
 )
 from ._shared import TOOL_DOMAIN_MAP
 from .enums import ResponseType
