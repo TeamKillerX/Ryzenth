@@ -25,7 +25,14 @@ import httpx
 from box import Box
 
 from .__version__ import get_user_agent
-from ._errors import InvalidModelError, WhatFuckError
+from ._errors import (
+   ForbiddenError,
+   RateLimitError,
+   InternalServerError,
+   AuthenticationError,
+   InvalidModelError,
+   WhatFuckError
+)
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
 from .helper import (
     FbanSync,
@@ -67,6 +74,30 @@ class RyzenthXSync:
             handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
             self.logger.addHandler(handler)
 
+    def _status_resp_error(self, resp, status_httpx=False):
+        if status_httpx:
+            if resp.status_code == 403:
+                raise ForbiddenError("Access Forbidden status 403: You may be blocked or banned.")
+            elif resp.status_code == 401:
+                raise AuthenticationError("Access Forbidden status 401: Your API key or token was invalid, expired, or revoked.")
+            elif resp.status_code == 429:
+                raise RateLimitError("Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details")
+            elif resp.status_code == 500:
+                raise InternalServerError("Status 500: The server had an error while processing your request")
+            elif resp.status_code == 503:
+                raise InternalServerError("Status 503: Slow Down or The engine is currently overloaded, please try again later")
+        else:
+            if resp.status == 403:
+                raise ForbiddenError("Access Forbidden status 403: You may be blocked or banned.")
+            elif resp.status == 401:
+                raise AuthenticationError("Access Forbidden status 401: Your API key or token was invalid, expired, or revoked.")
+            elif resp.status == 429:
+                raise RateLimitError("Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details")
+            elif resp.status == 500:
+                raise InternalServerError("Status 500: The server had an error while processing your request")
+            elif resp.status == 503:
+                raise InternalServerError("Status 503: Slow Down or The engine is currently overloaded, please try again later")
+
     def send_downloader(
         self,
         switch_name: str,
@@ -92,6 +123,7 @@ class RyzenthXSync:
                 headers=self.headers,
                 timeout=self.timeout
             )
+            self._status_resp_error(response, status_httpx=True)
             response.raise_for_status()
             return self.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
@@ -121,6 +153,7 @@ class RyzenthXSync:
                 headers=self.headers,
                 timeout=self.timeout
             )
+            self._status_resp_error(response, status_httpx=True)
             response.raise_for_status()
             return self.obj(response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
