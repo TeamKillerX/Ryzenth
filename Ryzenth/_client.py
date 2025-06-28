@@ -23,6 +23,7 @@ import logging
 import random
 import time
 import typing as t
+from box import Box
 from os import getenv
 
 import aiohttp
@@ -91,6 +92,12 @@ class RyzenthApiClient:
             logging.getLogger("httpx").setLevel(logging.CRITICAL)
             logging.getLogger("httpcore").setLevel(logging.CRITICAL)
 
+    def result_convert_to_dot(self, obj):
+        return Box(obj if obj is not None else {})
+
+    def get_kwargs(**params):
+        return {k: v for k, v in params.items() if v is not None}
+    
     def get_base_url(self, tool: str) -> str:
         check_ok = self._tools.get(tool, None)
         if check_ok is None:
