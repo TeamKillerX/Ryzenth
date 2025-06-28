@@ -26,6 +26,7 @@ import httpx
 from box import Box
 
 from .__version__ import get_user_agent
+from .helper import AutoRetry
 from ._errors import (
     AuthenticationError,
     ForbiddenError,
@@ -98,6 +99,7 @@ class RyzenthXAsync:
         elif resp.status == 503:
             raise InternalServerError("Status 503: Slow Down or The engine is currently overloaded, please try again later")
 
+    @AutoRetry(max_retries=3, delay=1.5)
     async def send_downloader(
         self,
         switch_name: str,
@@ -119,34 +121,15 @@ class RyzenthXAsync:
             raise InvalidModelError(f"Invalid switch_name: {switch_name}")
 
         async with httpx.AsyncClient() as client:
-            try:
-                response = await self._client_downloader_get(
-                    client,
-                    params,
-                    params_only,
-                    model_name
-                )
-                await self._status_resp_error(response, status_httpx=True)
-                response.raise_for_status()
-                return self.obj(response.json() or {}) if dot_access else response.json()
-            except httpx.HTTPError as e:
-                self.logger.error(f"[ASYNC] Error: {e}")
-                raise WhatFuckError("[ASYNC] Error fetching") from e
-            except httpx.ReadTimeout as readerr:
-                self.logger.info(f"[ASYNC] Error try again: {str(readerr)}")
-                try:
-                    async with aiohttp.ClientSession() as session_aio:
-                        async with session_aio.get(
-                            f"{self.base_url}/v1/dl/{model_param}",
-                            params=params.model_dump() if params_only else None,
-                            headers=self.headers,
-                        ) as response_aio:
-                            await self._status_resp_error(response_aio, status_httpx=False)
-                            data_json = await response_aio.json()
-                            return self.obj(data_json or {}) if dot_access else data_json
-                except Exception as e:
-                    self.logger.error(f"[ASYNC] Error: {str(e)}")
-                    raise WhatFuckError("[ASYNC] Error fetching") from e
+            response = await self._client_downloader_get(
+                client,
+                params,
+                params_only,
+                model_name
+            )
+            await self._status_resp_error(response, status_httpx=True)
+            response.raise_for_status()
+            return self.obj(response.json() or {}) if dot_access else response.json()
 
     async def _client_message_get(self, client, params, model_param):
         return await client.get(
@@ -164,6 +147,7 @@ class RyzenthXAsync:
             timeout=self.timeout
         )
 
+    @AutoRetry(max_retries=3, delay=1.5)
     async def send_message(
         self,
         model: str,
@@ -180,26 +164,8 @@ class RyzenthXAsync:
             raise InvalidModelError(f"Invalid model name: {model}")
 
         async with httpx.AsyncClient() as client:
-            try:
-                response = await self._client_message_get(client, params, model_param)
-                await self._status_resp_error(response, status_httpx=True)
-                response.raise_for_status()
-                return self.obj(response.json() or {}) if dot_access else response.json()
-            except httpx.HTTPError as e:
-                self.logger.error(f"[ASYNC] Error: {e}")
-                raise WhatFuckError("[ASYNC] Error fetching") from e
-            except httpx.ReadTimeout as readerr:
-                self.logger.info(f"[ASYNC] Error try again: {str(readerr)}")
-                try:
-                    async with aiohttp.ClientSession() as session_aio:
-                        async with session_aio.get(
-                            f"{self.base_url}/v1/ai/akenox/{model_param}",
-                            params=params.model_dump(),
-                            headers=self.headers,
-                        ) as response_aio:
-                            await self._status_resp_error(response_aio, status_httpx=False)
-                            data_json = await response_aio.json()
-                            return self.obj(data_json or {}) if dot_access else data_json
-                except Exception as e:
-                    self.logger.error(f"[ASYNC] Error: {str(e)}")
-                    raise WhatFuckError("[ASYNC] Error fetching") from e
+            response = await self._client_message_get(client, params, model_param)
+            await self._status_resp_error(response, status_httpx=True)
+            response.raise_for_status()
+            return self.obj(response.json() or {}) if dot_access else response.json()
+            
