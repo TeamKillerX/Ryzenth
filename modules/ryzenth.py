@@ -1,3 +1,4 @@
+import asyncio
 from Ryzenth import RyzenthApiClient
 from Ryzenth.enums import ResponseType
 from Ryzenth.helper._images import ResponseFileImage
@@ -26,3 +27,6 @@ async def main():
             use_type=ResponseType.JSON
         )
     ).to_save(file_path="pro.jpg")
+
+if __name__ == "__main__":
+    asyncio.run(main())
