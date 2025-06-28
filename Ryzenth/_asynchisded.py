@@ -168,4 +168,3 @@ class RyzenthXAsync:
             await self._status_resp_error(response, status_httpx=True)
             response.raise_for_status()
             return self.obj(response.json() or {}) if dot_access else response.json()
-
