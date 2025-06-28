@@ -92,10 +92,10 @@ class RyzenthApiClient:
             logging.getLogger("httpx").setLevel(logging.CRITICAL)
             logging.getLogger("httpcore").setLevel(logging.CRITICAL)
 
-    def result_convert_to_dot(self, obj):
+    def dict_convert_to_dot(self, obj):
         return Box(obj if obj is not None else {})
 
-    def get_kwargs(**params):
+    def get_kwargs(self, **params):
         return {k: v for k, v in params.items() if v is not None}
 
     def get_base_url(self, tool: str) -> str:
