@@ -13,16 +13,17 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     version=read("Ryzenth/__version__.py", version=True),
     license="MIT",
-    description="Ryzenth Python Wrapper For Perfomance",
+    description="Ryzenth is a flexible Multi-API SDK with built-in support for API key management and database integration.",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     author="TeamKillerX",
     project_urls={
         "Source": "https://github.com/TeamKillerX/Ryzenth/",
-        "Issues": "https://github.com/TeamKillerX/Ryzenth/issues",
+        "Issues": "https://github.com/TeamKillerX/Ryzenth/discussions",
     },
     keywords=[
-        "API",
+        "Multi-API",
+        "Ryzenth-SDK",
         "Ryzenth",
     ],
     install_requires=[
