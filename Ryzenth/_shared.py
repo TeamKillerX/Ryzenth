@@ -9,12 +9,34 @@ TOOL_DOMAIN_MAP = {
     "openai": "https://api.openai.com/v1",
     "cohere": "https://api.cohere.com/v1",
     "claude": "https://api.anthropic.com/v1",
+    "grok": "https://api.x.ai/v1",
     "alibaba": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
     "gemini": "https://generativelanguage.googleapis.com/v1beta",
     "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai"
 }
 
 ###-------------AI-----------------###
+
+# GROK AI
+"""
+headers = {
+    'accept: application/json',
+    'Authorization': 'Bearer {api_key}',
+    'Content-Type': 'application/json'
+}
+grok_response = await clients.post(
+    tool="grok",
+    path="/chat/completions",
+    json={
+        "model": "grok-3",
+        "messages": [
+            {"role": "user", "content": "hello world!"}
+        ],
+        "temperature": 0.7
+    }
+)
+"""
+
 
 # COHERE
 """
