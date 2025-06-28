@@ -26,7 +26,6 @@ import httpx
 from box import Box
 
 from .__version__ import get_user_agent
-from .helper import AutoRetry
 from ._errors import (
     AuthenticationError,
     ForbiddenError,
@@ -37,6 +36,7 @@ from ._errors import (
 )
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
 from .helper import (
+    AutoRetry,
     FbanAsync,
     FontsAsync,
     HumanizeAsync,
@@ -168,4 +168,4 @@ class RyzenthXAsync:
             await self._status_resp_error(response, status_httpx=True)
             response.raise_for_status()
             return self.obj(response.json() or {}) if dot_access else response.json()
-            
+
