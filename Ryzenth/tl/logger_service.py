@@ -22,7 +22,7 @@ from datetime import datetime as dt
 
 import httpx
 
-from .._errors import ForbiddenError, InternalError
+from .._errors import ForbiddenError, AuthenticationError, InternalServerError
 
 
 class LoggerService:
@@ -56,11 +56,11 @@ class LoggerService:
                 if resp.status_code == 200:
                     logging.info("[Logger] Telegram log success")
                 elif resp.status_code == 403:
-                    raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
+                    raise AuthenticationError("Access Forbidden: You may be blocked or banned.")
                 elif resp.status_code == 401:
                     raise ForbiddenError("Access Forbidden: Required bot token or invalid params.")
                 elif resp.status_code == 500:
-                    raise InternalError("Error requests status code 500")
+                    raise InternalServerError("Error requests status code 500")
         except Exception as e:
             logging.info(f"[Logger] httpx failed: {e}")
             raise e
