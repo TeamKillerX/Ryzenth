@@ -34,7 +34,13 @@ class ToolNotFoundError(Exception):
     """Raised when a base URL for a requested tool cannot be found."""
     pass
 
-class InternalError(Exception):
+class RateLimitError(Exception):
+    pass
+
+class AuthenticationError(Exception):
+    pass
+
+class InternalServerError(Exception):
     """Custom exception for 500 Error"""
     pass
 
@@ -59,7 +65,9 @@ class InvalidEmptyError(ValueError):
 __all__ = [
     "WhatFuckError",
     "ForbiddenError",
-    "InternalError",
+    "InternalServerError",
+    "AuthenticationError",
+    "RateLimitError",
     "ToolNotFoundError",
     "ParamsRequiredError",
     "InvalidVersionError",

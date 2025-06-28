@@ -35,6 +35,7 @@ def AutoRetry(max_retries: int = 3, delay: float = 1.5):
                     return await func(*args, **kwargs)
                 except (
                     httpx.HTTPError,
+                    httpx.ReadTimeout,
                     aiohttp.ClientError,
                     asyncio.TimeoutError
                 ) as e:
