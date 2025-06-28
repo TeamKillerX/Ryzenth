@@ -129,7 +129,8 @@ class RyzenthXSync:
         except httpx.HTTPError as e:
             self.logger.error(f"[SYNC] Error fetching from downloader {e}")
             raise WhatFuckError("[SYNC] Error fetching from downloader") from e
-        except httpx.ReadTimeout:
+        except httpx.ReadTimeout as readerr:
+            self.logger.info(f"[SYNC] Error try again: {readerr}")
             try:
                 response_ = requests.get(
                     f"{self.base_url}/v1/dl/{model_name}",
@@ -139,8 +140,8 @@ class RyzenthXSync:
                 response_.raise_for_status()
                 self._status_resp_error(response_, status_httpx=True)
                 return self.obj(response.json() or {}) if dot_access else response.json()
-            except Exception:
-                self.logger.error(f"[SYNC] Error fetching from downloader {e}")
+            except Exception as e:
+                self.logger.error(f"[SYNC] Error fetching from downloader {str(e)}")
                 raise WhatFuckError("[SYNC] Error fetching from downloader") from e
 
     def send_message(
@@ -169,7 +170,8 @@ class RyzenthXSync:
         except httpx.HTTPError as e:
             self.logger.error(f"[SYNC] Error fetching from akenox: {e}")
             raise WhatFuckError("[SYNC] Error fetching from akenox") from e
-        except httpx.ReadTimeout:
+        except httpx.ReadTimeout as readerr:
+            self.logger.info(f"[SYNC] Error try again: {readerr}")
             try:
                 response_ = requests.get(
                     f"{self.base_url}/v1/ai/akenox/{model_param}",
@@ -179,6 +181,6 @@ class RyzenthXSync:
                 response_.raise_for_status()
                 self._status_resp_error(response_, status_httpx=True)
                 return self.obj(response.json() or {}) if dot_access else response.json()
-            except Exception:
-                self.logger.error(f"[SYNC] Error fetching from akenox: {e}")
+            except Exception as e:
+                self.logger.error(f"[SYNC] Error fetching from akenox: {str(e)}")
                 raise WhatFuckError("[SYNC] Error fetching from akenox") from e

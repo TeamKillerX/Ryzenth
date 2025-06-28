@@ -130,9 +130,10 @@ class RyzenthXAsync:
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                self.logger.error(f"[ASYNC] Error: {str(e)}")
+                self.logger.error(f"[ASYNC] Error: {e}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
-            except httpx.ReadTimeout:
+            except httpx.ReadTimeout as readerr:
+                self.logger.info(f"[ASYNC] Error try again: {str(readerr)}")
                 try:
                     async with aiohttp.ClientSession() as session_aio:
                         async with session_aio.get(
@@ -144,6 +145,7 @@ class RyzenthXAsync:
                             data_json = await response_aio.json()
                             return self.obj(data_json or {}) if dot_access else data_json
                 except Exception as e:
+                    self.logger.error(f"[ASYNC] Error: {str(e)}")
                     raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def _client_message_get(self, client, params, model_param):
@@ -184,9 +186,10 @@ class RyzenthXAsync:
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                self.logger.error(f"[ASYNC] Error: {str(e)}")
+                self.logger.error(f"[ASYNC] Error: {e}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
-            except httpx.ReadTimeout:
+            except httpx.ReadTimeout as readerr:
+                self.logger.info(f"[ASYNC] Error try again: {str(readerr)}")
                 try:
                     async with aiohttp.ClientSession() as session_aio:
                         async with session_aio.get(
@@ -198,4 +201,5 @@ class RyzenthXAsync:
                             data_json = await response_aio.json()
                             return self.obj(data_json or {}) if dot_access else data_json
                 except Exception as e:
+                    self.logger.error(f"[ASYNC] Error: {str(e)}")
                     raise WhatFuckError("[ASYNC] Error fetching") from e
