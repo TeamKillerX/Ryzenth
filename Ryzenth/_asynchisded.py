@@ -21,6 +21,7 @@ import logging
 import platform
 from typing import Union
 
+import aiohttp
 import httpx
 from box import Box
 
@@ -131,6 +132,19 @@ class RyzenthXAsync:
             except httpx.HTTPError as e:
                 self.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
+            except httpx.ReadTimeout:
+                try:
+                    async with aiohttp.ClientSession() as session_aio:
+                        async with session_aio.get(
+                            f"{self.base_url}/v1/dl/{model_param}",
+                            params=params.model_dump() if params_only else None,
+                            headers=self.headers,
+                        ) as response_aio:
+                            await self._status_resp_error(response_aio, status_httpx=False)
+                            data_json = await response_aio.json()
+                            return self.obj(data_json or {}) if dot_access else data_json
+                except Exception as e:
+                    raise WhatFuckError("[ASYNC] Error fetching") from e
 
     async def _client_message_get(self, client, params, model_param):
         return await client.get(
@@ -172,3 +186,16 @@ class RyzenthXAsync:
             except httpx.HTTPError as e:
                 self.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
+            except httpx.ReadTimeout:
+                try:
+                    async with aiohttp.ClientSession() as session_aio:
+                        async with session_aio.get(
+                            f"{self.base_url}/v1/ai/akenox/{model_param}",
+                            params=params.model_dump(),
+                            headers=self.headers,
+                        ) as response_aio:
+                            await self._status_resp_error(response_aio, status_httpx=False)
+                            data_json = await response_aio.json()
+                            return self.obj(data_json or {}) if dot_access else data_json
+                except Exception as e:
+                    raise WhatFuckError("[ASYNC] Error fetching") from e

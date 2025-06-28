@@ -22,6 +22,7 @@ import platform
 from typing import Union
 
 import httpx
+import requests
 from box import Box
 
 from .__version__ import get_user_agent
@@ -128,9 +129,19 @@ class RyzenthXSync:
         except httpx.HTTPError as e:
             self.logger.error(f"[SYNC] Error fetching from downloader {e}")
             raise WhatFuckError("[SYNC] Error fetching from downloader") from e
-        except httpx.ReadTimeout as e:
-            self.logger.error(f"[SYNC] Error ReadTimeout from downloader {e}")
-            raise WhatFuckError("[SYNC] Error ReadTimeout from downloader ") from e
+        except httpx.ReadTimeout:
+            try:
+                response_ = requests.get(
+                    f"{self.base_url}/v1/dl/{model_name}",
+                    params=params.model_dump() if params_only else None,
+                    headers=self.headers
+                )
+                response_.raise_for_status()
+                self._status_resp_error(response_, status_httpx=True)
+                return self.obj(response.json() or {}) if dot_access else response.json()
+            except Exception:
+                self.logger.error(f"[SYNC] Error fetching from downloader {e}")
+                raise WhatFuckError("[SYNC] Error fetching from downloader") from e
 
     def send_message(
         self,
@@ -158,6 +169,16 @@ class RyzenthXSync:
         except httpx.HTTPError as e:
             self.logger.error(f"[SYNC] Error fetching from akenox: {e}")
             raise WhatFuckError("[SYNC] Error fetching from akenox") from e
-        except httpx.ReadTimeout as e:
-            self.logger.error(f"[SYNC] Error ReadTimeout from Akenox {e}")
-            raise WhatFuckError("[SYNC] Error ReadTimeout from akenox") from e
+        except httpx.ReadTimeout:
+            try:
+                response_ = requests.get(
+                    f"{self.base_url}/v1/ai/akenox/{model_param}",
+                    params=params.model_dump(),
+                    headers=self.headers
+                )
+                response_.raise_for_status()
+                self._status_resp_error(response_, status_httpx=True)
+                return self.obj(response.json() or {}) if dot_access else response.json()
+            except Exception:
+                self.logger.error(f"[SYNC] Error fetching from akenox: {e}")
+                raise WhatFuckError("[SYNC] Error fetching from akenox") from e
