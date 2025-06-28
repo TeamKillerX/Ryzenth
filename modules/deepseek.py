@@ -1,4 +1,5 @@
 import asyncio
+
 from Ryzenth import RyzenthApiClient
 from Ryzenth.enums import ResponseType
 
