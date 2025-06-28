@@ -22,7 +22,7 @@ from datetime import datetime as dt
 
 import httpx
 
-from .._errors import ForbiddenError, AuthenticationError, InternalServerError
+from .._errors import AuthenticationError, ForbiddenError, InternalServerError
 
 
 class LoggerService:
