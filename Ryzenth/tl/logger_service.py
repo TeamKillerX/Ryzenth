@@ -56,9 +56,9 @@ class LoggerService:
                 if resp.status_code == 200:
                     logging.info("[Logger] Telegram log success")
                 elif resp.status_code == 403:
-                    raise AuthenticationError("Access Forbidden: You may be blocked or banned.")
+                    raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
                 elif resp.status_code == 401:
-                    raise ForbiddenError("Access Forbidden: Required bot token or invalid params.")
+                    raise AuthenticationError("Access Forbidden: Required bot token or invalid params.")
                 elif resp.status_code == 500:
                     raise InternalServerError("Error requests status code 500")
         except Exception as e:
