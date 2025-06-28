@@ -130,7 +130,7 @@ class RyzenthXAsync:
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                self.logger.error(f"[ASYNC] Error: {str(e)}")
+                self.logger.error(f"[ASYNC] Error: {e}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
             except httpx.ReadTimeout as readerr:
                 self.logger.info(f"[ASYNC] Error try again: {str(readerr)}")
@@ -186,7 +186,7 @@ class RyzenthXAsync:
                 response.raise_for_status()
                 return self.obj(response.json() or {}) if dot_access else response.json()
             except httpx.HTTPError as e:
-                self.logger.error(f"[ASYNC] Error: {str(e)}")
+                self.logger.error(f"[ASYNC] Error: {e}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
             except httpx.ReadTimeout as readerr:
                 self.logger.info(f"[ASYNC] Error try again: {str(readerr)}")
