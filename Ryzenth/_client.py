@@ -28,6 +28,7 @@ from os import getenv
 import aiohttp
 import httpx
 import requests
+from box import Box
 
 from .__version__ import get_user_agent
 from ._benchmark import Benchmark
@@ -90,6 +91,12 @@ class RyzenthApiClient:
         if disable_httpx_log:
             logging.getLogger("httpx").setLevel(logging.CRITICAL)
             logging.getLogger("httpcore").setLevel(logging.CRITICAL)
+
+    def result_convert_to_dot(self, obj):
+        return Box(obj if obj is not None else {})
+
+    def get_kwargs(**params):
+        return {k: v for k, v in params.items() if v is not None}
 
     def get_base_url(self, tool: str) -> str:
         check_ok = self._tools.get(tool, None)
