@@ -19,9 +19,11 @@
 
 import logging
 import typing as t
-from .._errors import WhatFuckError, AsyncStatusError, SyncStatusError
+
 from .._benchmark import Benchmark
+from .._errors import AsyncStatusError, SyncStatusError, WhatFuckError
 from . import AutoRetry
+
 
 class FbanSync:
     def __init__(self, parent):
@@ -414,7 +416,7 @@ class FbanAsync:
             await AsyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            
+
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def renamefed(

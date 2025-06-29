@@ -19,10 +19,12 @@
 
 import logging
 import typing as t
-from .._errors import WhatFuckError, AsyncStatusError, SyncStatusError
-from ..types import QueryParameter
+
 from .._benchmark import Benchmark
+from .._errors import AsyncStatusError, SyncStatusError, WhatFuckError
+from ..types import QueryParameter
 from . import AutoRetry
+
 
 class WhatAsync:
     def __init__(self, parent):
@@ -48,7 +50,7 @@ class WhatAsync:
             await AsyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            
+
 class WhatSync:
     def __init__(self, parent):
         self.parent = parent

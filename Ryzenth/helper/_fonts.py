@@ -19,9 +19,11 @@
 
 import logging
 import typing as t
-from .._errors import ParamsRequiredError, WhatFuckError, AsyncStatusError, SyncStatusError
+
 from .._benchmark import Benchmark
+from .._errors import AsyncStatusError, ParamsRequiredError, SyncStatusError, WhatFuckError
 from . import AutoRetry
+
 
 class FontsAsync:
     def __init__(self, parent):

@@ -33,8 +33,8 @@ from box import Box
 from .__version__ import get_user_agent
 from ._benchmark import Benchmark
 from ._errors import (
-    SyncStatusError,
     AsyncStatusError,
+    SyncStatusError,
     ToolNotFoundError,
     WhatFuckError,
 )

@@ -20,10 +20,12 @@
 import json
 import logging
 import typing as t
-from .._errors import WhatFuckError, AsyncStatusError, SyncStatusError
-from ..types import RequestHumanizer
+
 from .._benchmark import Benchmark
+from .._errors import AsyncStatusError, SyncStatusError, WhatFuckError
+from ..types import RequestHumanizer
 from . import AutoRetry
+
 
 class HumanizeAsync:
     def __init__(self, parent):
@@ -53,7 +55,7 @@ class HumanizeAsync:
                 result = response.json()["results"]
                 return json.loads(result)
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            
+
 class HumanizeSync:
     def __init__(self, parent):
         self.parent = parent

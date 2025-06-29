@@ -18,15 +18,16 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
-import typing as t
 import logging
 import os
+import typing as t
 import uuid
 
-from .._errors import WhatFuckError, AsyncStatusError, SyncStatusError
-from ..types import QueryParameter
 from .._benchmark import Benchmark
+from .._errors import AsyncStatusError, SyncStatusError, WhatFuckError
+from ..types import QueryParameter
 from . import AutoRetry
+
 
 class ImagesAsync:
     def __init__(self, parent):

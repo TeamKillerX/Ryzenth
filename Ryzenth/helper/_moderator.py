@@ -19,9 +19,11 @@
 
 import logging
 import typing as t
-from .._errors import InvalidVersionError, WhatFuckError, AsyncStatusError, SyncStatusError
+
 from .._benchmark import Benchmark
+from .._errors import AsyncStatusError, InvalidVersionError, SyncStatusError, WhatFuckError
 from . import AutoRetry
+
 
 class ModeratorAsync:
     def __init__(self, parent):
@@ -87,7 +89,7 @@ class ModeratorAsync:
             await AsyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            
+
 class ModeratorSync:
     def __init__(self, parent):
         self.parent = parent
