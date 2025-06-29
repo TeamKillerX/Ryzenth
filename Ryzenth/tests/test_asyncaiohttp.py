@@ -1,5 +1,5 @@
 import pytest
-
+import asyncio
 from Ryzenth import RyzenthApiClient
 from Ryzenth.enums import ResponseType
 
@@ -18,3 +18,6 @@ async def test_itzpire_aiohttp():
         use_type=ResponseType.JSON
     )
     assert result is not None
+
+if __name__ == "__main__":
+    asyncio.run(test_itzpire_aiohttp())
