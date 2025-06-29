@@ -17,13 +17,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from .._errors import WhatFuckError
-
+import logging
+from .._errors import WhatFuckError, AsyncStatusError, SyncStatusError
+from .._benchmark import Benchmark
+from . import AutoRetry
 
 class FbanSync:
     def __init__(self, parent):
         self.parent = parent
 
+    @Benchmark.sync(level=logging.DEBUG)
     def newfed(self, name: str , owner: int, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/newfed"
         try:
@@ -33,12 +36,14 @@ class FbanSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from newfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from newfed") from e
 
+    @Benchmark.sync(level=logging.DEBUG)
     def subfed(self, parent_uuid: str, child_uuid: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/subfed"
         try:
@@ -48,12 +53,14 @@ class FbanSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from subfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from subfed") from e
 
+    @Benchmark.sync(level=logging.DEBUG)
     def getfed(self, uuid: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/getfed/{uuid}"
         try:
@@ -62,12 +69,14 @@ class FbanSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from getfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from getfed") from e
 
+    @Benchmark.sync(level=logging.DEBUG)
     def unban(self, name: str, user_id: int, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/unban"
         try:
@@ -77,12 +86,14 @@ class FbanSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from unban {e}")
             raise WhatFuckError("[SYNC] Error fetching from unban") from e
 
+    @Benchmark.sync(level=logging.DEBUG)
     def ban(self, federation_uuid: str, user_id: int, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/ban"
         try:
@@ -92,12 +103,14 @@ class FbanSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from ban {e}")
             raise WhatFuckError("[SYNC] Error fetching from ban") from e
 
+    @Benchmark.sync(level=logging.DEBUG)
     def ban_check(self, federation_uuid: str, user_id: int, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/ban-check"
         try:
@@ -107,12 +120,14 @@ class FbanSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from ban-check {e}")
             raise WhatFuckError("[SYNC] Error fetching from ban-check") from e
 
+    @Benchmark.sync(level=logging.DEBUG)
     def fedstats(self, uuid: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/fedstats"
         try:
@@ -122,12 +137,14 @@ class FbanSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from fedstats {e}")
             raise WhatFuckError("[SYNC] Error fetching from fedstats") from e
 
+    @Benchmark.sync(level=logging.DEBUG)
     def unsubfed(self, parent_uuid: str, child_uuid: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/unsubfed"
         try:
@@ -137,12 +154,14 @@ class FbanSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from unsubfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from unsubfed") from e
 
+    @Benchmark.sync(level=logging.DEBUG)
     def renamefed(self, federation_uuid: str, new_name: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/renamefed"
         try:
@@ -152,6 +171,7 @@ class FbanSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
@@ -162,6 +182,8 @@ class FbanAsync:
     def __init__(self, parent):
         self.parent = parent
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def newfed(self, name: str , owner: int, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/newfed"
         async with self.parent.httpx.AsyncClient() as client:
@@ -172,12 +194,15 @@ class FbanAsync:
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
+                await AsyncStatusError(response, use_httpx=True)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except self.parent.httpx.HTTPError as e:
                 self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def subfed(self, parent_uuid: str, child_uuid: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/subfed"
         async with self.parent.httpx.AsyncClient() as client:
@@ -188,23 +213,29 @@ class FbanAsync:
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
+                await AsyncStatusError(response, use_httpx=True)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except self.parent.httpx.HTTPError as e:
                 self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def getfed(self, uuid: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/getfed/{uuid}"
         async with self.parent.httpx.AsyncClient() as client:
             try:
                 response = await client.get(url, headers=self.parent.headers, timeout=self.parent.timeout)
+                await AsyncStatusError(response, use_httpx=True)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except self.parent.httpx.HTTPError as e:
                 self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def unban(self, name: str, user_id: int, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/unban"
         async with self.parent.httpx.AsyncClient() as client:
@@ -215,12 +246,15 @@ class FbanAsync:
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
+                await AsyncStatusError(response, use_httpx=True)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except self.parent.httpx.HTTPError as e:
                 self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def ban(self, federation_uuid: str, user_id: int, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/ban"
         async with self.parent.httpx.AsyncClient() as client:
@@ -231,12 +265,15 @@ class FbanAsync:
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
+                await AsyncStatusError(response, use_httpx=True)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except self.parent.httpx.HTTPError as e:
                 self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def ban_check(self, federation_uuid: str, user_id: int, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/ban-check"
         async with self.parent.httpx.AsyncClient() as client:
@@ -247,12 +284,15 @@ class FbanAsync:
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
+                await AsyncStatusError(response, use_httpx=True)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except self.parent.httpx.HTTPError as e:
                 self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def fedstats(self, uuid: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/fedstats"
         async with self.parent.httpx.AsyncClient() as client:
@@ -263,12 +303,15 @@ class FbanAsync:
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
+                await AsyncStatusError(response, use_httpx=True)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except self.parent.httpx.HTTPError as e:
                 self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def unsubfed(self, parent_uuid: str, child_uuid: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/unsubfed"
         async with self.parent.httpx.AsyncClient() as client:
@@ -279,12 +322,15 @@ class FbanAsync:
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
+                await AsyncStatusError(response, use_httpx=True)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except self.parent.httpx.HTTPError as e:
                 self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
                 raise WhatFuckError("[ASYNC] Error fetching") from e
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def renamefed(self, federation_uuid: str, new_name: str, dot_access=False):
         url = f"{self.parent.base_url}/v2/federation/renamefed"
         async with self.parent.httpx.AsyncClient() as client:
@@ -295,6 +341,7 @@ class FbanAsync:
                     headers=self.parent.headers,
                     timeout=self.parent.timeout
                 )
+                await AsyncStatusError(response, use_httpx=True)
                 response.raise_for_status()
                 return self.parent.obj(response.json() or {}) if dot_access else response.json()
             except self.parent.httpx.HTTPError as e:
