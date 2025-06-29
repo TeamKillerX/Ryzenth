@@ -32,7 +32,8 @@ class FbanSync:
     @Benchmark.sync(level=logging.DEBUG)
     def newfed(
         self,
-        name: str ,
+        *,
+        name: str,
         owner: int,
         timeout: t.Union[int, float] = 5,
         dot_access: bool = False
@@ -249,7 +250,8 @@ class FbanAsync:
     @AutoRetry(max_retries=3, delay=1.5)
     async def newfed(
         self,
-        name: str ,
+        *,
+        name: str,
         owner: int,
         timeout: t.Union[int, float] = 5,
         dot_access: bool = False

@@ -19,7 +19,7 @@
 
 import logging
 import platform
-from typing import Union
+import typing as t
 
 import aiohttp
 import httpx
@@ -79,16 +79,17 @@ class RyzenthXAsync:
         self,
         *,
         switch_name: str,
-        params: Union[
+        params: t.Union[
         DownloaderBy,
         QueryParameter,
         Username,
         RequestXnxx
         ] = None,
-        params_only=True,
-        on_render=False,
-        dot_access=False
-    ):
+        timeout: t.Union[int, float] = 5,
+        params_only: bool = True,
+        on_render: bool = False,
+        dot_access: bool = False
+    ) -> t.Union[dict, Box]:
 
         dl_dict = BASE_DICT_RENDER if on_render else BASE_DICT_OFFICIAL
         model_name = dl_dict.get(switch_name)
@@ -97,29 +98,45 @@ class RyzenthXAsync:
 
         async with httpx.AsyncClient() as client:
             response = await self._client_downloader_get(
-                client,
-                params,
-                params_only,
-                model_name
+                client=client,
+                params=params,
+                timeout=timeout,
+                params_only=params_only,
+                model_name=model_name
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
             return self.obj(response.json() or {}) if dot_access else response.json()
 
-    async def _client_message_get(self, client, params, model_param):
+    async def _client_message_get(
+        self,
+        *,
+        client,
+        params,
+        timeout,
+        model_param
+    ):
         return await client.get(
             f"{self.base_url}/v1/ai/akenox/{model_param}",
             params=params.model_dump(),
             headers=self.headers,
-            timeout=self.timeout
+            timeout=timeout
         )
 
-    async def _client_downloader_get(self, client, params, params_only, model_param):
+    async def _client_downloader_get(
+        self,
+        *,
+        client,
+        params,
+        timeout,
+        params_only,
+        model_param
+    ):
         return await client.get(
             f"{self.base_url}/v1/dl/{model_param}",
             params=params.model_dump() if params_only else None,
             headers=self.headers,
-            timeout=self.timeout
+            timeout=timeout
         )
 
     @AutoRetry(max_retries=3, delay=1.5)
@@ -127,10 +144,10 @@ class RyzenthXAsync:
         self,
         *,
         model: str,
-        params: QueryParameter = None,
-        use_full_model_list=False,
-        dot_access=False
-    ):
+        params: QueryParameter,
+        use_full_model_list: bool = False,
+        dot_access: bool = False
+    ) -> t.Union[dict, Box]:
 
         model_dict = BASE_DICT_AI_RYZENTH if use_full_model_list else {"hybrid": "AkenoX-1.9-Hybrid"}
         model_param = model_dict.get(model)
@@ -139,7 +156,12 @@ class RyzenthXAsync:
             raise InvalidModelError(f"Invalid model name: {model}")
 
         async with httpx.AsyncClient() as client:
-            response = await self._client_message_get(client, params, model_param)
+            response = await self._client_message_get(
+                client=client,
+                params=params,
+                timeout=timeout,
+                model_param
+            )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
             return self.obj(response.json() or {}) if dot_access else response.json()
