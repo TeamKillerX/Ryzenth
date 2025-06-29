@@ -33,6 +33,7 @@ from ._errors import (
     WhatFuckError,
 )
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
+from ._benchmark import Benchmark
 from .helper import (
     AutoRetry,
     FbanAsync,
@@ -74,6 +75,7 @@ class RyzenthXAsync:
             handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
             self.logger.addHandler(handler)
 
+    @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def send_downloader(
         self,
@@ -139,6 +141,7 @@ class RyzenthXAsync:
             timeout=timeout
         )
 
+    @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def send_message(
         self,
