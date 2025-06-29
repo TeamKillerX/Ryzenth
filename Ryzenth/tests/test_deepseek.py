@@ -6,7 +6,7 @@ from ..types import QueryParameter
 def test_deepseek():
     ryz = ApiKeyFrom(..., True)
     result = ryz._sync.what.think(
-        QueryParameter(
+        params=QueryParameter(
             query="ok test"
         )
     )
