@@ -26,6 +26,7 @@ import httpx
 from box import Box
 
 from .__version__ import get_user_agent
+from ._benchmark import Benchmark
 from ._errors import (
     AsyncStatusError,
     InvalidModelError,
@@ -74,6 +75,7 @@ class RyzenthXAsync:
             handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
             self.logger.addHandler(handler)
 
+    @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def send_downloader(
         self,
@@ -139,6 +141,7 @@ class RyzenthXAsync:
             timeout=timeout
         )
 
+    @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def send_message(
         self,
@@ -160,7 +163,7 @@ class RyzenthXAsync:
                 client=client,
                 params=params,
                 timeout=timeout,
-                model_param
+                model_param=model_param
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
