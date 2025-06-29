@@ -8,7 +8,7 @@ def test_deepseek():
     result = ryz._sync.what.think(
         params=QueryParameter(
             query="ok test"
-        )
+        ),
         timeout=10
     )
     assert result is not None
