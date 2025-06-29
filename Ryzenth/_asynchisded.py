@@ -19,7 +19,7 @@
 
 import logging
 import platform
-from typing import Union
+import typing as t
 
 import aiohttp
 import httpx
@@ -79,16 +79,16 @@ class RyzenthXAsync:
         self,
         *,
         switch_name: str,
-        params: Union[
+        params: t.Union[
         DownloaderBy,
         QueryParameter,
         Username,
         RequestXnxx
         ] = None,
-        params_only=True,
-        on_render=False,
-        dot_access=False
-    ):
+        params_only: bool = True,
+        on_render: bool = False,
+        dot_access: bool = False
+    ) -> t.Union[dict, Box]:
 
         dl_dict = BASE_DICT_RENDER if on_render else BASE_DICT_OFFICIAL
         model_name = dl_dict.get(switch_name)
@@ -127,10 +127,10 @@ class RyzenthXAsync:
         self,
         *,
         model: str,
-        params: QueryParameter = None,
-        use_full_model_list=False,
-        dot_access=False
-    ):
+        params: QueryParameter,
+        use_full_model_list: bool = False,
+        dot_access: bool = False
+    ) -> t.Union[dict, Box]:
 
         model_dict = BASE_DICT_AI_RYZENTH if use_full_model_list else {"hybrid": "AkenoX-1.9-Hybrid"}
         model_param = model_dict.get(model)
