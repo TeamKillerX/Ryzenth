@@ -26,6 +26,7 @@ import httpx
 from box import Box
 
 from .__version__ import get_user_agent
+from ._benchmark import Benchmark
 from ._errors import (
     AsyncStatusError,
     InvalidModelError,
@@ -33,7 +34,6 @@ from ._errors import (
     WhatFuckError,
 )
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
-from ._benchmark import Benchmark
 from .helper import (
     AutoRetry,
     FbanAsync,
