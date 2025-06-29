@@ -1,3 +1,5 @@
+import pytest
+
 from Ryzenth import RyzenthApiClient
 from Ryzenth.enums import ResponseType
 
@@ -8,8 +10,9 @@ clients = RyzenthApiClient(
     use_httpx=True # Fixed Aiohttp RuntimeError: no running event loop
 )
 
-def test_itzpire():
-    result = clients.sync_get(
+@pytest.mark.asyncio
+async def test_itzpire():
+    result = await clients.get(
         tool="itzpire",
         path="/games/siapakah-aku",
         use_type=ResponseType.JSON

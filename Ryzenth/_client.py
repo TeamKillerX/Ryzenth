@@ -223,7 +223,6 @@ class RyzenthApiClient:
         path: str,
         params: t.Optional[dict] = None,
         timeout: t.Union[int, float] = 5,
-        allow_redirects: bool = False,
         use_type: ResponseType = ResponseType.JSON
     ) -> t.Union[dict, bytes, str]:
         await self._throttle()
@@ -236,8 +235,7 @@ class RyzenthApiClient:
                 url,
                 params=params,
                 headers=headers,
-                timeout=timeout,
-                allow_redirects=allow_redirects
+                timeout=timeout
             )
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
@@ -252,8 +250,7 @@ class RyzenthApiClient:
                 url,
                 params=params,
                 headers=headers,
-                timeout=timeout,
-                allow_redirects=allow_redirects
+                timeout=timeout
             ) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
@@ -312,7 +309,6 @@ class RyzenthApiClient:
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None,
         timeout: t.Union[int, float] = 5,
-        allow_redirects: bool = False,
         use_type: ResponseType = ResponseType.JSON
     ) -> t.Union[dict, bytes, str]:
         await self._throttle()
@@ -326,8 +322,7 @@ class RyzenthApiClient:
                 data=data,
                 json=json,
                 headers=headers,
-                timeout=timeout,
-                allow_redirects=allow_redirects
+                timeout=timeout
             )
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
@@ -343,8 +338,7 @@ class RyzenthApiClient:
                 data=data,
                 json=json,
                 headers=headers,
-                timeout=timeout,
-                allow_redirects=allow_redirects
+                timeout=timeout
             ) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
