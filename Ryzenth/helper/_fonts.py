@@ -17,36 +17,38 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from .._errors import ParamsRequiredError, WhatFuckError
-
+import logging
+from .._errors import ParamsRequiredError, WhatFuckError, AsyncStatusError, SyncStatusError
+from .._benchmark import Benchmark
+from . import AutoRetry
 
 class FontsAsync:
     def __init__(self, parent):
         self.parent = parent
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def scanning(
         self,
-        text: str = "𝖍𝖊𝖑𝖑𝖔 𝖘𝖎𝖒𝖇𝖔𝖑",
-        use_parent_params_dict=False,
-        dot_access=False
+        *,
+        text: str,
+        use_parent_params_dict: bool = False,
+        dot_access: bool = False
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
         if not text:
             raise ParamsRequiredError("Invalid Params Text")
         _params = self.parent.params if use_parent_params_dict else {"query": text}
         async with self.parent.httpx.AsyncClient() as client:
-            try:
-                response = await client.get(
-                    url,
-                    params=_params,
-                    headers=self.parent.headers,
-                    timeout=self.parent.timeout
-                )
-                response.raise_for_status()
-                return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            except self.parent.httpx.HTTPError as e:
-                self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
-                raise WhatFuckError("[ASYNC] Error fetching") from e
+            response = await client.get(
+                url,
+                params=_params,
+                headers=self.parent.headers,
+                timeout=self.parent.timeout
+            )
+            await AsyncStatusError(response, use_httpx=True)
+            response.raise_for_status()
+            return self.parent.obj(response.json() or {}) if dot_access else response.json()
 
 class FontsSync:
     def __init__(self, parent):
@@ -54,9 +56,10 @@ class FontsSync:
 
     def scanning(
         self,
-        text: str = "𝖍𝖊𝖑𝖑𝖔 𝖘𝖎𝖒𝖇𝖔𝖑",
-        use_parent_params_dict=False,
-        dot_access=False
+        *,
+        text: str,
+        use_parent_params_dict: bool = False,
+        dot_access: bool = False
     ):
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
         if not text:
@@ -69,6 +72,7 @@ class FontsSync:
                 headers=self.parent.headers,
                 timeout=self.parent.timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
