@@ -62,7 +62,7 @@ class InvalidJSONDecodeError(json.decoder.JSONDecodeError):
 class InvalidEmptyError(ValueError):
     pass
 
-async def AsyncStatusError(self, resp, status_httpx=False):
+async def AsyncStatusError(resp, status_httpx=False):
     if status_httpx:
         if resp.status_code == 403:
             raise ForbiddenError(
@@ -105,7 +105,7 @@ async def AsyncStatusError(self, resp, status_httpx=False):
             "Status 503: Slow Down or The engine is currently overloaded, please try again later"
         )
 
-def SyncStatusError(self, resp, status_httpx=False):
+def SyncStatusError(resp, status_httpx=False):
     if status_httpx:
         if resp.status_code == 403:
             raise ForbiddenError(
