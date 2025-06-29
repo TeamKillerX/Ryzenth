@@ -246,20 +246,21 @@ class RyzenthApiClient:
             else:
                 data = resp.json()
         else:
-            async with self._session.get(
-                url,
-                params=params,
-                headers=headers,
-                timeout=timeout
-            ) as resp:
-                await self._status_resp_error(resp, status_httpx=False)
-                resp.raise_for_status()
-                if use_type == ResponseType.IMAGE:
-                    data = await resp.read()
-                elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-                    data = await resp.text()
-                else:
-                    data = await resp.json()
+            async with self._session as res:
+                async with res.get(
+                    url,
+                    params=params,
+                    headers=headers,
+                    timeout=timeout
+                ) as resp:
+                    await self._status_resp_error(resp, status_httpx=False)
+                    resp.raise_for_status()
+                    if use_type == ResponseType.IMAGE:
+                        data = await resp.read()
+                    elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
+                        data = await resp.text()
+                    else:
+                        data = await resp.json()
         if self._logger:
             await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
         return data
@@ -333,21 +334,21 @@ class RyzenthApiClient:
             else:
                 data = resp.json()
         else:
-            async with self._session.post(
-                url,
-                data=data,
-                json=json,
-                headers=headers,
-                timeout=timeout
-            ) as resp:
-                await self._status_resp_error(resp, status_httpx=False)
-                resp.raise_for_status()
-                if use_type == ResponseType.IMAGE:
-                    data = await resp.read()
-                elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-                    data = await resp.text()
-                else:
-                    data = await resp.json()
+            async with self._session as res:
+                async with res.post(
+                    url,
+                    params=params,
+                    headers=headers,
+                    timeout=timeout
+                ) as resp:
+                    await self._status_resp_error(resp, status_httpx=False)
+                    resp.raise_for_status()
+                    if use_type == ResponseType.IMAGE:
+                        data = await resp.read()
+                    elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
+                        data = await resp.text()
+                    else:
+                        data = await resp.json()
         if self._logger:
             await self._logger.log(f"[POST {tool}] ✅ Success: {url}")
         return data
