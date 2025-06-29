@@ -49,7 +49,7 @@ class HumanizeAsync:
                 headers=self.parent.headers,
                 timeout=timeout
             )
-            await AsyncStatusError(response, use_httpx=True)
+            await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
             if pickle_json:
                 result = response.json()["results"]
@@ -76,7 +76,7 @@ class HumanizeSync:
                 headers=self.parent.headers,
                 timeout=timeout
             )
-            SyncStatusError(response, use_httpx=True)
+            SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
             if pickle_json:
                 result = response.json()["results"]

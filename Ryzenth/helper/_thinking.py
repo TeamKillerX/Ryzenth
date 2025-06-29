@@ -47,7 +47,7 @@ class WhatAsync:
                 headers=self.parent.headers,
                 timeout=timeout
             )
-            await AsyncStatusError(response, use_httpx=True)
+            await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
 
@@ -70,7 +70,7 @@ class WhatSync:
                 headers=self.parent.headers,
                 timeout=timeout
             )
-            SyncStatusError(response, use_httpx=True)
+            SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
