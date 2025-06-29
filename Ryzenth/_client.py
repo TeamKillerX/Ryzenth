@@ -187,12 +187,21 @@ class RyzenthApiClient:
         tool: str,
         path: str,
         params: t.Optional[dict] = None,
+        timeout: t.Union[int, float] = 5,
+        allow_redirects: bool = False,
         use_type: ResponseType = ResponseType.JSON
     ) -> t.Union[dict, bytes, str]:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        resp = self.request("get", url, params=params, headers=headers)
+        resp = self.request(
+            "get",
+            url,
+            params=params,
+            headers=headers,
+            timeout=timeout,
+            allow_redirects=allow_redirects
+        )
         if resp.status_code == 403:
             raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
         elif resp.status_code == 401:
@@ -213,6 +222,8 @@ class RyzenthApiClient:
         tool: str,
         path: str,
         params: t.Optional[dict] = None,
+        timeout: t.Union[int, float] = 5,
+        allow_redirects: bool = False,
         use_type: ResponseType = ResponseType.JSON
     ) -> t.Union[dict, bytes, str]:
         await self._throttle()
@@ -221,7 +232,13 @@ class RyzenthApiClient:
         headers = self._get_headers_for_tool(tool)
 
         if self._use_httpx:
-            resp = await self._session.get(url, params=params, headers=headers)
+            resp = await self._session.get(
+                url,
+                params=params,
+                headers=headers,
+                timeout=timeout,
+                allow_redirects=allow_redirects
+            )
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
             if use_type == ResponseType.IMAGE:
@@ -231,7 +248,13 @@ class RyzenthApiClient:
             else:
                 data = resp.json()
         else:
-            async with self._session.get(url, params=params, headers=headers) as resp:
+            async with self._session.get(
+                url,
+                params=params,
+                headers=headers,
+                timeout=timeout,
+                allow_redirects=allow_redirects
+            ) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
                 if use_type == ResponseType.IMAGE:
@@ -251,12 +274,22 @@ class RyzenthApiClient:
         path: str,
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None,
+        timeout: t.Union[int, float] = 5,
+        allow_redirects: bool = False,
         use_type: ResponseType = ResponseType.JSON
     ) -> t.Union[dict, bytes, str]:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        resp = self.request("post", url, data=data, json=json, headers=headers)
+        resp = self.request(
+            "post",
+            url,
+            data=data,
+            json=json,
+            headers=headers,
+            timeout=timeout,
+            allow_redirects=allow_redirects
+        )
         if resp.status_code == 403:
             raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
         elif resp.status_code == 401:
@@ -278,6 +311,8 @@ class RyzenthApiClient:
         path: str,
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None,
+        timeout: t.Union[int, float] = 5,
+        allow_redirects: bool = False,
         use_type: ResponseType = ResponseType.JSON
     ) -> t.Union[dict, bytes, str]:
         await self._throttle()
@@ -286,7 +321,14 @@ class RyzenthApiClient:
         headers = self._get_headers_for_tool(tool)
 
         if self._use_httpx:
-            resp = await self._session.post(url, data=data, json=json, headers=headers)
+            resp = await self._session.post(
+                url,
+                data=data,
+                json=json,
+                headers=headers,
+                timeout=timeout,
+                allow_redirects=allow_redirects
+            )
             await self._status_resp_error(resp, status_httpx=True)
             resp.raise_for_status()
             if use_type == ResponseType.IMAGE:
@@ -296,7 +338,14 @@ class RyzenthApiClient:
             else:
                 data = resp.json()
         else:
-            async with self._session.post(url, data=data, json=json, headers=headers) as resp:
+            async with self._session.post(
+                url,
+                data=data,
+                json=json,
+                headers=headers,
+                timeout=timeout,
+                allow_redirects=allow_redirects
+            ) as resp:
                 await self._status_resp_error(resp, status_httpx=False)
                 resp.raise_for_status()
                 if use_type == ResponseType.IMAGE:
