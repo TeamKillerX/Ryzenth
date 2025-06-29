@@ -63,7 +63,7 @@ class ImagesSync:
     def generate(
         self,
         *,
-        params: QueryParameter
+        params: QueryParameter,
         timeout: t.Union[int, float] = 5
     ) -> bytes:
         url = f"{self.parent.base_url}/v1/flux/black-forest-labs/flux-1-schnell"
