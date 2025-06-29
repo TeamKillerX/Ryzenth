@@ -1,6 +1,7 @@
 from Ryzenth import ApiKeyFrom
 from Ryzenth.types import QueryParameter
 
+
 def test_send_message_melayu():
     ryz = ApiKeyFrom(..., is_ok=True)
     result = ryz._sync.send_message(
