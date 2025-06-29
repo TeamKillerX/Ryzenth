@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+import typing as t
 from .._errors import ParamsRequiredError, WhatFuckError, AsyncStatusError, SyncStatusError
 from .._benchmark import Benchmark
 from . import AutoRetry
@@ -32,6 +33,7 @@ class FontsAsync:
         self,
         *,
         text: str,
+        timeout: t.Union[int, float] = 5,
         use_parent_params_dict: bool = False,
         dot_access: bool = False
     ):
@@ -44,7 +46,7 @@ class FontsAsync:
                 url,
                 params=_params,
                 headers=self.parent.headers,
-                timeout=self.parent.timeout
+                timeout=timeout
             )
             await AsyncStatusError(response, use_httpx=True)
             response.raise_for_status()
@@ -58,6 +60,7 @@ class FontsSync:
         self,
         *,
         text: str,
+        timeout: t.Union[int, float] = 5,
         use_parent_params_dict: bool = False,
         dot_access: bool = False
     ):
@@ -70,7 +73,7 @@ class FontsSync:
                 url,
                 params=_params,
                 headers=self.parent.headers,
-                timeout=self.parent.timeout
+                timeout=timeout
             )
             SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
