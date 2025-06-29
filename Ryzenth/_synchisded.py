@@ -19,7 +19,7 @@
 
 import logging
 import platform
-from typing import Union
+import typing as t
 
 import httpx
 import requests
@@ -77,16 +77,17 @@ class RyzenthXSync:
         self,
         *,
         switch_name: str,
-        params: Union[
+        params: t.Union[
         DownloaderBy,
         QueryParameter,
         Username,
         RequestXnxx
         ] = None,
-        params_only=True,
-        on_render=False,
-        dot_access=False
-    ):
+        timeout: t.Union[int, float] = 5,
+        params_only: bool = True,
+        on_render: bool = False,
+        dot_access: bool = False
+    ) -> t.Union[dict, Box]:
         dl_dict = BASE_DICT_RENDER if on_render else BASE_DICT_OFFICIAL
         model_name = dl_dict.get(switch_name)
         if not model_name:
@@ -96,7 +97,7 @@ class RyzenthXSync:
                 f"{self.base_url}/v1/dl/{model_name}",
                 params=params.model_dump() if params_only else None,
                 headers=self.headers,
-                timeout=self.timeout
+                timeout=timeout
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
@@ -124,9 +125,10 @@ class RyzenthXSync:
         *,
         model: str,
         params: QueryParameter = None,
-        use_full_model_list=False,
-        dot_access=False
-    ):
+        timeout: t.Union[int, float] = 5,
+        use_full_model_list: bool = False,
+        dot_access: bool = False
+    ) -> t.Union[dict, Box]:
         model_dict = BASE_DICT_AI_RYZENTH if use_full_model_list else {"hybrid": "AkenoX-1.9-Hybrid"}
         model_param = model_dict.get(model)
         if not model_param:
@@ -137,7 +139,7 @@ class RyzenthXSync:
                 f"{self.base_url}/v1/ai/akenox/{model_param}",
                 params=params.model_dump(),
                 headers=self.headers,
-                timeout=self.timeout
+                timeout=timeout
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
