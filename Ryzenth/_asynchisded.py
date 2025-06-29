@@ -110,6 +110,7 @@ class RyzenthXAsync:
 
     async def _client_message_get(
         self,
+        *,
         client,
         params,
         timeout,
@@ -124,6 +125,7 @@ class RyzenthXAsync:
 
     async def _client_downloader_get(
         self,
+        *,
         client,
         params,
         timeout,
