@@ -78,30 +78,50 @@ class RyzenthXSync:
     def _status_resp_error(self, resp, status_httpx=False):
         if status_httpx:
             if resp.status_code == 403:
-                raise ForbiddenError("Access Forbidden status 403: You may be blocked or banned.")
+                raise ForbiddenError(
+                    "Access Forbidden status 403: You may be blocked or banned."
+                )
             elif resp.status_code == 401:
-                raise AuthenticationError("Access Forbidden status 401: Your API key or token was invalid, expired, or revoked.")
+                raise AuthenticationError(
+                    "Access Forbidden status 401: Your API key or token was invalid, expired, or revoked."
+                )
             elif resp.status_code == 429:
-                raise RateLimitError("Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details")
+                raise RateLimitError(
+                    "Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details"
+                )
             elif resp.status_code == 500:
-                raise InternalServerError("Status 500: The server had an error while processing your request")
+                raise InternalServerError(
+                    "Status 500: The server had an error while processing your request"
+                )
             elif resp.status_code == 503:
-                raise InternalServerError("Status 503: Slow Down or The engine is currently overloaded, please try again later")
+                raise InternalServerError(
+                    "Status 503: Slow Down or The engine is currently overloaded, please try again later"
+                )
         elif resp.status == 403:
-            raise ForbiddenError("Access Forbidden status 403: You may be blocked or banned.")
+            raise ForbiddenError(
+                "Access Forbidden status 403: You may be blocked or banned."
+            )
         elif resp.status == 401:
-            raise AuthenticationError("Access Forbidden status 401: Your API key or token was invalid, expired, or revoked.")
+            raise AuthenticationError(
+                "Access Forbidden status 401: Your API key or token was invalid, expired, or revoked."
+            )
         elif resp.status == 429:
-            raise RateLimitError("Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details")
+            raise RateLimitError(
+                "Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details"
+            )
         elif resp.status == 500:
-            raise InternalServerError("Status 500: The server had an error while processing your request")
+            raise InternalServerError(
+                "Status 500: The server had an error while processing your request"
+            )
         elif resp.status == 503:
-            raise InternalServerError("Status 503: Slow Down or The engine is currently overloaded, please try again later")
+            raise InternalServerError(
+                "Status 503: Slow Down or The engine is currently overloaded, please try again later"
+            )
 
     def send_downloader(
         self,
-        switch_name: str,
         *,
+        switch_name: str,
         params: Union[
         DownloaderBy,
         QueryParameter,
@@ -146,8 +166,8 @@ class RyzenthXSync:
 
     def send_message(
         self,
-        model: str,
         *,
+        model: str,
         params: QueryParameter = None,
         use_full_model_list=False,
         dot_access=False
