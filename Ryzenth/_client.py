@@ -156,6 +156,7 @@ class RyzenthApiClient:
     @Benchmark.sync(level=logging.DEBUG)
     def sync_get(
         self,
+        *,
         tool: str,
         path: str,
         params: t.Optional[dict] = None,
@@ -186,6 +187,7 @@ class RyzenthApiClient:
     @AutoRetry(max_retries=3, delay=1.5)
     async def get(
         self,
+        *,
         tool: str,
         path: str,
         params: t.Optional[dict] = None,
@@ -234,6 +236,7 @@ class RyzenthApiClient:
     @Benchmark.sync(level=logging.DEBUG)
     def sync_post(
         self,
+        *,
         tool: str,
         path: str,
         data: t.Optional[dict] = None,
@@ -266,6 +269,7 @@ class RyzenthApiClient:
     @AutoRetry(max_retries=3, delay=1.5)
     async def post(
         self,
+        *,
         tool: str,
         path: str,
         data: t.Optional[dict] = None,
