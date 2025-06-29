@@ -160,7 +160,7 @@ class RyzenthXAsync:
                 client=client,
                 params=params,
                 timeout=timeout,
-                model_param
+                model_param=model_param
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
