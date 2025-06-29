@@ -111,7 +111,8 @@ class RyzenthXSync:
                 response_ = requests.get(
                     f"{self.base_url}/v1/dl/{model_name}",
                     params=params.model_dump() if params_only else None,
-                    headers=self.headers
+                    headers=self.headers,
+                    timeout=timeout
                 )
                 response_.raise_for_status()
                 SyncStatusError(response_, status_httpx=True)
@@ -153,7 +154,8 @@ class RyzenthXSync:
                 response_ = requests.get(
                     f"{self.base_url}/v1/ai/akenox/{model_param}",
                     params=params.model_dump(),
-                    headers=self.headers
+                    headers=self.headers,
+                    timeout=timeout
                 )
                 response_.raise_for_status()
                 SyncStatusError(response_, status_httpx=True)
