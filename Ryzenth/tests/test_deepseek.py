@@ -9,5 +9,6 @@ def test_deepseek():
         params=QueryParameter(
             query="ok test"
         )
+        timeout=10
     )
     assert result is not None
