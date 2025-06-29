@@ -1,4 +1,5 @@
 import pytest
+
 from Ryzenth import RyzenthApiClient
 from Ryzenth.enums import ResponseType
 
