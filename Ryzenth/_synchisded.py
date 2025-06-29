@@ -125,7 +125,7 @@ class RyzenthXSync:
         self,
         *,
         model: str,
-        params: QueryParameter = None,
+        params: QueryParameter,
         timeout: t.Union[int, float] = 5,
         use_full_model_list: bool = False,
         dot_access: bool = False
