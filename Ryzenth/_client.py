@@ -33,10 +33,8 @@ from box import Box
 from .__version__ import get_user_agent
 from ._benchmark import Benchmark
 from ._errors import (
-    AuthenticationError,
-    ForbiddenError,
-    InternalServerError,
-    RateLimitError,
+    AsyncStatusError,
+    SyncStatusError,
     ToolNotFoundError,
     WhatFuckError,
 )
@@ -155,32 +153,6 @@ class RyzenthApiClient:
             use_httpx=httpx_flag
         )
 
-    async def _status_resp_error(self, resp, status_httpx=False):
-        if status_httpx:
-            if resp.status_code == 403:
-                raise ForbiddenError("Access Forbidden status 403: You may be blocked or banned.")
-            elif resp.status_code == 401:
-                raise AuthenticationError("Access Forbidden status 401: Your API key or token was invalid, expired, or revoked.")
-            elif resp.status_code == 429:
-                raise RateLimitError("Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details")
-            elif resp.status_code == 500:
-                raise InternalServerError("Status 500: The server had an error while processing your request")
-            elif resp.status_code == 503:
-                raise InternalServerError("Status 503: Slow Down or The engine is currently overloaded, please try again later")
-        elif resp.status == 403:
-            raise ForbiddenError("Access Forbidden status 403: You may be blocked or banned.")
-        elif resp.status == 401:
-            raise AuthenticationError("Access Forbidden status 401: Your API key or token was invalid, expired, or revoked.")
-        elif resp.status == 429:
-            raise RateLimitError("Access Forbidden status 429: Rate limit reached for requests or You exceeded your current quota, please check your plan and billing details")
-        elif resp.status == 500:
-            raise InternalServerError("Status 500: The server had an error while processing your request")
-        elif resp.status == 503:
-            raise InternalServerError("Status 503: Slow Down or The engine is currently overloaded, please try again later")
-
-    def request(self, method, url, **kwargs):
-        return self._sync_session.request(method=method, url=url, **kwargs)
-
     @Benchmark.sync(level=logging.DEBUG)
     def sync_get(
         self,
@@ -202,12 +174,7 @@ class RyzenthApiClient:
             timeout=timeout,
             allow_redirects=allow_redirects
         )
-        if resp.status_code == 403:
-            raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
-        elif resp.status_code == 401:
-            raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
-        elif resp.status_code == 500:
-            raise InternalError("Error requests status code 500")
+        SyncStatusError(resp, use_httpx=False)
         resp.raise_for_status()
         if use_type == ResponseType.IMAGE:
             return resp.content
@@ -237,7 +204,7 @@ class RyzenthApiClient:
                 headers=headers,
                 timeout=timeout
             )
-            await self._status_resp_error(resp, status_httpx=True)
+            await AsyncStatusError(resp, status_httpx=True)
             resp.raise_for_status()
             if use_type == ResponseType.IMAGE:
                 data = resp.content
@@ -252,7 +219,7 @@ class RyzenthApiClient:
                 headers=headers,
                 timeout=timeout
             ) as resp:
-                await self._status_resp_error(resp, status_httpx=False)
+                await AsyncStatusError(resp, status_httpx=False)
                 resp.raise_for_status()
                 if use_type == ResponseType.IMAGE:
                     data = await resp.read()
@@ -287,12 +254,7 @@ class RyzenthApiClient:
             timeout=timeout,
             allow_redirects=allow_redirects
         )
-        if resp.status_code == 403:
-            raise ForbiddenError("Access Forbidden: You may be blocked or banned.")
-        elif resp.status_code == 401:
-            raise ForbiddenError("Access Forbidden: Required API key or invalid params.")
-        elif resp.status_code == 500:
-            raise InternalError("Error requests status code 500")
+        SyncStatusError(resp, status_httpx=False)
         resp.raise_for_status()
         if use_type == ResponseType.IMAGE:
             return resp.content
@@ -324,7 +286,7 @@ class RyzenthApiClient:
                 headers=headers,
                 timeout=timeout
             )
-            await self._status_resp_error(resp, status_httpx=True)
+            await AsyncStatusError(resp, status_httpx=True)
             resp.raise_for_status()
             if use_type == ResponseType.IMAGE:
                 data = resp.content
@@ -340,7 +302,7 @@ class RyzenthApiClient:
                 headers=headers,
                 timeout=timeout
             ) as resp:
-                await self._status_resp_error(resp, status_httpx=False)
+                await AsyncStatusError(resp, status_httpx=True)
                 resp.raise_for_status()
                 if use_type == ResponseType.IMAGE:
                     data = await resp.read()

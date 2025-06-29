@@ -18,47 +18,65 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
+import logging
+import typing as t
 
-from .._errors import WhatFuckError
+from .._benchmark import Benchmark
+from .._errors import AsyncStatusError, SyncStatusError, WhatFuckError
 from ..types import RequestHumanizer
+from . import AutoRetry
 
 
 class HumanizeAsync:
     def __init__(self, parent):
         self.parent = parent
 
-    async def rewrite(self, params: RequestHumanizer, pickle_json=False, dot_access=False):
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def rewrite(
+        self,
+        *,
+        params: RequestHumanizer,
+        timeout: t.Union[int, float] = 5,
+        pickle_json: bool = False,
+        dot_access: bool = False
+    ):
         url = f"{self.parent.base_url}/v1/ai/r/Ryzenth-Humanize-05-06-2025"
         async with self.parent.httpx.AsyncClient() as client:
-            try:
-                response = await client.get(
-                    url,
-                    params=params.model_dump(),
-                    headers=self.parent.headers,
-                    timeout=self.parent.timeout
-                )
-                response.raise_for_status()
-                if pickle_json:
-                    result = response.json()["results"]
-                    return json.loads(result)
-                return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            except self.parent.httpx.HTTPError as e:
-                self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
-                raise WhatFuckError("[ASYNC] Error fetching") from e
+            response = await client.get(
+                url,
+                params=params.model_dump(),
+                headers=self.parent.headers,
+                timeout=timeout
+            )
+            await AsyncStatusError(response, use_httpx=True)
+            response.raise_for_status()
+            if pickle_json:
+                result = response.json()["results"]
+                return json.loads(result)
+            return self.parent.obj(response.json() or {}) if dot_access else response.json()
 
 class HumanizeSync:
     def __init__(self, parent):
         self.parent = parent
 
-    def rewrite(self, params: RequestHumanizer, pickle_json=False, dot_access=False):
+    def rewrite(
+        self,
+        *,
+        params: RequestHumanizer,
+        timeout: t.Union[int, float] = 5,
+        pickle_json: bool = False,
+        dot_access: bool = False
+    ):
         url = f"{self.parent.base_url}/v1/ai/r/Ryzenth-Humanize-05-06-2025"
         try:
             response = self.parent.httpx.get(
                 url,
                 params=params.model_dump(),
                 headers=self.parent.headers,
-                timeout=self.parent.timeout
+                timeout=timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             if pickle_json:
                 result = response.json()["results"]

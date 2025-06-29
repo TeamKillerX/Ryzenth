@@ -17,16 +17,25 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from .._errors import InvalidVersionError, WhatFuckError
+import logging
+import typing as t
+
+from .._benchmark import Benchmark
+from .._errors import AsyncStatusError, InvalidVersionError, SyncStatusError, WhatFuckError
+from . import AutoRetry
 
 
 class ModeratorAsync:
     def __init__(self, parent):
         self.parent = parent
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def aigen_image_check(
         self,
+        *,
         text: str,
+        timeout: t.Union[int, float] = 5,
         version: str = "v2",
         is_loads: bool = False,
         dot_access: bool = False
@@ -41,22 +50,23 @@ class ModeratorAsync:
 
         url = f"{self.parent.base_url}/v1/ai/akenox/aigen-{_version}"
         async with self.parent.httpx.AsyncClient() as client:
-            try:
-                response = await client.get(
-                    url,
-                    params={"query": text, "isJson": is_loads},
-                    headers=self.parent.headers,
-                    timeout=self.parent.timeout
-                )
-                response.raise_for_status()
-                return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            except self.parent.httpx.HTTPError as e:
-                self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
-                raise WhatFuckError("[ASYNC] Error fetching") from e
+            response = await client.get(
+                url,
+                params={"query": text, "isJson": is_loads},
+                headers=self.parent.headers,
+                timeout=timeout
+            )
+            await AsyncStatusError(response, use_httpx=True)
+            response.raise_for_status()
+            return self.parent.obj(response.json() or {}) if dot_access else response.json()
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def antievalai(
         self,
+        *,
         text: str,
+        timeout: t.Union[int, float] = 5,
         version: str = "v2",
         dot_access: bool = False
     ):
@@ -70,18 +80,15 @@ class ModeratorAsync:
 
         url = f"{self.parent.base_url}/v1/ai/akenox/antievalai-{_version}"
         async with self.parent.httpx.AsyncClient() as client:
-            try:
-                response = await client.get(
-                    url,
-                    params={"query": text},
-                    headers=self.parent.headers,
-                    timeout=self.parent.timeout
-                )
-                response.raise_for_status()
-                return self.parent.obj(response.json() or {}) if dot_access else response.json()
-            except self.parent.httpx.HTTPError as e:
-                self.parent.logger.error(f"[ASYNC] Error: {str(e)}")
-                raise WhatFuckError("[ASYNC] Error fetching") from e
+            response = await client.get(
+                url,
+                params={"query": text},
+                headers=self.parent.headers,
+                timeout=timeout
+            )
+            await AsyncStatusError(response, use_httpx=True)
+            response.raise_for_status()
+            return self.parent.obj(response.json() or {}) if dot_access else response.json()
 
 class ModeratorSync:
     def __init__(self, parent):
@@ -89,7 +96,9 @@ class ModeratorSync:
 
     def aigen_image_check(
         self,
+        *,
         text: str,
+        timeout: t.Union[int, float] = 5,
         version: str = "v2",
         is_loads: bool = False,
         dot_access: bool = False
@@ -108,8 +117,9 @@ class ModeratorSync:
                 url,
                 params={"query": text, "isJson": is_loads},
                 headers=self.parent.headers,
-                timeout=self.parent.timeout
+                timeout=timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
@@ -118,7 +128,9 @@ class ModeratorSync:
 
     def antievalai(
         self,
+        *,
         text: str,
+        timeout: t.Union[int, float] = 5,
         version: str = "v2",
         dot_access: bool = False
     ):
@@ -136,8 +148,9 @@ class ModeratorSync:
                 url,
                 params={"query": text},
                 headers=self.parent.headers,
-                timeout=self.parent.timeout
+                timeout=timeout
             )
+            SyncStatusError(response, use_httpx=True)
             response.raise_for_status()
             return self.parent.obj(response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
