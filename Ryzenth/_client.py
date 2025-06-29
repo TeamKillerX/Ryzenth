@@ -337,7 +337,8 @@ class RyzenthApiClient:
             async with self._session as res:
                 async with res.post(
                     url,
-                    params=params,
+                    data=data,
+                    json=json,
                     headers=headers,
                     timeout=timeout
                 ) as resp:
