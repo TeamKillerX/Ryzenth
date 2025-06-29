@@ -49,7 +49,7 @@ class ImagesAsync:
                 headers=self.parent.headers,
                 timeout=timeout
             )
-            await AsyncStatusError(response, use_httpx=True)
+            await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
             return response.content
 
@@ -75,7 +75,7 @@ class ImagesSync:
                 headers=self.parent.headers,
                 timeout=timeout
             )
-            SyncStatusError(response, use_httpx=True)
+            SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
             return response.content
         except self.parent.httpx.HTTPError as e:
