@@ -37,6 +37,9 @@ class ToolNotFoundError(Exception):
 class RateLimitError(Exception):
     pass
 
+class BadRequestError(Exception):
+    pass
+
 class AuthenticationError(Exception):
     pass
 
@@ -64,7 +67,11 @@ class InvalidEmptyError(ValueError):
 
 async def AsyncStatusError(resp, status_httpx=False):
     if status_httpx:
-        if resp.status_code == 403:
+        if resp.status_code == 400:
+            raise BadRequestError(
+                "Bad Request Invalid or missing parameters."
+            )
+        elif resp.status_code == 403:
             raise ForbiddenError(
                 "Access Forbidden status 403: You may be blocked or banned."
             )
@@ -84,6 +91,10 @@ async def AsyncStatusError(resp, status_httpx=False):
             raise InternalServerError(
                 "Status 503: Slow Down or The engine is currently overloaded, please try again later"
             )
+    elif resp.status == 400:
+        raise BadRequestError(
+            "Bad Request 400 Invalid or missing parameters."
+        )
     elif resp.status == 403:
         raise ForbiddenError(
             "Access Forbidden status 403: You may be blocked or banned."
@@ -107,7 +118,11 @@ async def AsyncStatusError(resp, status_httpx=False):
 
 def SyncStatusError(resp, status_httpx=False):
     if status_httpx:
-        if resp.status_code == 403:
+        if resp.status_code == 400:
+            raise BadRequestError(
+                "Bad Request Invalid or missing parameters."
+            )
+        elif resp.status_code == 403:
             raise ForbiddenError(
                 "Access Forbidden status 403: You may be blocked or banned."
             )
@@ -127,6 +142,10 @@ def SyncStatusError(resp, status_httpx=False):
             raise InternalServerError(
                 "Status 503: Slow Down or The engine is currently overloaded, please try again later"
             )
+    elif resp.status == 400:
+        raise BadRequestError(
+            "Bad Request 400 Invalid or missing parameters."
+        )
     elif resp.status == 403:
         raise ForbiddenError(
             "Access Forbidden status 403: You may be blocked or banned."
@@ -162,6 +181,7 @@ __all__ = [
     "InvalidModelError",
     "UnauthorizedAccessError",
     "RequiredError",
+    "BadRequestError",
     "SyncStatusError",
     "AsyncStatusError"
 ]
