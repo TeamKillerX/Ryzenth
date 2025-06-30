@@ -195,6 +195,182 @@ class Paxsenix:
             **kwargs
         )
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def SearchUncovr(self, *, text: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-search/uncovr",
+            params=clients.get_kwargs(text=text),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def SearchFelo(self, *, text: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-search/felo",
+            params=clients.get_kwargs(text=text),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def SearchTurboSeek(self, *, text: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-search/turboseek",
+            params=clients.get_kwargs(text=text),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def SearchDuckAssist(self, *, text: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-search/duckassist",
+            params=clients.get_kwargs(text=text),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def SearchLepton(self, *, text: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-search/lepton",
+            params=clients.get_kwargs(text=text),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def SearchBagoodex(self, *, text: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-search/bagoodex",
+            params=clients.get_kwargs(text=text),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DLSpotify(self, *, url: str, serv: str = None, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/spotify",
+            params=clients.get_kwargs(url=url, serv=serv),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DLDeezer(self, *, url: str, quality: str = None, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/deezer",
+            params=clients.get_kwargs(url=url, quality=quality),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DLSoundCloud(self, *, url: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/soundcloud",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DLTwitter(self, *, url: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/twitter",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DLSnackVideo(self, *, url: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/snackvideo",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DLSnapChat(self, *, url: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/snapchat",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DLTerabox(self, *, url: str, password: str = None, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/terabox",
+            params=clients.get_kwargs(url=url, password=password),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DLAio(self, *, url: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/aio",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DLytdlp(self, *, url: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/ytdlp",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def DL9xbuddy(self, *, url: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/dl/9xbuddy",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
     # TODO: HERE ADDED
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
