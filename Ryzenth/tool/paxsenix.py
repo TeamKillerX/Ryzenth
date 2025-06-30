@@ -20,10 +20,12 @@
 # BASED API: https://api.paxsenix.biz.id/docs
 
 import logging
-from .._client import RyzenthApiClient
+
 from .._benchmark import Benchmark
-from ..helper import AutoRetry
+from .._client import RyzenthApiClient
 from ..enums import ResponseType
+from ..helper import AutoRetry
+
 
 class Paxsenix:
     def __init__(self, *, api_key: str):
@@ -64,7 +66,7 @@ class Paxsenix:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def GeminiRealtime(
-        self, 
+        self,
         *,
         text: str,
         session_id: str = None,
@@ -84,7 +86,7 @@ class Paxsenix:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def HuggingChat(
-        self, 
+        self,
         *,
         text: str,
         model: str = None,
@@ -108,7 +110,7 @@ class Paxsenix:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def LambdaChat(
-        self, 
+        self,
         *,
         text: str,
         model: str = None,
@@ -132,7 +134,7 @@ class Paxsenix:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def MetaChat(
-        self, 
+        self,
         *,
         text: str,
         conversation_id: str = None,
@@ -199,7 +201,7 @@ class Paxsenix:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def DeepSeekChat(
-        self, 
+        self,
         *,
         text: str,
         session_id: str = None,
