@@ -81,13 +81,6 @@ You can skip passing the API key directly by setting it via environment:
 export RYZENTH_API_KEY=your-api-key
 ```
 
-## Web scrapers
-> Without authentication
->
-> Free unlimited
-- [`itzpire`](https://itzpire.com) - Team Developer
-- [`x-api-js`](https://x-api-js.onrender.com/docs) - Ryzenth Developer
-
 ## Tool Developer
 ~ Artificial Intelligence
 - [`OpenAI`](https://platform.openai.com/docs) - OpenAI Docs
@@ -106,6 +99,12 @@ export RYZENTH_API_KEY=your-api-key
 - [`Grok API key`](https://console.x.ai/team/default/api-keys) - Website official
 
 ## Credits
+
+### Web Developers
+- [`Paxsenix`](https://api.paxsenix.biz.id) - PaxSenix Dev
+- [`Itzpire`](https://itzpire.com) - Itzpire Dev
+- [`x-api-js`](https://x-api-js.onrender.com/docs) - Ryzenth (JS) Dev
+- [`Ryzenth TS`](https://ryzenth.randydev.my.id/v2/fast/list-endpoint) - Ryzenth (TS) Dev
 
 * Built with love by [xtdevs](https://t.me/xtdevs)
 * Inspired by early work on AkenoX API
