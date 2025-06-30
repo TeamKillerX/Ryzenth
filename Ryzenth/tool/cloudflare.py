@@ -21,10 +21,12 @@
 
 import logging
 from os import getenv
+
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
 from ..helper import AutoRetry
+
 
 class Cloudflare:
     def __init__(self, *, account_id: str, auth_token: str = None):
