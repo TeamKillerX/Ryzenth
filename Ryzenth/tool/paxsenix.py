@@ -39,7 +39,7 @@ class Paxsenix:
 
     async def ChatCompletions(self, **kwargs):
         # https://api.paxsenix.biz.id/docs#endpoint-e42b905
-        clients = self._service_new()
+        clients = await self._service_new()
         return await clients.post(
             tool="paxsenix",
             path="/v1/chat/completions",
@@ -47,16 +47,117 @@ class Paxsenix:
         )
 
     async def ListModels(self, **kwargs):
-        clients = self._service_new()
+        clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
             path="/v1/models",
             **kwargs
         )
-    async def GeminiRealtime(self, **kwargs):
-        clients = self._service_new()
+
+    async def GeminiRealtime(
+        self, 
+        *,
+        text: str,
+        session_id: str = None,
+        **kwargs
+    ):
+        clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
             path="/ai/gemini-realtime",
+            params=client.get_kwargs(
+                text=text,
+                session_id=session_id
+            ),
+            **kwargs
+        )
+
+    async def HuggingChat(
+        self, 
+        *,
+        text: str,
+        model: str = None,
+        system: str = None,
+        conversation_id: str = None,
+        **kwargs
+    ):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai/huggingchat",
+            params=client.get_kwargs(
+                text=text,
+                model=model,
+                system=system,
+                conversation_id=conversation_id
+            ),
+            **kwargs
+        )
+
+    async def LambdaChat(
+        self, 
+        *,
+        text: str,
+        model: str = None,
+        system: str = None,
+        conversation_id: str = None,
+        **kwargs
+    ):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai/lambdachat",
+            params=client.get_kwargs(
+                text=text,
+                model=model,
+                system=system,
+                conversation_id=conversation_id
+            ),
+            **kwargs
+        )
+
+    async def MetaChat(
+        self, 
+        *,
+        text: str,
+        conversation_id: str = None,
+        **kwargs
+    ):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai/metaai",
+            params=client.get_kwargs(
+                text=text,
+                model=model,
+                system=system,
+                conversation_id=conversation_id
+            ),
+            **kwargs
+        )
+
+    async def DeepSeekChat(
+        self, 
+        *,
+        text: str,
+        session_id: str = None,
+        file_url: str = None,
+        message_id: int = 0,
+        thinking_enabled: bool = False,
+        search_enabled: bool = False,
+        **kwargs
+    ):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai/deepseek",
+            params=client.get_kwargs(
+                text=text,
+                session_id=session_id,
+                file_url=file_url,
+                message_id=message_id,
+                thinking_enabled=thinking_enabled,
+                search_enabled=search_enabled
+            ),
             **kwargs
         )
