@@ -76,7 +76,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai/gemini-realtime",
-            params=client.get_kwargs(
+            params=clients.get_kwargs(
                 text=text,
                 session_id=session_id
             ),
@@ -98,7 +98,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai/huggingchat",
-            params=client.get_kwargs(
+            params=clients.get_kwargs(
                 text=text,
                 model=model,
                 system=system,
@@ -122,7 +122,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai/lambdachat",
-            params=client.get_kwargs(
+            params=clients.get_kwargs(
                 text=text,
                 model=model,
                 system=system,
@@ -144,7 +144,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai/metaai",
-            params=client.get_kwargs(
+            params=clients.get_kwargs(
                 text=text,
                 conversation_id=conversation_id
             ),
@@ -158,7 +158,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai-persona/lori",
-            params=client.get_kwargs(text=text),
+            params=clients.get_kwargs(text=text),
             **kwargs
         )
 
@@ -169,7 +169,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai-persona/githubroaster",
-            params=client.get_kwargs(username=username),
+            params=clients.get_kwargs(username=username),
             **kwargs
         )
 
@@ -180,7 +180,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai-persona/goody2",
-            params=client.get_kwargs(text=text, session_id=session_id),
+            params=clients.get_kwargs(text=text, session_id=session_id),
             **kwargs
         )
 
@@ -191,7 +191,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai-persona/human",
-            params=client.get_kwargs(text=text),
+            params=clients.get_kwargs(text=text),
             **kwargs
         )
 
@@ -213,7 +213,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai/deepseek",
-            params=client.get_kwargs(
+            params=clients.get_kwargs(
                 text=text,
                 session_id=session_id,
                 file_url=file_url,
