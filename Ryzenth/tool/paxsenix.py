@@ -34,7 +34,7 @@ class Paxsenix:
     async def start(self):
         return RyzenthApiClient(
             tools_name=["paxsenix"],
-            api_key={"paxsenix": [{"Authorization": f"Bearer {api_key}"}]},
+            api_key={"paxsenix": [{"Authorization": f"Bearer {self._api_key}"}]},
             rate_limit=100,
             use_default_headers=True
         )
@@ -146,8 +146,6 @@ class Paxsenix:
             path="/ai/metaai",
             params=client.get_kwargs(
                 text=text,
-                model=model,
-                system=system,
                 conversation_id=conversation_id
             ),
             **kwargs
