@@ -20,14 +20,16 @@
 # BASE API: https://api.cloudflare.com
 
 import logging
-
+from os import getenv
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
 from ..helper import AutoRetry
 
 class Cloudflare:
-    def __init__(self, *, account_id: str, auth_token: str):
+    def __init__(self, *, account_id: str, auth_token: str = None):
+        if auth_token is None:
+            auth_token = getenv("CLOUDFLARE_AUTH_TOKEN")
         self._account_id = account_id
         self._auth_token = auth_token
 
