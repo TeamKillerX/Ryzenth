@@ -32,6 +32,10 @@ class Cloudflare:
     def __init__(self, *, account_id: str, auth_token: str = None):
         if auth_token is None:
             auth_token = getenv("CLOUDFLARE_AUTH_TOKEN")
+        if not account_id:
+            raise ValueError("Cloudflare account_id must be provided and non-empty.")
+        if not auth_token:
+            raise ValueError("Cloudflare auth_token must be provided and non-empty (either as argument or CLOUDFLARE_AUTH_TOKEN env var).")
         self._account_id = account_id
         self._auth_token = auth_token
 
