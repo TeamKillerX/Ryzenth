@@ -17,9 +17,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# BASED: https://api.paxsenix.biz.id/docs
+# BASED API: https://api.paxsenix.biz.id/docs
 
+import logging
 from .._client import RyzenthApiClient
+from .._benchmark import Benchmark
+from ..helper import AutoRetry
 from ..enums import ResponseType
 
 class Paxsenix:
@@ -37,6 +40,8 @@ class Paxsenix:
     async def _service_new(self):
         return await self.start()
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def ChatCompletions(self, **kwargs):
         # https://api.paxsenix.biz.id/docs#endpoint-e42b905
         clients = await self._service_new()
@@ -46,6 +51,8 @@ class Paxsenix:
             **kwargs
         )
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def ListModels(self, **kwargs):
         clients = await self._service_new()
         return await clients.get(
@@ -54,6 +61,8 @@ class Paxsenix:
             **kwargs
         )
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def GeminiRealtime(
         self, 
         *,
@@ -72,6 +81,8 @@ class Paxsenix:
             **kwargs
         )
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def HuggingChat(
         self, 
         *,
@@ -94,6 +105,8 @@ class Paxsenix:
             **kwargs
         )
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def LambdaChat(
         self, 
         *,
@@ -116,6 +129,8 @@ class Paxsenix:
             **kwargs
         )
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def MetaChat(
         self, 
         *,
@@ -136,6 +151,53 @@ class Paxsenix:
             **kwargs
         )
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def Lori(self, *, text: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-persona/lori",
+            params=client.get_kwargs(text=text),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def GithubRoaster(self, *, username: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-persona/githubroaster",
+            params=client.get_kwargs(username=username),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def Goody2(self, *, text: str, session_id: str = None, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-persona/goody2",
+            params=client.get_kwargs(username=username, session_id=session_id),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def Human(self, *, text: str, **kwargs):
+        clients = await self._service_new()
+        return await clients.get(
+            tool="paxsenix",
+            path="/ai-persona/human",
+            params=client.get_kwargs(text=text),
+            **kwargs
+        )
+
+    # TODO: HERE ADDED
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def DeepSeekChat(
         self, 
         *,
