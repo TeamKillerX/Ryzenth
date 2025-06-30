@@ -6,6 +6,7 @@ TOOL_DOMAIN_MAP = {
     "ryzenth": "https://randydev-ryu-js.hf.space",
     "onrender": "https://x-api-js.onrender.com",
     "deepseek": "https://api.deepseek.com",
+    "paxsenix": "https://api.paxsenix.biz.id",
     "openai": "https://api.openai.com/v1",
     "cohere": "https://api.cohere.com/v1",
     "claude": "https://api.anthropic.com/v1",
