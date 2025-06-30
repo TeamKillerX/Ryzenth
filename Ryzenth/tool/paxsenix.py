@@ -182,7 +182,7 @@ class Paxsenix:
         return await clients.get(
             tool="paxsenix",
             path="/ai-persona/goody2",
-            params=client.get_kwargs(username=username, session_id=session_id),
+            params=client.get_kwargs(text=text, session_id=session_id),
             **kwargs
         )
 
