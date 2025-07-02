@@ -9,6 +9,7 @@ TOOL_DOMAIN_MAP = {
     "cloudflare": "https://api.cloudflare.com",
     "paxsenix": "https://api.paxsenix.biz.id",
     "exonity": "https://exonity.tech",
+    "yogik": "https://api.yogik.id",
     "ytdlpyton": "https://ytdlpyton.nvlgroup.my.id",
     "openai": "https://api.openai.com/v1",
     "cohere": "https://api.cohere.com/v1",

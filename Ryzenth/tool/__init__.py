@@ -9,6 +9,7 @@ from .itzpire import ItzpireClient
 from .onrender import OnRenderJS
 from .openai import OpenAIClient
 from .paxsenix import Paxsenix
+from .yogik import YogikClient
 from .ytdlpyton import YtdlPythonClient
 
 __all__ = [
@@ -23,5 +24,6 @@ __all__ = [
   "OpenAIClient",
   "YtdlPythonClient",
   "ExonityClient",
+  "YogikClient",
   "OnRenderJS",
 ]
