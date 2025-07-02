@@ -31,12 +31,13 @@ class Paxsenix:
     def __init__(self, *, api_key: str):
         self._api_key = api_key
 
-    async def start(self):
+    async def start(self, **kwargs):
         return RyzenthApiClient(
             tools_name=["paxsenix"],
             api_key={"paxsenix": [{"Authorization": f"Bearer {self._api_key}"}]},
             rate_limit=100,
-            use_default_headers=True
+            use_default_headers=True,
+            **kwargs
         )
 
     async def _service_new(self):
