@@ -9,6 +9,7 @@ from .onrender import OnRenderJS
 from .openai import OpenAIClient
 from .paxsenix import Paxsenix
 from .ytdlpyton import YtdlPythonClient
+from .exonity import ExonityClient
 
 __all__ = [
   "Paxsenix",
@@ -21,5 +22,6 @@ __all__ = [
   "ItzpireClient",
   "OpenAIClient",
   "YtdlPythonClient",
+  "ExonityClient",
   "OnRenderJS",
 ]
