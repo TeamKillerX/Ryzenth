@@ -71,6 +71,10 @@ async def AsyncStatusError(resp, status_httpx=False):
             raise BadRequestError(
                 "Bad Request Invalid or missing parameters."
             )
+        elif resp.status_code == 402:
+            raise ForbiddenError(
+                "Access Forbidden status 402: API Key disabled or invalid. Please upgrade to sk-ryzenth-* format or Different API."
+        )
         elif resp.status_code == 403:
             raise ForbiddenError(
                 "Access Forbidden status 403: You may be blocked or banned."
@@ -91,6 +95,11 @@ async def AsyncStatusError(resp, status_httpx=False):
             raise InternalServerError(
                 "Status 503: Slow Down or The engine is currently overloaded, please try again later"
             )
+    # For Aiohttp
+    elif resp.status == 402:
+        raise ForbiddenError(
+            "Access Forbidden status 402: API Key disabled or invalid. Please upgrade to sk-ryzenth-* format or Different API."
+        )
     elif resp.status == 400:
         raise BadRequestError(
             "Bad Request 400 Invalid or missing parameters."
@@ -122,6 +131,10 @@ def SyncStatusError(resp, status_httpx=False):
             raise BadRequestError(
                 "Bad Request Invalid or missing parameters."
             )
+        elif resp.status_code == 402:
+            raise ForbiddenError(
+                "Access Forbidden status 402: API Key disabled or invalid. Please upgrade to sk-ryzenth-* format or Different API."
+            )
         elif resp.status_code == 403:
             raise ForbiddenError(
                 "Access Forbidden status 403: You may be blocked or banned."
@@ -142,6 +155,11 @@ def SyncStatusError(resp, status_httpx=False):
             raise InternalServerError(
                 "Status 503: Slow Down or The engine is currently overloaded, please try again later"
             )
+    # For Aiohttp
+    elif resp.status == 402:
+        raise ForbiddenError(
+            "Access Forbidden status 402: API Key disabled or invalid. Please upgrade to sk-ryzenth-* format or Different API."
+        )
     elif resp.status == 400:
         raise BadRequestError(
             "Bad Request 400 Invalid or missing parameters."
