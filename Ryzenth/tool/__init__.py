@@ -8,7 +8,7 @@ from .itzpire import ItzpireClient
 from .onrender import OnRenderJS
 from .openai import OpenAIClient
 from .paxsenix import Paxsenix
-from .ytdlpyton import YtdlPytonClient
+from .ytdlpyton import YtdlPythonClient
 
 __all__ = [
   "Paxsenix",
@@ -20,6 +20,6 @@ __all__ = [
   "GrokClient",
   "ItzpireClient",
   "OpenAIClient",
-  "YtdlPytonClient",
+  "YtdlPythonClient",
   "OnRenderJS",
 ]
