@@ -272,6 +272,7 @@ class RyzenthApiClient:
         *,
         tool: str,
         path: str,
+        params: t.Optional[dict] = None,
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None,
         timeout: t.Union[int, float] = 5,
@@ -285,6 +286,7 @@ class RyzenthApiClient:
         if self._use_httpx:
             resp = await self._session.post(
                 url,
+                params=params,
                 data=data,
                 json=json,
                 headers=headers,
@@ -301,6 +303,7 @@ class RyzenthApiClient:
         else:
             async with self._session.post(
                 url,
+                params=params,
                 data=data,
                 json=json,
                 headers=headers,
