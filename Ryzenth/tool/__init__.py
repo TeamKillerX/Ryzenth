@@ -3,13 +3,13 @@ from .claude import ClaudeClient
 from .cloudflare import Cloudflare
 from .cohere import CohereClient
 from .deepseek import DeepSeekClient
+from .exonity import ExonityClient
 from .grok import GrokClient
 from .itzpire import ItzpireClient
 from .onrender import OnRenderJS
 from .openai import OpenAIClient
 from .paxsenix import Paxsenix
 from .ytdlpyton import YtdlPythonClient
-from .exonity import ExonityClient
 
 __all__ = [
   "Paxsenix",
