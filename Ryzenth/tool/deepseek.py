@@ -27,7 +27,7 @@ from ..enums import ResponseType
 from ..helper import AutoRetry
 
 
-class DeepSeek:
+class DeepSeekClient:
     def __init__(self, *, api_key: str):
         self._api_key = api_key
 
