@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # BASED API: https://ytdlpyton.nvlgroup.my.id
+# YOU NEED UPGRADE FIRST: https://ytdlpyton.nvlgroup.my.id/buyrole
 
 import logging
 import typing as t
@@ -43,6 +44,42 @@ class YtdlPythonClient:
         )
 
     #TODO: HERE ADDED
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def topup_roles(self, **kwargs):
+        clients = await self.start()
+        return await clients.get(
+            tool="ytdlpyton",
+            path="/topup/roles",
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def topup_qris(
+        self,
+        *,
+        ip_address: t.Union[int, str],
+        role: str,
+        whatsapp: str,
+        idpay: str,
+        **kwargs
+    ):
+        if not all([ip_address, role, whatsapp, idpay]):
+            raise ParamsRequiredError("The all required parameter.")
+        clients = await self.start()
+        return await clients.post(
+            tool="ytdlpyton",
+            path="/topup/qris",
+            params=clients.get_kwargs(
+                ip=ip_address,
+                role=role,
+                wa=whatsapp,
+                idpay=idpay
+            ),
+            **kwargs
+        )
+
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def search(self, *, query: str, **kwargs):
