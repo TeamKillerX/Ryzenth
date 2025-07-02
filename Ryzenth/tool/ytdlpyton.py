@@ -20,7 +20,7 @@
 # BASED API: https://ytdlpyton.nvlgroup.my.id
 
 import logging
-
+import typing as t
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
@@ -39,4 +39,140 @@ class YtdlPythonClient:
             use_default_headers=True,
             **kwargs
         )
+
     #TODO: HERE ADDED
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def search(self, *, query: str, **kwargs):
+        clients = await self.start()
+        return await clients.get(
+            tool="ytdlpyton",
+            path="/search/",
+            params=clients.get_kwargs(query=query),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def info(self, *, url: str, **kwargs):
+        clients = await self.start()
+        return await clients.get(
+            tool="ytdlpyton",
+            path="/info/",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def download(
+        self,
+        *,
+        url: str,
+        resolution: t.Union[int, str] = 720,
+        mode: str = "url",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="ytdlpyton",
+            path="/download/",
+            params=clients.get_kwargs(
+                url=url,
+                resolution=resolution,
+                mode=mode
+            ),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def ytindo(
+        self,
+        *,
+        url: str,
+        resolution: t.Union[int, str] = 720,
+        mode: str = "url",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="ytdlpyton",
+            path="/download/ytindo",
+            params=clients.get_kwargs(
+                url=url,
+                resolution=resolution,
+                mode=mode
+            ),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def ytsub(
+        self,
+        *,
+        url: str,
+        resolution: t.Union[int, str] = 720,
+        lang: str = "id",
+        mode: str = "url",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="ytdlpyton",
+            path="/download/ytsub",
+            params=clients.get_kwargs(
+                url=url,
+                resolution=resolution,
+                lang=lang,
+                mode=mode
+            ),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def ytpost(self, *, url: str, mode: str = "url", **kwargs):
+        clients = await self.start()
+        return await clients.get(
+            tool="ytdlpyton",
+            path="/download/ytpost",
+            params=clients.get_kwargs(url=url, mode=mode),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def audio(self, *, url: str, mode: str = "url", **kwargs):
+        clients = await self.start()
+        return await clients.get(
+            tool="ytdlpyton",
+            path="/download/audio",
+            params=clients.get_kwargs(url=url, mode=mode),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def playlist(
+        self,
+        *, 
+        url: str,
+        resolution: t.Union[int, str] = 720,
+        max_videos: int = 10,
+        mode: str = "url",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="ytdlpyton",
+            path="/download/playlist",
+            params=clients.get_kwargs(
+                url=url,
+                resolution=resolution,
+                max_videos=max_videos,
+                mode=mode
+            ),
+            **kwargs
+        )
