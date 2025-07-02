@@ -3,6 +3,7 @@ from .claude import ClaudeClient
 from .cloudflare import Cloudflare
 from .cohere import CohereClient
 from .deepseek import DeepSeekClient
+from .exonity import ExonityClient
 from .grok import GrokClient
 from .itzpire import ItzpireClient
 from .onrender import OnRenderJS
@@ -21,5 +22,6 @@ __all__ = [
   "ItzpireClient",
   "OpenAIClient",
   "YtdlPythonClient",
+  "ExonityClient",
   "OnRenderJS",
 ]

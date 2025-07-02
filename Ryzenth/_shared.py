@@ -8,6 +8,7 @@ TOOL_DOMAIN_MAP = {
     "deepseek": "https://api.deepseek.com",
     "cloudflare": "https://api.cloudflare.com",
     "paxsenix": "https://api.paxsenix.biz.id",
+    "exonity": "https://exonity.tech",
     "ytdlpyton": "https://ytdlpyton.nvlgroup.my.id",
     "openai": "https://api.openai.com/v1",
     "cohere": "https://api.cohere.com/v1",
