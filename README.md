@@ -105,6 +105,7 @@ export RYZENTH_API_KEY=your-api-key
 - [`Itzpire`](https://itzpire.com) - Itzpire Dev
 - [`Ytdlpyton`](https://ytdlpyton.nvlgroup.my.id/) - Ytdlpyton Unesa Dev
 - [`Exonity`](https://exonity.tech) - Exonity Dev
+- [`Yogik`](https://api.yogik.id) - Yogik Dev
 - [`x-api-js`](https://x-api-js.onrender.com/docs) - Ryzenth (JS) Dev
 - [`Ryzenth TS`](https://ryzenth.randydev.my.id/v2/fast/list-endpoint) - Ryzenth (TS) Dev
 
