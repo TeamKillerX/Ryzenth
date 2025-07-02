@@ -27,7 +27,7 @@ from ..enums import ResponseType
 from ..helper import AutoRetry
 
 
-class Itzpire:
+class ItzpireClient:
     def __init__(self, *, api_key: str = "test"):
         self._api_key = api_key
 
