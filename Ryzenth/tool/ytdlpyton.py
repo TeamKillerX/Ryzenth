@@ -66,7 +66,7 @@ class YtdlPythonClient:
         **kwargs
     ):
         if not all([ip_address, role, whatsapp, idpay]):
-            raise ParamsRequiredError("The all required parameter.")
+            raise ParamsRequiredError("All required parameters must be provided.")
         clients = await self.start()
         return await clients.post(
             tool="ytdlpyton",
