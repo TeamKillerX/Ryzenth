@@ -21,6 +21,7 @@
 
 import logging
 import typing as t
+
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
@@ -157,7 +158,7 @@ class YtdlPythonClient:
     @AutoRetry(max_retries=3, delay=1.5)
     async def playlist(
         self,
-        *, 
+        *,
         url: str,
         resolution: t.Union[int, str] = 720,
         max_videos: int = 10,
