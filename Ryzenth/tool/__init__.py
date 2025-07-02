@@ -9,8 +9,8 @@ from .itzpire import ItzpireClient
 from .onrender import OnRenderJS
 from .openai import OpenAIClient
 from .paxsenix import Paxsenix
-from .ytdlpyton import YtdlPythonClient
 from .yogik import YogikClient
+from .ytdlpyton import YtdlPythonClient
 
 __all__ = [
   "Paxsenix",
