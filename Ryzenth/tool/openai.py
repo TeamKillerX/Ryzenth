@@ -39,3 +39,14 @@ class OpenAIClient:
             use_default_headers=True,
             **kwargs
         )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def images_generations(self, *, prompt: str, model: str = "gpt-image-1", **kwargs):
+        clients = await self.start()
+        return await clients.post(
+            tool="openai",
+            path="/images/generations",
+            json=clients.get_kwargs(prompt=prompt, model=model),
+            **kwargs
+        )

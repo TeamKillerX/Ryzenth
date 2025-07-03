@@ -231,7 +231,10 @@ class RyzenthApiClient:
                     data = await resp.json()
         if self._logger:
             await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
-        return data
+        try:
+            return data
+        finally:
+            await self.close()
 
     @Benchmark.sync(level=logging.DEBUG)
     def sync_post(
@@ -319,7 +322,10 @@ class RyzenthApiClient:
                     data = await resp.json()
         if self._logger:
             await self._logger.log(f"[POST {tool}] ✅ Success: {url}")
-        return data
+        try:
+            return data
+        finally:
+            await self.close()
 
     def sync_close(self):
         return self._sync_session.close()
