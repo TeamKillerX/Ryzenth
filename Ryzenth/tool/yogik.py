@@ -71,7 +71,7 @@ class YogikClient:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def terabox(self, *, url: str, **kwargs):
-        if not url or url.strip() == "":
+        if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(
