@@ -23,6 +23,7 @@ import logging
 import asyncio
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
+from ..errors import InternalServerError
 from ..enums import ResponseType
 from ..helper import AutoRetry
 
@@ -376,7 +377,6 @@ class Paxsenix:
     @AutoRetry(max_retries=3, delay=1.5)
     async def Imagen4(self, *, text: str):
         clients = await self._service_new()
-        results = ""
         result = await clients.get(
             tool="paxsenix",
             path="/ai-image/imagen4",
@@ -395,6 +395,7 @@ class Paxsenix:
                     if status["status"] == "done":
                         return status["url"]
                 await asyncio.sleep(5)
+        raise InternalServerError("Error server try again")
 
     # TODO: HERE ADDED
     @Benchmark.performance(level=logging.DEBUG)
