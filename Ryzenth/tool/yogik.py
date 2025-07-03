@@ -42,7 +42,6 @@ class YogikClient:
     #TODO: HERE ADDED
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    """All In One Downloader"""
     async def aio(self, *, url: str, **kwargs):
         if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
@@ -56,7 +55,6 @@ class YogikClient:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    """All In One Downloader V2"""
     async def aiov2(self, *, url: str, **kwargs):
         if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
