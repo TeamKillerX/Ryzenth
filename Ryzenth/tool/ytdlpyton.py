@@ -83,7 +83,7 @@ class YtdlPythonClient:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def search(self, *, query: str, **kwargs):
-        if not query or not query.strip()
+        if not query or not query.strip():
             raise ParamsRequiredError("The 'query' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(
