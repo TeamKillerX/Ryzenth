@@ -392,9 +392,9 @@ class Paxsenix:
                     path=result_url,
                     timeout=30
                 )
-                if status["ok"]:
-                    if status["status"] == "done":
-                        return status["url"]
+                if status["ok"] and status["status"] == "done":
+                    return status["url"]
+
                 await asyncio.sleep(5)
         raise InternalServerError("Error server try again")
 
