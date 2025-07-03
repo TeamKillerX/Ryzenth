@@ -19,12 +19,13 @@
 
 # BASED API: https://api.paxsenix.biz.id/docs
 
-import logging
 import asyncio
+import logging
+
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from ..errors import InternalServerError
 from ..enums import ResponseType
+from ..errors import InternalServerError
 from ..helper import AutoRetry
 
 
