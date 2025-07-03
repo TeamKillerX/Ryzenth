@@ -83,7 +83,7 @@ class YtdlPythonClient:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def search(self, *, query: str, **kwargs):
-        if not query or query.strip() == "":
+        if not query or not query.strip()
             raise ParamsRequiredError("The 'query' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(
@@ -96,7 +96,7 @@ class YtdlPythonClient:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def info(self, *, url: str, **kwargs):
-        if not url or url.strip() == "":
+        if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(
@@ -116,7 +116,7 @@ class YtdlPythonClient:
         mode: str = "url",
         **kwargs
     ):
-        if not url or url.strip() == "":
+        if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(
@@ -140,7 +140,7 @@ class YtdlPythonClient:
         mode: str = "url",
         **kwargs
     ):
-        if not url or url.strip() == "":
+        if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(
@@ -165,7 +165,7 @@ class YtdlPythonClient:
         mode: str = "url",
         **kwargs
     ):
-        if not url or url.strip() == "":
+        if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(
@@ -183,7 +183,7 @@ class YtdlPythonClient:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def ytpost(self, *, url: str, mode: str = "url", **kwargs):
-        if not url or url.strip() == "":
+        if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(
@@ -196,7 +196,7 @@ class YtdlPythonClient:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def audio(self, *, url: str, mode: str = "url", **kwargs):
-        if not url or url.strip() == "":
+        if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(
@@ -217,7 +217,7 @@ class YtdlPythonClient:
         mode: str = "url",
         **kwargs
     ):
-        if not url or url.strip() == "":
+        if not url or not url.strip():
             raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
         clients = await self.start()
         return await clients.get(

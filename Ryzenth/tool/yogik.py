@@ -40,3 +40,69 @@ class YogikClient:
             **kwargs
         )
     #TODO: HERE ADDED
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    """All In One Downloader""""
+    async def aio(self, *, url: str, **kwargs):
+        if not url or not url.strip():
+            raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
+        clients = await self.start()
+        return await clients.get(
+            tool="yogik",
+            path="/downloader/aio",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    """All In One Downloader V2"""
+    async def aiov2(self, *, url: str, **kwargs):
+        if not url or not url.strip():
+            raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
+        clients = await self.start()
+        return await clients.get(
+            tool="yogik",
+            path="/downloader/aiov2",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def terabox(self, *, url: str, **kwargs):
+        if not url or not url.strip():
+            raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
+        clients = await self.start()
+        return await clients.get(
+            tool="yogik",
+            path="/downloader/terabox",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def capcut(self, *, url: str, **kwargs):
+        if not url or not url.strip():
+            raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
+        clients = await self.start()
+        return await clients.get(
+            tool="yogik",
+            path="/downloader/capcut",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def ssweb(self, *, url: str, **kwargs):
+        if not url or not url.strip():
+            raise ParamsRequiredError("The 'url' parameter must not be empty or whitespace.")
+        clients = await self.start()
+        return await clients.get(
+            tool="yogik",
+            path="/tools/ssweb",
+            params=clients.get_kwargs(url=url),
+            **kwargs
+        )
