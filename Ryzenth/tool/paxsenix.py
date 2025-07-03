@@ -20,7 +20,7 @@
 # BASED API: https://api.paxsenix.biz.id/docs
 
 import logging
-
+import asyncio
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
@@ -371,6 +371,30 @@ class Paxsenix:
             params=clients.get_kwargs(url=url),
             **kwargs
         )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def Imagen4(self, *, text: str):
+        clients = await self._service_new()
+        results = ""
+        result = await clients.get(
+            tool="paxsenix",
+            path="/ai-image/imagen4",
+            params=clients.get_kwargs(text=text),
+            timeout=30
+        )
+        if result["ok"]:
+            result_url = result["task_url"]
+            while True:
+                status = await clients.get(
+                    tool="paxsenix",
+                    path=result_url,
+                    timeout=30
+                )
+                if status["ok"]:
+                    if status["status"] == "done":
+                        return status["url"]
+                await asyncio.sleep(5)
 
     # TODO: HERE ADDED
     @Benchmark.performance(level=logging.DEBUG)
