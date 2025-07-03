@@ -385,11 +385,10 @@ class Paxsenix:
             timeout=30
         )
         if result["ok"]:
-            result_url = result["task_url"]
             while True:
                 status = await clients.get(
                     tool="paxsenix",
-                    path=result_url,
+                    path=f"/task/{result['jobId']}",
                     timeout=30
                 )
                 if status["ok"] and status["status"] == "done":
