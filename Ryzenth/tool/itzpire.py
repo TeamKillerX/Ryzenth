@@ -20,6 +20,7 @@
 # BASED API: https://itzpire.com
 
 import logging
+import typing as t
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -39,4 +40,96 @@ class ItzpireClient:
             use_default_headers=True,
             **kwargs
         )
+
     #TODO: HERE ADDED
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def animagine_input(
+        self,
+        *,
+        prompt: str,
+        type: str = None,
+        style: str = "Tifa",
+        visual: str = "Together",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="itzpire",
+            path="/ai/animagine",
+            params=clients.get_kwargs(
+                prompt=prompt,
+                type=type,
+                style=style,
+                visual=visual
+            ),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def anipix_input(
+        self,
+        *,
+        prompt: str,
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="itzpire",
+            path="/ai/anipix",
+            params=clients.get_kwargs(prompt=prompt),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def artify_input(
+        self,
+        *,
+        prompt: str,
+        style: str,
+        url: str = None,
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="itzpire",
+            path="/ai/artify",
+            params=clients.get_kwargs(
+                prompt=prompt,
+                style=style,
+                url=url
+            ),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def artvista_input(
+        self,
+        *,
+        prompt: str,
+        model: t.Union[str, int] = "1",
+        composition: str = None,
+        color_tone: str = None,
+        lightning: str = None,
+        ratio: str = None,
+        style: str = None,
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="itzpire",
+            path="/ai/artvista",
+            params=clients.get_kwargs(
+                prompt=prompt,
+                model=model,
+                composition=composition,
+                color_tone=color_tone,
+                lightning=lightning,
+                ratio=ratio,
+                style=style
+            ),
+            **kwargs
+        )

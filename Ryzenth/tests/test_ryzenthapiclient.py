@@ -2,7 +2,7 @@ import pytest
 
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
-from ..tool import YogikClient
+from ..tool import ItzpireClient, YogikClient
 
 clients_single = RyzenthApiClient(
     tools_name=["yogik"],
@@ -26,6 +26,17 @@ async def test_yokik_two():
     result = await clients_two.get(
         tool="yogik",
         path="/api/status",
+        timeout=30,
+        use_type=ResponseType.JSON
+    )
+    assert result is not None
+
+@pytest.mark.asyncio
+async def test_itzpire():
+    clients_t = await ItzpireClient().start()
+    result = await clients_t.get(
+        tool="itzpire",
+        path="/games/siapakah-aku",
         timeout=30,
         use_type=ResponseType.JSON
     )
