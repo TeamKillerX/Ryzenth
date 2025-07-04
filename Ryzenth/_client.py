@@ -322,7 +322,7 @@ class RyzenthApiClient:
                 headers=headers,
                 timeout=timeout
             ) as resp:
-                await AsyncStatusError(resp, status_httpx=True)
+                await AsyncStatusError(resp, status_httpx=False)
                 resp.raise_for_status()
                 if use_type == ResponseType.IMAGE:
                     data = await resp.read()
