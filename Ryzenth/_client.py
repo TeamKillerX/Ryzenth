@@ -160,6 +160,9 @@ class RyzenthApiClient:
         tool: str,
         path: str,
         params: t.Optional[dict] = None,
+        data: t.Optional[dict] = None,
+        json: t.Optional[dict] = None,
+        files: t.Optional[dict] = None,
         timeout: t.Union[int, float] = 5,
         allow_redirects: bool = False,
         use_type: ResponseType = ResponseType.JSON
@@ -171,6 +174,9 @@ class RyzenthApiClient:
             "get",
             url,
             params=params,
+            data=data,
+            json=json,
+            files=files,
             headers=headers,
             timeout=timeout,
             allow_redirects=allow_redirects
@@ -242,8 +248,10 @@ class RyzenthApiClient:
         *,
         tool: str,
         path: str,
+        params: t.Optional[dict] = None,
         data: t.Optional[dict] = None,
         json: t.Optional[dict] = None,
+        files: t.Optional[dict] = None,
         timeout: t.Union[int, float] = 5,
         allow_redirects: bool = False,
         use_type: ResponseType = ResponseType.JSON
@@ -254,8 +262,10 @@ class RyzenthApiClient:
         resp = self.request(
             "post",
             url,
+            params=params,
             data=data,
             json=json,
+            files=files,
             headers=headers,
             timeout=timeout,
             allow_redirects=allow_redirects
