@@ -21,6 +21,7 @@
 
 import logging
 import typing as t
+
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from ..enums import ResponseType

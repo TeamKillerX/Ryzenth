@@ -2,7 +2,7 @@ import pytest
 
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
-from ..tool import YogikClient, ItzpireClient
+from ..tool import ItzpireClient, YogikClient
 
 clients_single = RyzenthApiClient(
     tools_name=["yogik"],
