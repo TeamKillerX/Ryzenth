@@ -20,7 +20,7 @@
 # BASED API: https://api.openai.com
 
 import logging
-
+import typing as t
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
@@ -68,7 +68,40 @@ class OpenAIClient:
             json=clients.get_kwargs(
                 model=model,
                 instructions=instructions,
-                input=input
+                input=prompt
+            ),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def responses_multi_chat(
+        self,
+        *,
+        extra_multi_chat_or_input: t.Union[str, list[dict]],
+        model: str = "gpt-4.1",
+        **kwargs
+    ):
+        """
+        code::block:
+           extra_multi_chat=[
+               {
+                   "role": "developer",
+                   "content": "Talk like a pirate."
+               },
+               {
+                   "role": "user",
+                   "content": "Are semicolons optional in JavaScript?"
+               }
+            ]
+        """
+        clients = await self.start()
+        return await clients.post(
+            tool="openai",
+            path="/responses",
+            json=clients.get_kwargs(
+                model=model,
+                input=extra_multi_chat
             ),
             **kwargs
         )
