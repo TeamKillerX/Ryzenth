@@ -72,10 +72,37 @@ ryz._sync.send_message(
 )
 ```
 
+### Multi-Support
+```py
+from Ryzenth.tool import GrokClient
+
+g = GrokClient(api_key="sk-grok-xxxx")
+
+response = await g.chat_completions(
+    messages=[
+        {
+            "role": "system",
+            "content": "You are Grok, a chatbot inspired by the Hitchhikers Guide to the Galaxy."
+        },
+        {
+            "role": "user",
+            "content": "What is the meaning of life, the universe, and everything?"
+        }
+    ],
+    model="grok-3-mini-latest",
+    reasoning_effort="low",
+    temperature=0.7,
+    timeout=30
+)
+print(response)
+```
+-> [`Tools`](https://github.com/TeamKillerX/Ryzenth/tree/beta/Ryzenth/tool) - Tools Developers
+
 ## Environment Variable Support
 - Available API key v2 via [`@RyzenthKeyBot`](https://t.me/RyzenthKeyBot)
+- Tools Required API key: [`#HERE`](https://github.com/TeamKillerX/Ryzenth/dev/README.md#how-to-get-api-key)
 
-You can skip passing the API key directly by setting it via environment:
+You can skip passing the API key (**Only Ryzenth not tools**) directly by setting it via environment:
 
 ```bash
 export RYZENTH_API_KEY=your-api-key
