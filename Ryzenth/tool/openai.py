@@ -20,6 +20,7 @@
 # BASED API: https://api.openai.com
 
 import logging
+import typing as t
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -48,5 +49,89 @@ class OpenAIClient:
             tool="openai",
             path="/images/generations",
             json=clients.get_kwargs(prompt=prompt, model=model),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def responses_input(
+        self,
+        *,
+        prompt: str,
+        instructions: str = "Talk like a pirate.",
+        model: str = "gpt-4.1",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.post(
+            tool="openai",
+            path="/responses",
+            json=clients.get_kwargs(
+                model=model,
+                instructions=instructions,
+                input=prompt
+            ),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def responses_multi_chat(
+        self,
+        *,
+        extra_multi_chat_or_input: t.Union[str, list[dict]],
+        model: str = "gpt-4.1",
+        **kwargs
+    ):
+        """
+        code::block:
+           extra_multi_chat_or_input=[
+               {
+                   "role": "developer",
+                   "content": "Talk like a pirate."
+               },
+               {
+                   "role": "user",
+                   "content": "Are semicolons optional in JavaScript?"
+               }
+            ]
+        """
+        clients = await self.start()
+        return await clients.post(
+            tool="openai",
+            path="/responses",
+            json=clients.get_kwargs(
+                model=model,
+                input=extra_multi_chat_or_input
+            ),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def responses_image_input(
+        self,
+        *,
+        prompt: str,
+        image_url: str,
+        model: str = "gpt-4.1",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.post(
+            tool="openai",
+            path="/responses",
+            json=clients.get_kwargs(
+                model=model,
+                input=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "input_text", "text": prompt},
+                            {"type": "input_image", "image_url": image_url}
+                        ]
+                    }
+                ]
+            ),
             **kwargs
         )
