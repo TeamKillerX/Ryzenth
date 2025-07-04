@@ -73,9 +73,9 @@ class GrokClient:
             json=clients.get_kwargs(
                 messages=messages,
                 model=model,
-                stream=stream,
+                reasoning_effort=reasoning_effort,
                 temperature=temperature,
-                reasoning_effort=reasoning_effort
+                stream=stream,
             ),
             **kwargs
         )
@@ -96,8 +96,8 @@ class GrokClient:
             tool="grok",
             path="/images/generations",
             json=clients.get_kwargs(
-                model=model,
                 prompt=prompt,
+                model=model,
                 response_format=response_format,
                 n=n
             ),
