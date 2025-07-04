@@ -85,7 +85,7 @@ class OpenAIClient:
     ):
         """
         code::block:
-           extra_multi_chat=[
+           extra_multi_chat_or_input=[
                {
                    "role": "developer",
                    "content": "Talk like a pirate."
@@ -102,7 +102,7 @@ class OpenAIClient:
             path="/responses",
             json=clients.get_kwargs(
                 model=model,
-                input=extra_multi_chat
+                input=extra_multi_chat_or_input
             ),
             **kwargs
         )
