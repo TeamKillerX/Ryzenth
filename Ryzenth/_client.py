@@ -184,7 +184,7 @@ class RyzenthApiClient:
             timeout=timeout,
             allow_redirects=allow_redirects
         )
-        SyncStatusError(resp, status_httpx=False)
+        SyncStatusError(resp, status_httpx=True)
         resp.raise_for_status()
         if use_type == ResponseType.IMAGE:
             return resp.content
@@ -273,7 +273,7 @@ class RyzenthApiClient:
             timeout=timeout,
             allow_redirects=allow_redirects
         )
-        SyncStatusError(resp, status_httpx=False)
+        SyncStatusError(resp, status_httpx=True)
         resp.raise_for_status()
         if use_type == ResponseType.IMAGE:
             return resp.content
