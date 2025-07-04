@@ -40,3 +40,62 @@ class ItzpireClient:
             **kwargs
         )
     #TODO: HERE ADDED
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def animagine_input(
+        self,
+        *,
+        prompt: str,
+        type: str = None,
+        style: str = "Tifa",
+        visual: str = "Together",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="itzpire",
+            path="/ai/animagine",
+            params=clients.get_kwargs(
+                prompt=prompt,
+                type=type,
+                style=style,
+                visual=visual
+            ),
+            **kwargs
+        )
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def anipix_input(
+        self,
+        *,
+        prompt: str,
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="itzpire",
+            path="/ai/anipix",
+            params=clients.get_kwargs(prompt=prompt),
+            **kwargs
+        )
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def anipix_input(
+        self,
+        *,
+        prompt: str,
+        style: str,
+        url: str = None,
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.get(
+            tool="itzpire",
+            path="/ai/artify",
+            params=clients.get_kwargs(
+                prompt=prompt,
+                style=style,
+                url=url
+            ),
+            **kwargs
+        )
