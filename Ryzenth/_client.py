@@ -115,6 +115,9 @@ class RyzenthApiClient:
             base.update(random.choice(self._api_keys[tool]))
         return base
 
+    def request(self, method, url, **kwargs):
+        return self._sync_session.request(method=method, url=url, **kwargs)
+
     async def _throttle(self):
         now = time.monotonic()
         if now - self._last_reset >= 1:
