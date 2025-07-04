@@ -94,7 +94,7 @@ class GrokClient:
         clients = await self.start()
         return await clients.post(
             tool="grok",
-            path="images/generations",
+            path="/images/generations",
             json=clients.get_kwargs(
                 model=model,
                 prompt=prompt,
