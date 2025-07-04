@@ -50,3 +50,32 @@ class OpenAIClient:
             json=clients.get_kwargs(prompt=prompt, model=model),
             **kwargs
         )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def responses_image_input(
+        self,
+        *,
+        prompt: str,
+        image_url: str,
+        model: str = "gpt-4.1",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.post(
+            tool="openai",
+            path="/responses",
+            json=clients.get_kwargs(
+                model=model,
+                input=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "input_text", "text": prompt},
+                            {"type": "input_image", "image_url": image_url}
+                        ]
+                    }
+                ]
+            ),
+            **kwargs
+        )
