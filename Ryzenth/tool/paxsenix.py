@@ -47,7 +47,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ChatCompletions(self, **kwargs):
+    async def chat_completions(self, **kwargs):
         # https://api.paxsenix.biz.id/docs#endpoint-e42b905
         clients = await self._service_new()
         return await clients.post(
@@ -58,7 +58,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ListModels(self, **kwargs):
+    async def list_models(self, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -68,7 +68,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def GeminiRealtime(
+    async def gemini_realtime(
         self,
         *,
         text: str,
@@ -88,7 +88,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def HuggingChat(
+    async def hugging_chat(
         self,
         *,
         text: str,
@@ -112,7 +112,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def LambdaChat(
+    async def lambda_chat(
         self,
         *,
         text: str,
@@ -136,7 +136,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def MetaChat(
+    async def meta_chat(
         self,
         *,
         text: str,
@@ -156,7 +156,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def Lori(self, *, text: str, **kwargs):
+    async def lori(self, *, text: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -167,7 +167,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def GithubRoaster(self, *, username: str, **kwargs):
+    async def github_roaster(self, *, username: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -178,7 +178,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def Goody2(self, *, text: str, session_id: str = None, **kwargs):
+    async def goody2(self, *, text: str, session_id: str = None, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -189,7 +189,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def Human(self, *, text: str, **kwargs):
+    async def human(self, *, text: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -200,7 +200,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def SearchUncovr(self, *, text: str, **kwargs):
+    async def search_uncovr(self, *, text: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -211,7 +211,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def SearchFelo(self, *, text: str, **kwargs):
+    async def search_felo(self, *, text: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -222,7 +222,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def SearchTurboSeek(self, *, text: str, **kwargs):
+    async def search_turbo_seek(self, *, text: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -233,7 +233,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def SearchDuckAssist(self, *, text: str, **kwargs):
+    async def search_duck_assist(self, *, text: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -244,7 +244,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def SearchLepton(self, *, text: str, **kwargs):
+    async def search_lepton(self, *, text: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -255,7 +255,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def SearchBagoodex(self, *, text: str, **kwargs):
+    async def search_bagoodex(self, *, text: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -266,7 +266,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DLSpotify(self, *, url: str, serv: str = None, **kwargs):
+    async def spotify(self, *, url: str, serv: str = None, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -277,7 +277,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DLDeezer(self, *, url: str, quality: str = None, **kwargs):
+    async def deezer(self, *, url: str, quality: str = None, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -288,7 +288,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DLSoundCloud(self, *, url: str, **kwargs):
+    async def soundcloud(self, *, url: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -299,7 +299,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DLTwitter(self, *, url: str, **kwargs):
+    async def twitter(self, *, url: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -310,7 +310,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DLSnackVideo(self, *, url: str, **kwargs):
+    async def snack_video(self, *, url: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -321,7 +321,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DLSnapChat(self, *, url: str, **kwargs):
+    async def snap_chat(self, *, url: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -332,7 +332,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DLTerabox(self, *, url: str, password: str = None, **kwargs):
+    async def terabox(self, *, url: str, password: str = None, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -343,7 +343,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DLAio(self, *, url: str, **kwargs):
+    async def aio(self, *, url: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -354,7 +354,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DLytdlp(self, *, url: str, **kwargs):
+    async def ytdlp(self, *, url: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -365,7 +365,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DL9xbuddy(self, *, url: str, **kwargs):
+    async def xbuddy(self, *, url: str, **kwargs):
         clients = await self._service_new()
         return await clients.get(
             tool="paxsenix",
@@ -376,7 +376,7 @@ class Paxsenix:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def Imagen4(self, *, text: str):
+    async def imagen4(self, *, text: str):
         clients = await self._service_new()
         result = await clients.get(
             tool="paxsenix",
@@ -400,7 +400,7 @@ class Paxsenix:
     # TODO: HERE ADDED
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def DeepSeekChat(
+    async def deep_seek_chat(
         self,
         *,
         text: str,
