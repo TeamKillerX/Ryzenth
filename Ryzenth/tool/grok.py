@@ -21,6 +21,7 @@
 
 import logging
 import typing as t
+
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
@@ -59,7 +60,7 @@ class GrokClient:
         Use grok-3 or grok-3-fast: For queries requiring deep domain expertise or world knowledge (eg healthcare, legal, finance).
 
         Note:
-        Reasoning is only supported by 
+        Reasoning is only supported by
         grok-3-mini and grok-3-mini-fast.
         The Grok 3 models grok-3 (reasoning_effort) and grok-3-fast do not support reasoning
 
