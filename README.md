@@ -100,7 +100,7 @@ print(response)
 
 ## Environment Variable Support
 - Available API key v2 via [`@RyzenthKeyBot`](https://t.me/RyzenthKeyBot)
-- Tools Required API key: [`#HERE`](https://github.com/TeamKillerX/Ryzenth/dev/README.md#how-to-get-api-key)
+- Tools Required API key: [`#HERE`](https://github.com/TeamKillerX/Ryzenth?tab=readme-ov-file#how-to-get-api-key)
 
 You can skip passing the API key (**Only Ryzenth not tools**) directly by setting it via environment:
 
