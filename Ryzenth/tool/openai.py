@@ -53,6 +53,28 @@ class OpenAIClient:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
+    async def responses_input(
+        self,
+        *,
+        prompt: str,
+        instructions: str = "Talk like a pirate.",
+        model: str = "gpt-4.1",
+        **kwargs
+    ):
+        clients = await self.start()
+        return await clients.post(
+            tool="openai",
+            path="/responses",
+            json=clients.get_kwargs(
+                model=model,
+                instructions=instructions,
+                input=input
+            ),
+            **kwargs
+        )
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def responses_image_input(
         self,
         *,
