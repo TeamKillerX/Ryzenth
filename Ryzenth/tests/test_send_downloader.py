@@ -1,3 +1,5 @@
+"""API is disabled move to domain new
+
 from Ryzenth._synchisded import RyzenthXSync
 from Ryzenth.types import QueryParameter, RequestXnxx, Username
 
@@ -35,3 +37,4 @@ def test_xnxxdl():
         on_render=True
     )
     assert result is not None
+"""
