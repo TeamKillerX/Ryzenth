@@ -1,3 +1,5 @@
+"""API is disabled move to domain new
+
 from Ryzenth import ApiKeyFrom
 
 from ..types import QueryParameter
@@ -12,3 +14,4 @@ def test_deepseek():
         timeout=10
     )
     assert result is not None
+"""
