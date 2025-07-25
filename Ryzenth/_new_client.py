@@ -80,7 +80,7 @@ class RyzenthAuthClient:
 
         client = await self._ensure_client()
 
-        path = f"/api/tools/{self._tool}?account_email={self._email}&tools-api-key={self._key}{self._set_paramater}"
+        path = f"/api/tools/{self._tool}?account_email={self._email}&tools-api-key={self._key}{self._set_parameter}"
         if self._use_cache and path in self._cache:
             return self._cache[path]
 
