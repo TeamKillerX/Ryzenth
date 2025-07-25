@@ -4,6 +4,7 @@ UNKNOWN_TEST = "YWtlbm9fVUtRRVFNdDk5MWtoMkVoaDdKcUpZS2FweDhDQ3llQw=="
 TOOL_DOMAIN_MAP = {
     "itzpire": "https://itzpire.com",
     "ryzenth": "https://ryzenth-api.onrender.com",
+    "ryzenth-v2": "https://api.ryzenths.dpdns.org",
     "onrender": "https://x-api-js.onrender.com",
     "deepseek": "https://api.deepseek.com",
     "cloudflare": "https://api.cloudflare.com",
