@@ -23,8 +23,6 @@ It supports both **synchronous and asynchronous** workflows out of the box, maki
 
 With native integration for `httpx`, `aiohttp`, advanced logging (including optional Telegram alerts), and support for database storage like MongoDB, Ryzenth is designed for developers who need a lightweight, scalable, and customizable API client.
 
-> Note: Ryzenth API V1 (**javascript**) is still alive and supported, but Ryzenth is the next generation.
-
 ## Features
 
 - Full support for both `sync` and `async` clients
@@ -41,8 +39,27 @@ pip install ryzenth[fast]
 
 ## Getting Started
 
-### Async Example
+### New chaining Support
+- Use syntax `\`
+- Allow using `&` for parameters
+- You need to log in to [`ryzenths.dpdns.org`](https://ryzenths.dpdns.org)
+```py
+from Ryzenth import RyzenthAuthClient
 
+response = await RyzenthAuthClient()\
+.with_credentials("me@gmail.com", "sk-ryzenth-*")\
+.use_tool("instatiktok")\
+.set_paramater("&url={url}&platform=facebook")\
+.retry(2)\
+.cache(True)\
+.timeout(10)\
+.execute()
+
+print(response)
+```
+
+### Async Example (Deprecated)
+- Old endpoint has been deprecated and will no longer be supported.
 ```python
 from Ryzenth import ApiKeyFrom
 from Ryzenth.types import QueryParameter
@@ -57,8 +74,8 @@ await ryz.aio.send_message(
 )
 ```
 
-### Sync Example
-
+### Sync Example (Deprecated)
+- Old endpoint has been deprecated and will no longer be supported.
 ```python
 from Ryzenth import ApiKeyFrom
 from Ryzenth.types import QueryParameter
@@ -96,18 +113,6 @@ response = await g.chat_completions(
 )
 print(response)
 ```
--> [`Tools`](https://github.com/TeamKillerX/Ryzenth/tree/beta/Ryzenth/tool) - Tools Developers
-
-## Environment Variable Support
-- Available API key v2 via [`@RyzenthKeyBot`](https://t.me/RyzenthKeyBot)
-- Tools Required API key: [`#HERE`](https://github.com/TeamKillerX/Ryzenth?tab=readme-ov-file#how-to-get-api-key)
-
-You can skip passing the API key (**Only Ryzenth not tools**) directly by setting it via environment:
-
-```bash
-export RYZENTH_API_KEY=your-api-key
-```
-
 ## Tool Developer
 ~ Artificial Intelligence
 - [`OpenAI`](https://platform.openai.com/docs) - OpenAI Docs
@@ -118,7 +123,7 @@ export RYZENTH_API_KEY=your-api-key
 - [`Grok AI key`](https://docs.x.ai/docs) - Grok AI Docs
 
 ## How to get api key?
-- [`Ryzenth API key`](https://t.me/RyzenthKeyBot) - Telegram bot
+- [`Ryzenth API key`](https://ryzenths.dpdns.org) - Website official
 - [`Openai API key`](https://platform.openai.com/api-keys) - Website official
 - [`Cohere API key`](https://dashboard.cohere.com/api-keys) - Website official
 - [`Alibaba API key`](https://bailian.console.alibabacloud.com/?tab=playground#/api-key) - Website official

@@ -1,3 +1,5 @@
+"""API is disabled move to domain new
+
 from Ryzenth import ApiKeyFrom
 
 
@@ -10,3 +12,4 @@ def test_moderator():
             dot_access=False
     )
     assert result is not None
+"""
