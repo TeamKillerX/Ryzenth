@@ -4,6 +4,7 @@ from .._client import RyzenthApiClient
 from ..enums import ResponseType
 from ..tool import ItzpireClient
 
+
 @pytest.mark.asyncio
 async def test_itzpire():
     clients_t = await ItzpireClient().start()
