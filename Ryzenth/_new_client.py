@@ -29,7 +29,7 @@ class RyzenthAuthClient:
     def __init__(self):
         self._email: t.Optional[str] = None
         self._key: t.Optional[str] = None
-        self._set_paramater: t.Optional[str] = None
+        self._set_parameter: t.Optional[str] = None
         self._tool: t.Optional[str] = None
         self._retries: int = 0
         self._use_cache: bool = False
