@@ -48,8 +48,8 @@ class RyzenthAuthClient:
         self._tool = tool
         return self
 
-    def set_paramater(self, set_paramater: str):
-        self._set_paramater = set_paramater
+    def set_parameter(self, set_parameter: str):
+        self._set_paramater = set_parameter
         return self
 
     def retry(self, times: int = 3):
