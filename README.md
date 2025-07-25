@@ -42,7 +42,7 @@ pip install ryzenth[fast]
 ### New chaining Support
 - Use syntax `\`
 - Allow using `&` for parameters
-- You need login in [`ryzenths.dpdns.org`](https://ryzenths.dpdns.org)
+- You need to log in to [`ryzenths.dpdns.org`](https://ryzenths.dpdns.org)
 ```py
 from Ryzenth import RyzenthAuthClient
 
