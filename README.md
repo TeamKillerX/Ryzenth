@@ -49,7 +49,7 @@ from Ryzenth import RyzenthAuthClient
 response = await RyzenthAuthClient()\
 .with_credentials("me@gmail.com", "sk-ryzenth-*")\
 .use_tool("instatiktok")\
-.set_paramater("&url={url}&platform=facebook")\
+.set_parameter("&url={url}&platform=facebook")\
 .retry(2)\
 .cache(True)\
 .timeout(10)\
