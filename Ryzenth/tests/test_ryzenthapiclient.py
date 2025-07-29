@@ -4,6 +4,7 @@ from .._client import RyzenthApiClient
 from ..enums import ResponseType
 from ..tool import SiputzxClient
 
+
 @pytest.mark.asyncio
 async def test_siputzx():
     clients_t = await SiputzxClient().start()
