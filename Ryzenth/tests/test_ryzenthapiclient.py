@@ -8,7 +8,7 @@ from ..tool import SiputzxClient
 async def test_siputzx():
     clients_t = await SiputzxClient().start()
     result = await clients_t.get(
-        tool="itzpire",
+        tool="siputzx",
         path="/api/stalk/pinterest",
         params=clients_t.get_kwargs(q="dims")
         timeout=30,
