@@ -10,7 +10,7 @@ async def test_siputzx():
     result = await clients_t.get(
         tool="siputzx",
         path="/api/stalk/pinterest",
-        params=clients_t.get_kwargs(q="dims")
+        params=clients_t.get_kwargs(q="dims"),
         timeout=30,
         use_type=ResponseType.JSON
     )
