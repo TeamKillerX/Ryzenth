@@ -61,6 +61,40 @@ print(response)
 clients = await RyzenthApiClient(tools_name=["ryzenth-v2"], api_key={"ryzenth-v2": [{}]}, rate_limit=100, use_default_headers=True)
 ```
 
+### Tool for developers
+Custom Name:
+- `itzpire` (dead)
+- `ryzenth`
+- `ryzenth-v2`
+- `siputzx`
+- `fgsi`
+- `onrender`
+- `deepseek`
+- `cloudflare`
+- `paxsenix`
+- `exonity`
+- `yogik` (dead)
+- `ytdlpyton`
+- `openai`
+- `cohere`
+- `claude`
+- `grok`
+- `alibaba`
+- `gemini`
+- `gemini-openai`
+
+Example plugins: [`https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py`](https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py)
+```py
+clients = RyzenthApiClient(
+    tools_name=["siputzx"],
+    api_key={"siputzx": [{"Authorization": f"Bearer {self._api_key}"}]},
+    rate_limit=100,
+    use_default_headers=True,
+    **kwargs
+)
+# your logic code here
+```
+
 ### Async Example (Deprecated)
 - Old endpoint has been deprecated and will no longer be supported.
 ```python
