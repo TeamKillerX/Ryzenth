@@ -47,7 +47,7 @@ pip install ryzenth[fast]
 from Ryzenth import RyzenthAuthClient
 
 response = await RyzenthAuthClient()\
-.with_credentials("me@gmail.com", "sk-ryzenth-*")\
+.with_credentials("68750d3b92828xxxxxxxx", "sk-ryzenth-*")\
 .use_tool("instatiktok")\
 .set_parameter("&url={url}&platform=facebook")\
 .retry(2)\
@@ -56,6 +56,9 @@ response = await RyzenthAuthClient()\
 .execute()
 
 print(response)
+
+# Optional Client:
+clients = await RyzenthApiClient(tools_name=["ryzenth-v2"], api_key={"ryzenth-v2": [{}]}, rate_limit=100 use_default_headers=True)
 ```
 
 ### Async Example (Deprecated)
@@ -137,7 +140,8 @@ print(response)
 - [`Itzpire`](https://itzpire.com) - Itzpire Dev
 - [`Ytdlpyton`](https://ytdlpyton.nvlgroup.my.id/) - Ytdlpyton Unesa Dev
 - [`Exonity`](https://exonity.tech) - Exonity Dev
-- [`Yogik`](https://api.yogik.id) - Yogik Dev
+- [`Yogik`](https://api.yogik.id) - Yogik Dev (Dead)
+- [`Siputzx`](https://api.siputzx.my.id) Siputzx Dev
 - [`x-api-js`](https://x-api-js.onrender.com/docs) - Ryzenth (JS) Dev
 - [`Ryzenth TS`](https://ryzenth.randydev.my.id/v2/fast/list-endpoint) - Ryzenth (TS) Dev
 

@@ -5,6 +5,7 @@ TOOL_DOMAIN_MAP = {
     "itzpire": "https://itzpire.com",
     "ryzenth": "https://ryzenth-api.onrender.com",
     "ryzenth-v2": "https://api.ryzenths.dpdns.org",
+    "siputzx": "https://api.siputzx.my.id",
     "onrender": "https://x-api-js.onrender.com",
     "deepseek": "https://api.deepseek.com",
     "cloudflare": "https://api.cloudflare.com",
