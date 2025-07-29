@@ -34,8 +34,12 @@ With native integration for `httpx`, `aiohttp`, advanced logging (including opti
 ## Installation
 
 ```bash
-pip install ryzenth[fast]
+pip3 install ryzenth[fast]
 ````
+Or Just update from github
+```bash
+pip3 install git+https://github.com/TeamKillerX/Ryzenth.git
+```
 
 ## Getting Started
 
@@ -68,7 +72,7 @@ Custom Name:
 - `ryzenth-v2`
 - `siputzx`
 - `fgsi`
-- `onrender`
+- `onrender` (next auto free month)
 - `deepseek`
 - `cloudflare`
 - `paxsenix`
@@ -85,6 +89,8 @@ Custom Name:
 
 Example plugins: [`https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py`](https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py)
 ```py
+from Ryzenth import RyzenthApiClient
+
 clients = RyzenthApiClient(
     tools_name=["siputzx"],
     api_key={"siputzx": [{"Authorization": f"Bearer {self._api_key}"}]},
