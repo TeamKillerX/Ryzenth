@@ -97,8 +97,7 @@ clients = RyzenthApiClient(
     tools_name=["siputzx"],
     api_key={"siputzx": [{"Authorization": f"Bearer {self._api_key}"}]},
     rate_limit=100,
-    use_default_headers=True,
-    **kwargs
+    use_default_headers=True
 )
 # your logic code here
 ```
