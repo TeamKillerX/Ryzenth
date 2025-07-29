@@ -6,6 +6,7 @@ TOOL_DOMAIN_MAP = {
     "ryzenth": "https://ryzenth-api.onrender.com",
     "ryzenth-v2": "https://api.ryzenths.dpdns.org",
     "siputzx": "https://api.siputzx.my.id",
+    "fgsi": "https://fgsi.koyeb.app",
     "onrender": "https://x-api-js.onrender.com",
     "deepseek": "https://api.deepseek.com",
     "cloudflare": "https://api.cloudflare.com",
