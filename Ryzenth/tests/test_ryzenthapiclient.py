@@ -2,15 +2,16 @@ import pytest
 
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
-from ..tool import ItzpireClient
+from ..tool import SiputzxClient
 
 
 @pytest.mark.asyncio
-async def test_itzpire():
-    clients_t = await ItzpireClient().start()
+async def test_siputzx():
+    clients_t = await SiputzxClient().start()
     result = await clients_t.get(
-        tool="itzpire",
-        path="/games/siapakah-aku",
+        tool="siputzx",
+        path="/api/stalk/pinterest",
+        params=clients_t.get_kwargs(q="dims"),
         timeout=30,
         use_type=ResponseType.JSON
     )
