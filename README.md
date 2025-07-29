@@ -142,8 +142,9 @@ print(response)
 - [`Exonity`](https://exonity.tech) - Exonity Dev
 - [`Yogik`](https://api.yogik.id) - Yogik Dev (Dead)
 - [`Siputzx`](https://api.siputzx.my.id) Siputzx Dev
-- [`x-api-js`](https://x-api-js.onrender.com/docs) - Ryzenth (JS) Dev
-- [`Ryzenth TS`](https://ryzenth.randydev.my.id/v2/fast/list-endpoint) - Ryzenth (TS) Dev
+- [`Fgsi`](https://fgsi.koyeb.app) Fgsi Dev (cewek)
+- [`x-api-js`](https://x-api-js.onrender.com/docs) - Ryzenth DLR (JS) Dev
+- [`Ryzenth V2`](https://ryzenths.dpdns.org) - Ryzenth V2 (TSX) Dev
 
 * Built with love by [xtdevs](https://t.me/xtdevs)
 * Inspired by early work on AkenoX API
