@@ -87,7 +87,9 @@ Custom Name:
 - `gemini`
 - `gemini-openai`
 
-Example plugins: [`https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py`](https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py)
+Example plugins: [`/dev/modules/paxsenix.py`](https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py)
+
+Share domain module: [`/Ryzenth/_shared.py#L4`](https://github.com/TeamKillerX/Ryzenth/blob/83ea891711c89d3c53e646c866ee5137f81fcb4c/Ryzenth/_shared.py#L4)
 ```py
 from Ryzenth import RyzenthApiClient
 
