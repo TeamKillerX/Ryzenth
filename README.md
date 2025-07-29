@@ -58,7 +58,7 @@ response = await RyzenthAuthClient()\
 print(response)
 
 # Optional Client:
-clients = await RyzenthApiClient(tools_name=["ryzenth-v2"], api_key={"ryzenth-v2": [{}]}, rate_limit=100 use_default_headers=True)
+clients = await RyzenthApiClient(tools_name=["ryzenth-v2"], api_key={"ryzenth-v2": [{}]}, rate_limit=100, use_default_headers=True)
 ```
 
 ### Async Example (Deprecated)
