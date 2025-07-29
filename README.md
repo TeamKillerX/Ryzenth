@@ -47,7 +47,7 @@ pip install ryzenth[fast]
 from Ryzenth import RyzenthAuthClient
 
 response = await RyzenthAuthClient()\
-.with_credentials("me@gmail.com", "sk-ryzenth-*")\
+.with_credentials("68750d3b92828xxxxxxxx", "sk-ryzenth-*")\
 .use_tool("instatiktok")\
 .set_parameter("&url={url}&platform=facebook")\
 .retry(2)\
@@ -56,6 +56,9 @@ response = await RyzenthAuthClient()\
 .execute()
 
 print(response)
+
+# Optional Client:
+clients = await RyzenthApiClient(tools_name=["ryzenth-v2"], api_key={"ryzenth-v2": [{}]}, rate_limit=100 use_default_headers=True)
 ```
 
 ### Async Example (Deprecated)
