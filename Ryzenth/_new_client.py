@@ -29,7 +29,7 @@ from .helper import AutoRetry
 
 class RyzenthAuthClient:
     def __init__(self):
-        self._email: t.Optional[str] = None
+        self._accountId: t.Optional[str] = None
         self._key: t.Optional[str] = None
         self._set_parameter: t.Optional[str] = None
         self._tool: t.Optional[str] = None
@@ -39,8 +39,8 @@ class RyzenthAuthClient:
         self._client = None
         self._cache = {}
 
-    def with_credentials(self, email: str, key: str):
-        self._email = email
+    def with_credentials(self, accountId: str, key: str):
+        self._accountId = accountId
         self._key = key
         return self
 
@@ -75,12 +75,12 @@ class RyzenthAuthClient:
         return self._client
 
     async def execute(self):
-        if not all([self._email, self._key, self._tool]):
-            raise ValueError("Email, API key, and tool must be set")
+        if not all([self._accountId, self._key, self._tool]):
+            raise ValueError("accountId, API key, and tool must be set")
 
         client = await self._ensure_client()
 
-        path = f"/api/tools/{self._tool}?account_email={self._email}&tools-api-key={self._key}{self._set_parameter}"
+        path = f"/api/tools/{self._tool}?accountId={self._accountId}&tools-api-key={self._key}{self._set_parameter}"
         if self._use_cache and path in self._cache:
             return self._cache[path]
 
