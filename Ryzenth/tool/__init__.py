@@ -4,13 +4,14 @@ from .cloudflare import Cloudflare
 from .cohere import CohereClient
 from .deepseek import DeepSeekClient
 from .exonity import ExonityClient
+
+# from .yogik import YogikClient
+from .fgsi import FgsiClient
 from .grok import GrokClient
 from .itzpire import ItzpireClient
 from .onrender import OnRenderJS
 from .openai import OpenAIClient
 from .paxsenix import Paxsenix
-
-# from .yogik import YogikClient
 from .siputzx import SiputzxClient
 from .ytdlpyton import YtdlPythonClient
 
@@ -27,5 +28,6 @@ __all__ = [
   "YtdlPythonClient",
   "ExonityClient",
   "SiputzxClient",
+  "FgsiClient",
   "OnRenderJS",
 ]
