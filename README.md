@@ -95,7 +95,7 @@ from Ryzenth import RyzenthApiClient
 
 clients = RyzenthApiClient(
     tools_name=["siputzx"],
-    api_key={"siputzx": [{"Authorization": f"Bearer {self._api_key}"}]},
+    api_key={"siputzx": [{"Authorization": f"Bearer test"}]},
     rate_limit=100,
     use_default_headers=True
 )
