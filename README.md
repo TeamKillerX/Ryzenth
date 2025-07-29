@@ -87,16 +87,17 @@ Custom Name:
 - `gemini`
 - `gemini-openai`
 
-Example plugins: [`https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py`](https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py)
+Example plugins: [`/dev/modules/paxsenix.py`](https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py)
+
+Share domain module: [`/Ryzenth/_shared.py#L4`](https://github.com/TeamKillerX/Ryzenth/blob/83ea891711c89d3c53e646c866ee5137f81fcb4c/Ryzenth/_shared.py#L4)
 ```py
 from Ryzenth import RyzenthApiClient
 
 clients = RyzenthApiClient(
     tools_name=["siputzx"],
-    api_key={"siputzx": [{"Authorization": f"Bearer {self._api_key}"}]},
+    api_key={"siputzx": [{"Authorization": f"Bearer test"}]},
     rate_limit=100,
-    use_default_headers=True,
-    **kwargs
+    use_default_headers=True
 )
 # your logic code here
 ```
