@@ -16,20 +16,19 @@
 ![Image](https://github.com/user-attachments/assets/ebb42582-4d5d-4f6a-8e8b-78d737810510)
 
 ---
+**Ryzenth** is this cool Multi-API SDK that's got your back when it comes to handling API keys and hooking up to databases.
 
-**Ryzenth** is a flexible Multi-API SDK with built-in support for API key management and database integration.
+It plays nice with both **sync and async** stuff right off the bat. That means it's perfect for all sorts of things these days, like AI APIs, Telegram bots, regular REST services, and automation tools.
 
-It supports both **synchronous and asynchronous** workflows out of the box, making it ideal for modern use cases such as AI APIs, Telegram bots, REST services, and automation tools.
-
-With native integration for `httpx`, `aiohttp`, advanced logging (including optional Telegram alerts), and support for database storage like MongoDB, Ryzenth is designed for developers who need a lightweight, scalable, and customizable API client.
+Because it works hand-in-hand with things like `httpx` and `aiohttp`, has some neat logging features (you can even get alerts on Telegram if you want), and can store data in databases like MongoDB, Ryzenth is made for developers who want an API client that's easy to work with, can grow as needed, and can be tweaked to fit their needs.
 
 ## Features
 
-- Full support for both `sync` and `async` clients
-- Built-in API Key management
-- Support for modern AI endpoints (image generation, search, text, and more)
-- Designed for speed with `httpx`
-- Etc
+- Works with both `sync` and `async` clients, so whatever you're using, it's got you covered.
+- Makes it easy to handle API Keys right out of the box.
+- Plays well with today's AI stuff like making images, searching, writing text and all that.
+- Uses `httpx` to keep things moving fast.
+- And more!
 
 ## Installation
 
@@ -187,17 +186,17 @@ print(response)
 - [`x-api-js`](https://x-api-js.onrender.com/docs) - Ryzenth DLR (JS) Dev
 - [`Ryzenth V2`](https://ryzenths.dpdns.org) - Ryzenth V2 (TSX) Dev
 
-* Built with love by [xtdevs](https://t.me/xtdevs)
-* Inspired by early work on AkenoX API
-* Thanks to Google Dev tools for AI integration concepts
-* All Web scraper original
+*   Made with love by [xtdevs](https://t.me/xtdevs)
+*   Got the idea from the early AkenoX API project
+*   Big thanks to Google Dev tools for the AI stuff
+*   The web scraper is all our own work
 
 ## Donation
-* Your donation helps us continue our work!
+Your gift makes a difference and lets us keep doing what we do
 
-To send payments via DANA, use the following Bank Jago account number:
+To donate using DANA, send your payment to Bank Jago account number `100201327349`.
 
-Bank Jago: `100201327349`
+Thanks a bunch!
 
 ## License
 MIT License © 2025 Ryzenth Developers from TeamKillerX
