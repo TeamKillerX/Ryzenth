@@ -23,6 +23,7 @@ import logging
 import random
 import time
 import typing as t
+import base64
 from os import getenv
 
 import aiohttp
@@ -114,6 +115,22 @@ class RyzenthApiClient:
         if self._use_default_headers and tool in self._api_keys:
             base.update(random.choice(self._api_keys[tool]))
         return base
+
+    def to_buffer(response=None, filename="default.jpg", return_image_base64=False):
+        if not filename.endswith(".jpg"):
+            return None
+        with open(filename, "wb") as f:
+            if return_image_base64:
+                if not response:
+                    return None
+                try:
+                    decoded_data = base64.b64decode(response)
+                except Exception:
+                    return None
+                f.write(decoded_data)
+            else:
+                f.write(response)
+        return filename
 
     def request(self, method, url, **kwargs):
         return self._sync_session.request(method=method, url=url, **kwargs)
