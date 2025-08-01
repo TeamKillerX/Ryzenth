@@ -116,7 +116,7 @@ class RyzenthApiClient:
             base.update(random.choice(self._api_keys[tool]))
         return base
 
-    def to_buffer(response=None, filename="default.jpg", return_image_base64=False):
+    def to_buffer(self, response=None, filename="default.jpg", return_image_base64=False):
         """
         Writes the response to a file buffer. Supports common image formats: .jpg, .jpeg, .png, .gif.
 
