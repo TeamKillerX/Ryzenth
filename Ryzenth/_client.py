@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
+import base64
 import json
 import logging
 import random
@@ -114,6 +115,34 @@ class RyzenthApiClient:
         if self._use_default_headers and tool in self._api_keys:
             base.update(random.choice(self._api_keys[tool]))
         return base
+
+    def to_buffer(self, response=None, filename="default.jpg", return_image_base64=False):
+        """
+        Writes the response to a file buffer. Supports common image formats: .jpg, .jpeg, .png, .gif.
+
+        Args:
+            response: The image data, either as bytes or base64 string.
+            filename: The output filename. Must end with a supported image extension.
+            return_image_base64: If True, decodes base64 before writing.
+
+        Returns:
+            None if the file extension is not supported or on error, otherwise writes the file.
+        """
+        allowed_extensions = (".jpg", ".jpeg", ".png", ".gif")
+        if not filename.lower().endswith(allowed_extensions):
+            return None
+        with open(filename, "wb") as f:
+            if return_image_base64:
+                if not response:
+                    return None
+                try:
+                    decoded_data = base64.b64decode(response)
+                except Exception:
+                    return None
+                f.write(decoded_data)
+            else:
+                f.write(response)
+        return filename
 
     def request(self, method, url, **kwargs):
         return self._sync_session.request(method=method, url=url, **kwargs)
