@@ -18,12 +18,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
+import base64
 import json
 import logging
 import random
 import time
 import typing as t
-import base64
 from os import getenv
 
 import aiohttp
