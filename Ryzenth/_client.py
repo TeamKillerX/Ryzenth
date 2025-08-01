@@ -117,7 +117,19 @@ class RyzenthApiClient:
         return base
 
     def to_buffer(response=None, filename="default.jpg", return_image_base64=False):
-        if not filename.endswith(".jpg"):
+        """
+        Writes the response to a file buffer. Supports common image formats: .jpg, .jpeg, .png, .gif.
+
+        Args:
+            response: The image data, either as bytes or base64 string.
+            filename: The output filename. Must end with a supported image extension.
+            return_image_base64: If True, decodes base64 before writing.
+
+        Returns:
+            None if the file extension is not supported or on error, otherwise writes the file.
+        """
+        allowed_extensions = (".jpg", ".jpeg", ".png", ".gif")
+        if not filename.lower().endswith(allowed_extensions):
             return None
         with open(filename, "wb") as f:
             if return_image_base64:
