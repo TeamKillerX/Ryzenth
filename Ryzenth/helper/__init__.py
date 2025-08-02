@@ -28,6 +28,7 @@ from ._openai import WhisperAsync, WhisperSync
 from ._ryzenth import HumanizeAsync, HumanizeSync
 from ._thinking import WhatAsync, WhatSync
 
+
 def to_buffer(response=None, filename="default.jpg", return_image_base64=False):
     allowed_extensions = (".jpg", ".jpeg", ".png", ".gif")
     if not filename.lower().endswith(allowed_extensions):
