@@ -28,6 +28,7 @@ from ._openai import WhisperAsync, WhisperSync
 from ._ryzenth import HumanizeAsync, HumanizeSync
 from ._thinking import WhatAsync, WhatSync
 
+
 class Helpers:
     @classmethod
     def encode_image_base64(cls, image_path):
