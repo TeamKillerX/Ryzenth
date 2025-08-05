@@ -41,7 +41,7 @@ from ._errors import (
 )
 from ._shared import TOOL_DOMAIN_MAP
 from .enums import ResponseType
-from .helper import AutoRetry
+from .helper import AutoRetry, ResponseFileImage
 from .tl import LoggerService
 
 
@@ -115,6 +115,9 @@ class RyzenthApiClient:
         if self._use_default_headers and tool in self._api_keys:
             base.update(random.choice(self._api_keys[tool]))
         return base
+
+    async def to_image_class(self, path: str):
+        return await ResponseFileImage(path)
 
     def to_buffer(self, response=None, filename="default.jpg", return_image_base64=False):
         """

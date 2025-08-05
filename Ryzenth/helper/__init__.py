@@ -22,7 +22,7 @@ import base64
 from ._decorators import AutoRetry, Decorators
 from ._federation import FbanAsync, FbanSync
 from ._fonts import FontsAsync, FontsSync
-from ._images import ImagesAsync, ImagesSync
+from ._images import ImagesAsync, ImagesSync, ResponseFileImage
 from ._moderator import ModeratorAsync, ModeratorSync
 from ._openai import WhisperAsync, WhisperSync
 from ._ryzenth import HumanizeAsync, HumanizeSync
@@ -73,5 +73,6 @@ __all__ = [
     "Decorators",
     "AutoRetry",
     "to_buffer",
-    "Helpers"
+    "Helpers",
+    "ResponseFileImage"
 ]
