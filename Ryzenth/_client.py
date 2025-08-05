@@ -116,8 +116,8 @@ class RyzenthApiClient:
             base.update(random.choice(self._api_keys[tool]))
         return base
 
-    async def to_image_class(self, path: str):
-        return await ResponseFileImage(path)
+    async def to_image_class(self, content):
+        return await ResponseFileImage(content)
 
     def to_buffer(self, response=None, filename="default.jpg", return_image_base64=False):
         """
