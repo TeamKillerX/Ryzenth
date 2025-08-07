@@ -35,7 +35,7 @@ class GeneratedImage:
         self._logger.info(f"Successfully generated and saved image to: {saved_path}")
         return saved_path
 
-    async def to_base64_and_decode(self):
+    async def to_buffer_and_list(self):
         file_save = self._client.to_buffer(
             content["data"]["base64Image"],
             return_image_base64=True
