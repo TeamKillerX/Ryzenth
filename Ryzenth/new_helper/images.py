@@ -81,6 +81,34 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
+    async def create_gemini_and_captions(self, prompt: str) -> str:
+        if not prompt or not prompt.strip():
+            raise WhatFuckError("Prompt cannot be empty")
+
+        client = self._get_client()
+
+        try:
+            self.logger.debug(f"Generating gemini image with prompt: {prompt[:50]}...")
+            response = await client.get(
+                tool="ryzenth-v2",
+                path="/api/v1/gemini-latest/imagen",
+                timeout=30,
+                params=client.get_kwargs(input=prompt.strip()),
+                use_type=ResponseType.JSON
+            )
+
+            if not response_content:
+                raise WhatFuckError("Empty response from image generation API")
+
+            return GeneratedImage(client=client, content=response)
+        except Exception as e:
+            self.logger.error(f"Gemini Image generation failed: {e}")
+            raise WhatFuckError(f"Gemini Image generation failed: {e}") from e
+        finally:
+            pass
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def create(
         self,
         prompt: str,
@@ -128,7 +156,12 @@ class ImagesOrgAsync:
             if not response_content:
                 raise WhatFuckError("Empty response from image generation API")
 
-            return GeneratedImage(client, response_content, file_path, self.logger)
+            return GeneratedImage(
+                client=client,
+                content=response_content,
+                file_path=file_path,
+                logger=self.logger
+            )
         except Exception as e:
             self.logger.error(f"Image generation failed: {e}")
             raise WhatFuckError(f"Image generation failed: {e}") from e
