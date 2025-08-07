@@ -3,11 +3,14 @@ import base64
 from ._errors import WhatFuckError
 
 class ResponseResult:
-    def __init__(self, client=None, response=None):
+    def __init__(self, client=None, response=None, is_ultimate: bool = False):
         self._client = client
+        self._is_ultimate = is_ultimate
         self._response = response
 
     async def to_result(self):
+        if self._is_ultimate:
+            return self._client.dict_convert_to_dot(self._response).data.content.ultimate[0].text
         return self._client.dict_convert_to_dot(self._response).data.choices[0].message.content
 
     async def to_json(self):
