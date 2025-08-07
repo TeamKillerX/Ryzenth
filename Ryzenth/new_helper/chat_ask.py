@@ -21,8 +21,8 @@ import logging
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._export_class import ResponseResult
 from .._errors import WhatFuckError
+from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
 

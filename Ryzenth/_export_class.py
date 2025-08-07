@@ -1,6 +1,8 @@
-import io
 import base64
+import io
+
 from ._errors import WhatFuckError
+
 
 class ResponseResult:
     def __init__(self, client=None, response=None, is_ultimate: bool = False):
@@ -32,17 +34,17 @@ class GeneratedImage:
             raise WhatFuckError("Failed to save generated image")
         self._logger.info(f"Successfully generated and saved image to: {saved_path}")
         return saved_path
-      
+
     async def to_base64(self):
         if not self._content:
             raise WhatFuckError("No content available")
 
       return base64.b64encode(self._content).decode()
-      
+
     async def to_fileobj(self):
         if not self._content:
             raise WhatFuckError("No content available")
         return io.BytesIO(self._content)
-        
+
     def __repr__(self):
         return f"<GeneratedImage path={self._file_path}>"

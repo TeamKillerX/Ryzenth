@@ -106,7 +106,7 @@ class ImagesOrgAsync:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
-    
+
         if not file_path:
             file_path = "default.jpg"
 
