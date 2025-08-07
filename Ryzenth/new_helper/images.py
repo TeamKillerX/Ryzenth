@@ -69,7 +69,7 @@ class ImagesOrgAsync:
                 },
                 use_type=ResponseType.JSON
             )
-            if self.is_json:
+            if is_json:
                 return ResponseResult(client=None, response)
             return ResponseResult(client, response)
         except Exception as e:
