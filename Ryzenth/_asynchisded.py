@@ -45,7 +45,7 @@ from .helper import (
     WhatAsync,
     WhisperAsync,
 )
-from .new_helper import ImagesOrgAsync
+from .new_helper import ImagesOrgAsync, ChatOrgAsync
 from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 
 
@@ -55,6 +55,7 @@ class RyzenthOrg:
         self._session = None
         self._closed = False
         self.images = ImagesOrgAsync(self)
+        self.chat = ChatOrgAsync(self)
 
     async def _get_session(self):
         if self._closed:
