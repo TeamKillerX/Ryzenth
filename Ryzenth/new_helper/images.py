@@ -20,7 +20,7 @@
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from ..enums import ResponseType
-from . import AutoRetry
+from ..helper import AutoRetry
 
 class ImagesOrgAsync:
     def __init__(self, parent):
