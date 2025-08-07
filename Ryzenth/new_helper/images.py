@@ -50,7 +50,7 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_upload_ask(self, captions: str, file_path: str, is_json: bool = False):
+    async def create_upload_to_ask(self, captions: str, file_path: str) -> ResponseResult:
         if not captions or not captions.strip():
             raise WhatFuckError("Captions cannot be empty")
 
@@ -69,14 +69,42 @@ class ImagesOrgAsync:
                 },
                 use_type=ResponseType.JSON
             )
-            if is_json:
-                return ResponseResult(client=None, response=response)
             return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"Image vision failed: {e}")
             raise WhatFuckError(f"Image vision failed: {e}") from e
         finally:
-            # Note: Don't close the client here as it might be reused
+            pass
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def create_gemini_to_edit(self, prompt: str, file_path: str) -> GeneratedImage:
+        if not prompt or not prompt.strip():
+            raise WhatFuckError("Prompt cannot be empty")
+
+        if not file_path:
+            file_path = "default.jpg"
+
+        client = self._get_client()
+        try:
+            response = await client.post(
+                tool="ryzenth-v2",
+                path="/api/v1/gemini-latest/imagen/edit",
+                timeout=30,
+                json={
+                    "input": prompt,
+                    "base64Image": Helpers.encode_image_base64(file_path)
+                },
+                use_type=ResponseType.JSON
+            )
+            if not response:
+                raise WhatFuckError("Empty response from gemini edit image API")
+
+            return GeneratedImage(client=client, content=response)
+        except Exception as e:
+            self.logger.error(f"Gemini Image generation failed: {e}")
+            raise WhatFuckError(f"Gemini Image generation failed: {e}") from e
+        finally:
             pass
 
     @Benchmark.performance(level=logging.DEBUG)
@@ -98,7 +126,7 @@ class ImagesOrgAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from image generation API")
+                raise WhatFuckError("Empty response from gemini image generation API")
 
             return GeneratedImage(client=client, content=response)
         except Exception as e:
@@ -166,7 +194,6 @@ class ImagesOrgAsync:
             self.logger.error(f"Image generation failed: {e}")
             raise WhatFuckError(f"Image generation failed: {e}") from e
         finally:
-            # Note: Don't close the client here as it might be reused
             pass
 
     def _validate_file_path(self, file_path: str, create_dirs: bool = True) -> str:

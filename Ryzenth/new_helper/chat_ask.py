@@ -48,7 +48,7 @@ class ChatOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask(self, prompt: str) -> str:
+    async def ask(self, prompt: str) -> ResponseResult:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
         client = self._get_client()
@@ -66,12 +66,11 @@ class ChatOrgAsync:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
         finally:
-            # Note: Don't close the client here as it might be reused
             pass
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask_ultimate(self, prompt: str, model: str = "grok") -> str:
+    async def ask_ultimate(self, prompt: str, model: str = "grok") -> ResponseResult:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
         if not model or not model.strip():
@@ -91,7 +90,6 @@ class ChatOrgAsync:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
         finally:
-            # Note: Don't close the client here as it might be reused
             pass
 
     async def close(self):
