@@ -24,6 +24,7 @@ import logging
 import random
 import time
 import typing as t
+from contextlib import asynccontextmanager
 from os import getenv
 
 import aiohttp
@@ -70,18 +71,19 @@ class RyzenthApiClient:
         self._use_httpx = use_httpx
         self._settings = settings or {}
         self._logger = logger
+        self._closed = False
         self._init_logging()
 
-        self._tools: dict[str, str] = {
-            name: TOOL_DOMAIN_MAP.get(name)
-            for name in tools_name
-        }
+        self._tools: dict[str, str] = {}
+        for name in tools_name:
+            domain = TOOL_DOMAIN_MAP.get(name)
+            if domain is None:
+                raise ToolNotFoundError(f"Tool '{name}' not found in domain map")
+            self._tools[name] = domain
+
         self._sync_session = requests.Session()
-        self._session = (
-            httpx.AsyncClient()
-            if use_httpx else
-            aiohttp.ClientSession()
-        )
+        self._async_session = None
+        self._session_lock = asyncio.Lock()
 
     def _init_logging(self):
         log_level = "WARNING"
@@ -93,10 +95,33 @@ class RyzenthApiClient:
             if "httpx_log" in entry:
                 disable_httpx_log = not entry["httpx_log"]
 
-        logging.basicConfig(level=getattr(logging, log_level, logging.WARNING))
+        if not logging.getLogger().hasHandlers():
+            logging.basicConfig(level=getattr(logging, log_level, logging.WARNING))
+        
         if disable_httpx_log:
             logging.getLogger("httpx").setLevel(logging.CRITICAL)
             logging.getLogger("httpcore").setLevel(logging.CRITICAL)
+
+    async def _get_session(self):
+        if self._closed:
+            raise RuntimeError("Client is closed")
+            
+        if self._async_session is None:
+            async with self._session_lock:
+                if self._async_session is None:
+                    if self._use_httpx:
+                        self._async_session = httpx.AsyncClient(
+                            timeout=httpx.Timeout(30.0),
+                            limits=httpx.Limits(max_connections=100, max_keepalive_connections=20)
+                        )
+                    else:
+                        connector = aiohttp.TCPConnector(limit=100, limit_per_host=20)
+                        timeout = aiohttp.ClientTimeout(total=30)
+                        self._async_session = aiohttp.ClientSession(
+                            connector=connector,
+                            timeout=timeout
+                        )
+        return self._async_session
 
     def dict_convert_to_dot(self, obj):
         return Box(obj if obj is not None else {})
@@ -113,10 +138,12 @@ class RyzenthApiClient:
     def _get_headers_for_tool(self, tool: str) -> dict:
         base = {"User-Agent": get_user_agent()}
         if self._use_default_headers and tool in self._api_keys:
-            base.update(random.choice(self._api_keys[tool]))
+            tool_headers = self._api_keys[tool]
+            if tool_headers:
+                base.update(random.choice(tool_headers))
         return base
 
-    async def to_image_class(self, content, path):
+    async def to_image_class(self, content: bytes, path: str):
         return await ResponseFileImage(content).to_save(path)
 
     def to_buffer(self, response=None, filename="default.jpg", return_image_base64=False):
@@ -129,25 +156,35 @@ class RyzenthApiClient:
             return_image_base64: If True, decodes base64 before writing.
 
         Returns:
-            None if the file extension is not supported or on error, otherwise writes the file.
+            str: filename if successful, None otherwise
         """
-        allowed_extensions = (".jpg", ".jpeg", ".png", ".gif")
+        if not response:
+            return None
+            
+        allowed_extensions = (".jpg", ".jpeg", ".png", ".gif", ".webp")
         if not filename.lower().endswith(allowed_extensions):
             return None
-        with open(filename, "wb") as f:
-            if return_image_base64:
-                if not response:
-                    return None
-                try:
-                    decoded_data = base64.b64decode(response)
-                except Exception:
-                    return None
-                f.write(decoded_data)
-            else:
-                f.write(response)
-        return filename
+            
+        try:
+            with open(filename, "wb") as f:
+                if return_image_base64:
+                    if isinstance(response, str):
+                        decoded_data = base64.b64decode(response)
+                        f.write(decoded_data)
+                    else:
+                        return None
+                else:
+                    if isinstance(response, (bytes, bytearray)):
+                        f.write(response)
+                    else:
+                        return None
+            return filename
+        except Exception as e:
+            if self._logger:
+                asyncio.create_task(self._logger.log(f"Error saving file {filename}: {e}"))
+            return None
 
-    def request(self, method, url, **kwargs):
+    def request(self, method: str, url: str, **kwargs):
         return self._sync_session.request(method=method, url=url, **kwargs)
 
     async def _throttle(self):
@@ -157,7 +194,9 @@ class RyzenthApiClient:
             self._request_counter = 0
 
         if self._request_counter >= self._rate_limit:
-            await asyncio.sleep(1 - (now - self._last_reset))
+            sleep_time = 1 - (now - self._last_reset)
+            if sleep_time > 0:
+                await asyncio.sleep(sleep_time)
             self._last_reset = time.monotonic()
             self._request_counter = 0
 
@@ -174,9 +213,13 @@ class RyzenthApiClient:
         if not tools_raw or not api_key_raw:
             raise WhatFuckError("Environment variables RYZENTH_TOOLS and RYZENTH_API_KEY_JSON are required.")
 
-        tools = [t.strip() for t in tools_raw.split(",")]
-        api_keys = json.loads(api_key_raw)
-        rate_limit = int(rate_limit_raw)
+        try:
+            tools = [t.strip() for t in tools_raw.split(",") if t.strip()]
+            api_keys = json.loads(api_key_raw)
+            rate_limit = int(rate_limit_raw)
+        except (ValueError, json.JSONDecodeError) as e:
+            raise WhatFuckError(f"Invalid environment variable format: {e}")
+
         use_default_headers = use_headers.lower() == "true"
         httpx_flag = use_httpx.lower() == "true"
 
@@ -205,24 +248,30 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        resp = self.request(
-            "get",
-            url,
-            params=params,
-            data=data,
-            json=json,
-            files=files,
-            headers=headers,
-            timeout=timeout,
-            allow_redirects=allow_redirects
-        )
-        SyncStatusError(resp, status_httpx=True)
-        resp.raise_for_status()
-        if use_type == ResponseType.IMAGE:
-            return resp.content
-        elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-            return resp.text
-        return resp.json()
+        
+        try:
+            resp = self.request(
+                "GET",
+                url,
+                params=params,
+                data=data,
+                json=json,
+                files=files,
+                headers=headers,
+                timeout=timeout,
+                allow_redirects=allow_redirects
+            )
+            SyncStatusError(resp, status_httpx=True)
+            resp.raise_for_status()
+            
+            if use_type == ResponseType.IMAGE:
+                return resp.content
+            elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
+                return resp.text
+            return resp.json()
+        except Exception as e:
+            logging.error(f"Sync GET request failed for {url}: {e}")
+            raise
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -239,43 +288,49 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
+        session = await self._get_session()
 
-        if self._use_httpx:
-            resp = await self._session.get(
-                url,
-                params=params,
-                headers=headers,
-                timeout=timeout
-            )
-            await AsyncStatusError(resp, status_httpx=True)
-            resp.raise_for_status()
-            if use_type == ResponseType.IMAGE:
-                data = resp.content
-            elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-                data = resp.text
-            else:
-                data = resp.json()
-        else:
-            async with self._session.get(
-                url,
-                params=params,
-                headers=headers,
-                timeout=timeout
-            ) as resp:
-                await AsyncStatusError(resp, status_httpx=False)
-                resp.raise_for_status()
-                if use_type == ResponseType.IMAGE:
-                    data = await resp.read()
-                elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-                    data = await resp.text()
-                else:
-                    data = await resp.json()
-        if self._logger:
-            await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
         try:
+            if self._use_httpx:
+                resp = await session.get(
+                    url,
+                    params=params,
+                    headers=headers,
+                    timeout=timeout
+                )
+                await AsyncStatusError(resp, status_httpx=True)
+                resp.raise_for_status()
+                
+                if use_type == ResponseType.IMAGE:
+                    data = resp.content
+                elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
+                    data = resp.text
+                else:
+                    data = resp.json()
+            else:
+                async with session.get(
+                    url,
+                    params=params,
+                    headers=headers,
+                    timeout=aiohttp.ClientTimeout(total=timeout)
+                ) as resp:
+                    await AsyncStatusError(resp, status_httpx=False)
+                    resp.raise_for_status()
+                    
+                    if use_type == ResponseType.IMAGE:
+                        data = await resp.read()
+                    elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
+                        data = await resp.text()
+                    else:
+                        data = await resp.json()
+
+            if self._logger:
+                await self._logger.log(f"[GET {tool}] ✅ Success: {url}")
             return data
-        finally:
-            await self.close()
+        except Exception as e:
+            if self._logger:
+                await self._logger.log(f"[GET {tool}] ❌ Error: {url} - {e}")
+            raise
 
     @Benchmark.sync(level=logging.DEBUG)
     def sync_post(
@@ -294,24 +349,30 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        resp = self.request(
-            "post",
-            url,
-            params=params,
-            data=data,
-            json=json,
-            files=files,
-            headers=headers,
-            timeout=timeout,
-            allow_redirects=allow_redirects
-        )
-        SyncStatusError(resp, status_httpx=True)
-        resp.raise_for_status()
-        if use_type == ResponseType.IMAGE:
-            return resp.content
-        elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-            return resp.text
-        return resp.json()
+        
+        try:
+            resp = self.request(
+                "POST",
+                url,
+                params=params,
+                data=data,
+                json=json,
+                files=files,
+                headers=headers,
+                timeout=timeout,
+                allow_redirects=allow_redirects
+            )
+            SyncStatusError(resp, status_httpx=True)
+            resp.raise_for_status()
+            
+            if use_type == ResponseType.IMAGE:
+                return resp.content
+            elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
+                return resp.text
+            return resp.json()
+        except Exception as e:
+            logging.error(f"Sync POST request failed for {url}: {e}")
+            raise
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -330,50 +391,75 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
+        session = await self._get_session()
 
-        if self._use_httpx:
-            resp = await self._session.post(
-                url,
-                params=params,
-                data=data,
-                json=json,
-                headers=headers,
-                timeout=timeout
-            )
-            await AsyncStatusError(resp, status_httpx=True)
-            resp.raise_for_status()
-            if use_type == ResponseType.IMAGE:
-                data = resp.content
-            elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-                data = resp.text
-            else:
-                data = resp.json()
-        else:
-            async with self._session.post(
-                url,
-                params=params,
-                data=data,
-                json=json,
-                headers=headers,
-                timeout=timeout
-            ) as resp:
-                await AsyncStatusError(resp, status_httpx=False)
-                resp.raise_for_status()
-                if use_type == ResponseType.IMAGE:
-                    data = await resp.read()
-                elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
-                    data = await resp.text()
-                else:
-                    data = await resp.json()
-        if self._logger:
-            await self._logger.log(f"[POST {tool}] ✅ Success: {url}")
         try:
+            if self._use_httpx:
+                resp = await session.post(
+                    url,
+                    params=params,
+                    data=data,
+                    json=json,
+                    headers=headers,
+                    timeout=timeout
+                )
+                await AsyncStatusError(resp, status_httpx=True)
+                resp.raise_for_status()
+                
+                if use_type == ResponseType.IMAGE:
+                    data = resp.content
+                elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
+                    data = resp.text
+                else:
+                    data = resp.json()
+            else:
+                async with session.post(
+                    url,
+                    params=params,
+                    data=data,
+                    json=json,
+                    headers=headers,
+                    timeout=aiohttp.ClientTimeout(total=timeout)
+                ) as resp:
+                    await AsyncStatusError(resp, status_httpx=False)
+                    resp.raise_for_status()
+                    
+                    if use_type == ResponseType.IMAGE:
+                        data = await resp.read()
+                    elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
+                        data = await resp.text()
+                    else:
+                        data = await resp.json()
+
+            if self._logger:
+                await self._logger.log(f"[POST {tool}] ✅ Success: {url}")
             return data
-        finally:
-            await self.close()
+        except Exception as e:
+            if self._logger:
+                await self._logger.log(f"[POST {tool}] ❌ Error: {url} - {e}")
+            raise
 
     def sync_close(self):
-        return self._sync_session.close()
+        if hasattr(self._sync_session, 'close'):
+            self._sync_session.close()
 
     async def close(self):
-        return await self._session.aclose() if self._use_httpx else await self._session.close()
+        self._closed = True
+        if self._async_session:
+            if self._use_httpx:
+                await self._async_session.aclose()
+            else:
+                await self._async_session.close()
+            self._async_session = None
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.sync_close()
