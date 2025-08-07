@@ -25,6 +25,7 @@ from .._errors import WhatFuckError
 from ..enums import ResponseType
 from ..helper import AutoRetry
 
+
 class ChatOrgAsync:
     def __init__(self, parent):
         self.parent = parent
