@@ -81,7 +81,7 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_gemini_and_captions(self, prompt: str) -> str:
+    async def create_gemini_and_captions(self, prompt: str) -> GeneratedImage:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -115,7 +115,7 @@ class ImagesOrgAsync:
         file_path: str = "default.jpg",
         validate_path: bool = True,
         create_dirs: bool = True
-    ) -> str:
+    ) -> GeneratedImage:
         """
         Generate an image from a text prompt
 
