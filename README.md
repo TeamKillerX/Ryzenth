@@ -65,7 +65,7 @@ clients = await RyzenthApiClient(tools_name=["ryzenth-v2"], api_key={"ryzenth-v2
 ```
 
 ### Ryzenth API without API Key
-- Support Grok, Openai V2, vision, image generate
+- Support Grok, OpenAI V2, vision, image generation
 
 - **Chat ultimate** Supported Models: `grok`, `deepseek-reasoning`, `evil`, `unity`, `sur`, `rtist`, `hypnosis-tracy`, `llama-roblox`
 ```py
@@ -82,9 +82,10 @@ print(await response_grok.to_result())
 response_openai = await new.aio_client.chat.ask("What's the capital of Japan?")
 print(await response_openai.to_result())
 
+# After close
 await new.aio_client.chat.close()
 
-# Image generate
+# Image generation
 response_content = await new.aio_client.images.create("make a generate cat blue")
 
 await response_content.to_save()
@@ -93,6 +94,7 @@ await response_content.to_save()
 response_see = await new.aio_client.images.create_upload_ask("Describe this image:", "/path/to/example.jpg")
 await response_see.to_result()
 
+# After close
 await new.aio_client.images.close()
 ```
 
