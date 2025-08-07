@@ -66,8 +66,8 @@ clients = await RyzenthApiClient(tools_name=["ryzenth-v2"], api_key={"ryzenth-v2
 
 ### Ryzenth API without API Key
 - Support Grok, Openai V2, vision, image generate
-  
-- **Chat ultimate** Supported Models: `grok`, `deepseek-reasoning`, `evil`, `unity`, `sur`, `rtist`, `hypnosis-tracy`, `llama-roblox` 
+
+- **Chat ultimate** Supported Models: `grok`, `deepseek-reasoning`, `evil`, `unity`, `sur`, `rtist`, `hypnosis-tracy`, `llama-roblox`
 ```py
 from Ryzenth import RyzenthTools
 
