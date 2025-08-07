@@ -97,7 +97,7 @@ class ImagesOrgAsync:
                 use_type=ResponseType.JSON
             )
 
-            if not response_content:
+            if not response:
                 raise WhatFuckError("Empty response from image generation API")
 
             return GeneratedImage(client=client, content=response)
