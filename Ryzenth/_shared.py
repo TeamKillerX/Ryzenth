@@ -18,7 +18,7 @@ TOOL_DOMAIN_MAP = {
     "cohere": "https://api.cohere.com/v1",
     "claude": "https://api.anthropic.com/v1",
     "grok": "https://api.x.ai/v1",
-    "alibaba": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+    "alibaba": "https://dashscope-intl.aliyuncs.com",
     "gemini": "https://generativelanguage.googleapis.com/v1beta",
     "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai"
 }
