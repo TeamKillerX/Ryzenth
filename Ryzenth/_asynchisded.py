@@ -44,8 +44,17 @@ from .helper import (
     WhatAsync,
     WhisperAsync,
 )
+from .new_helper import ImagesOrgAsync
 from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 
+
+class RyzenthOrg:
+    def __init__(self):
+        self._api_key = ""
+        self.images = ImagesOrgAsync(self)
+
+    def _nomethod(self):
+        pass
 
 class RyzenthXAsync:
     def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
