@@ -25,7 +25,7 @@ from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import WhatFuckError
 from ..enums import ResponseType
-from ..helper import AutoRetry
+from ..helper import AutoRetry, Helpers
 
 
 class ImagesOrgAsync:
@@ -47,6 +47,34 @@ class ImagesOrgAsync:
                 raise WhatFuckError(f"Failed to initialize API client: {e}")
         return self._client
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def upload_ask(self, captions: str, file_path: str):
+        if not captions or not captions.strip():
+            raise WhatFuckError("Captions cannot be empty")
+
+        if not file_path:
+            file_path = "default.jpg"
+
+        try:
+            response = await client.post(
+                tool="ryzenth-v2",
+                path="/api/v1/openai-v2/image-vision",
+                timeout=30,
+                json={
+                    "input": captions,
+                    "base64Image": Helpers.encode_image_base64(file_path)
+                },
+                use_type=ResponseType.JSON
+            )
+            return client.dict_convert_to_dot(response).data.choices[0].message.content
+        except Exception as e:
+            self.logger.error(f"Image vision failed: {e}")
+            raise WhatFuckError(f"Image vision failed: {e}") from e
+        finally:
+            # Note: Don't close the client here as it might be reused
+            pass
+        
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def create(
@@ -105,7 +133,7 @@ class ImagesOrgAsync:
 
         except Exception as e:
             self.logger.error(f"Image generation failed: {e}")
-            raise WhatFuckError(f"Image generation failed: {e}")
+            raise WhatFuckError(f"Image generation failed: {e}") from e
         finally:
             # Note: Don't close the client here as it might be reused
             pass
@@ -206,7 +234,7 @@ class ImagesOrgAsync:
                 self.logger.warning(f"Failed to generate {failed_count} out of {len(prompts)} images")
             return successful_paths
         except Exception as e:
-            raise WhatFuckError(f"Batch image generation failed: {e}")
+            raise WhatFuckError(f"Batch image generation failed: {e}") from e
 
     async def close(self):
         if self._client:
