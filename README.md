@@ -64,6 +64,38 @@ print(response)
 clients = await RyzenthApiClient(tools_name=["ryzenth-v2"], api_key={"ryzenth-v2": [{}]}, rate_limit=100, use_default_headers=True)
 ```
 
+### Ryzenth API without API Key
+- Support Grok, Openai V2, vision, image generate
+
+- **Chat ultimate** Supported Models: `grok`, `deepseek-reasoning`, `evil`, `unity`, `sur`, `rtist`, `hypnosis-tracy`, `llama-roblox`
+```py
+from Ryzenth import RyzenthTools
+
+new = RyzenthTools()
+
+# Chat ultimate
+response_grok = await new.aio_client.chat.ask_ultimate("what is durov on telegram?", model="grok")
+
+print(await response_grok.to_result())
+
+# OpenAI V2
+response_openai = await new.aio_client.chat.ask("What's the capital of Japan?")
+print(await response_openai.to_result())
+
+await new.aio_client.chat.close()
+
+# Image generate
+response_content = await new.aio_client.images.create("make a generate cat blue")
+
+await response_content.to_save()
+
+# Upload + Ask
+response_see = await new.aio_client.images.create_upload_ask("Describe this image:", "/path/to/example.jpg")
+await response_see.to_result()
+
+await new.aio_client.images.close()
+```
+
 ### Tool for developers
 Custom Name:
 - `itzpire` (dead)
