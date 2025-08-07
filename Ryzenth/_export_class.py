@@ -19,7 +19,7 @@ class ResponseResult:
         return self._response
 
 class GeneratedImage:
-    def __init__(self, client, content, file_path, logger):
+    def __init__(self, client, content=None, file_path=None, logger=None):
         self._client = client
         self._content = content
         self._file_path = file_path
@@ -34,6 +34,13 @@ class GeneratedImage:
             raise WhatFuckError("Failed to save generated image")
         self._logger.info(f"Successfully generated and saved image to: {saved_path}")
         return saved_path
+
+    async def to_buffer_and_list(self):
+        file_save = self._client.to_buffer(
+            content["data"]["base64Image"],
+            return_image_base64=True
+        )
+        return file_save, content["data"]["content_text"]
 
     async def to_base64(self):
         if not self._content:
