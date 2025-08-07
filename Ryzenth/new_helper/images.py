@@ -74,7 +74,7 @@ class ImagesOrgAsync:
         finally:
             # Note: Don't close the client here as it might be reused
             pass
-        
+
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def create(
