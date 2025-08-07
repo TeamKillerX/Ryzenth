@@ -21,6 +21,7 @@ import logging
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
+from .._export_class import ResponseResult
 from .._errors import WhatFuckError
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -60,7 +61,7 @@ class ChatOrgAsync:
                 params=client.get_kwargs(input=prompt.strip()),
                 use_type=ResponseType.JSON
             )
-            return client.dict_convert_to_dot(response).data.choices[0].message.content
+            return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
@@ -85,7 +86,7 @@ class ChatOrgAsync:
                 params=client.get_kwargs(input=prompt.strip(), model=model),
                 use_type=ResponseType.JSON
             )
-            return client.dict_convert_to_dot(response).data.content.ultimate[0].text
+            return ResponseResult(client, response, is_ultimate=True)
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
