@@ -22,6 +22,7 @@ from .._client import RyzenthApiClient
 from ..enums import ResponseType
 from ..helper import AutoRetry
 
+
 class ImagesOrgAsync:
     def __init__(self, parent):
         self.parent = parent
@@ -40,6 +41,6 @@ class ImagesOrgAsync:
             path="/api/tools/generate-image",
             timeout=30,
             params=clients.get_kwargs(prompt=prompt),
-            use_type=ResponseType.IMAGE 
+            use_type=ResponseType.IMAGE
         )
         return await clients.to_image_class(response_content, file_path)
