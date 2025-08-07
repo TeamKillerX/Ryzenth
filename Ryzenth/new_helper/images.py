@@ -56,6 +56,7 @@ class ImagesOrgAsync:
         if not file_path:
             file_path = "default.jpg"
 
+        client = self._get_client()
         try:
             response = await client.post(
                 tool="ryzenth-v2",
