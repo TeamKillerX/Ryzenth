@@ -67,6 +67,31 @@ class ChatOrgAsync:
             # Note: Don't close the client here as it might be reused
             pass
 
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def ask_ultimate(self, prompt: str, model: str = "grok") -> str:
+        if not prompt or not prompt.strip():
+            raise WhatFuckError("Prompt cannot be empty")
+        if not model or not model.strip():
+            raise WhatFuckError("model cannot be empty")
+        client = self._get_client()
+        try:
+            self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
+            response = await client.get(
+                tool="ryzenth-v2",
+                path="/api/v1/ultimate-chat",
+                timeout=30,
+                params=client.get_kwargs(input=prompt.strip()),
+                use_type=ResponseType.JSON
+            )
+            return client.dict_convert_to_dot(response).data.content.ultimate[0].text
+        except Exception as e:
+            self.logger.error(f"chat ask failed: {e}")
+            raise WhatFuckError(f"chat ask failed: {e}") from e
+        finally:
+            # Note: Don't close the client here as it might be reused
+            pass
+
     async def close(self):
         if self._client:
             await self._client.close()
