@@ -97,7 +97,7 @@ class RyzenthApiClient:
 
         if not logging.getLogger().hasHandlers():
             logging.basicConfig(level=getattr(logging, log_level, logging.WARNING))
-        
+
         if disable_httpx_log:
             logging.getLogger("httpx").setLevel(logging.CRITICAL)
             logging.getLogger("httpcore").setLevel(logging.CRITICAL)
@@ -105,7 +105,7 @@ class RyzenthApiClient:
     async def _get_session(self):
         if self._closed:
             raise RuntimeError("Client is closed")
-            
+
         if self._async_session is None:
             async with self._session_lock:
                 if self._async_session is None:
@@ -160,11 +160,11 @@ class RyzenthApiClient:
         """
         if not response:
             return None
-            
+
         allowed_extensions = (".jpg", ".jpeg", ".png", ".gif", ".webp")
         if not filename.lower().endswith(allowed_extensions):
             return None
-            
+
         try:
             with open(filename, "wb") as f:
                 if return_image_base64:
@@ -248,7 +248,7 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        
+
         try:
             resp = self.request(
                 "GET",
@@ -263,7 +263,7 @@ class RyzenthApiClient:
             )
             SyncStatusError(resp, status_httpx=True)
             resp.raise_for_status()
-            
+
             if use_type == ResponseType.IMAGE:
                 return resp.content
             elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
@@ -300,7 +300,7 @@ class RyzenthApiClient:
                 )
                 await AsyncStatusError(resp, status_httpx=True)
                 resp.raise_for_status()
-                
+
                 if use_type == ResponseType.IMAGE:
                     data = resp.content
                 elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
@@ -316,7 +316,7 @@ class RyzenthApiClient:
                 ) as resp:
                     await AsyncStatusError(resp, status_httpx=False)
                     resp.raise_for_status()
-                    
+
                     if use_type == ResponseType.IMAGE:
                         data = await resp.read()
                     elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
@@ -349,7 +349,7 @@ class RyzenthApiClient:
         base_url = self.get_base_url(tool)
         url = f"{base_url}{path}"
         headers = self._get_headers_for_tool(tool)
-        
+
         try:
             resp = self.request(
                 "POST",
@@ -364,7 +364,7 @@ class RyzenthApiClient:
             )
             SyncStatusError(resp, status_httpx=True)
             resp.raise_for_status()
-            
+
             if use_type == ResponseType.IMAGE:
                 return resp.content
             elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
@@ -405,7 +405,7 @@ class RyzenthApiClient:
                 )
                 await AsyncStatusError(resp, status_httpx=True)
                 resp.raise_for_status()
-                
+
                 if use_type == ResponseType.IMAGE:
                     data = resp.content
                 elif use_type in [ResponseType.TEXT, ResponseType.HTML]:
@@ -423,7 +423,7 @@ class RyzenthApiClient:
                 ) as resp:
                     await AsyncStatusError(resp, status_httpx=False)
                     resp.raise_for_status()
-                    
+
                     if use_type == ResponseType.IMAGE:
                         data = await resp.read()
                     elif use_type in [ResponseType.TEXT, ResponseType.HTML]:

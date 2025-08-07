@@ -50,30 +50,30 @@ class ImagesOrgAsync:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def create(
-        self, 
-        prompt: str, 
+        self,
+        prompt: str,
         file_path: str = "default.jpg",
         validate_path: bool = True,
         create_dirs: bool = True
     ) -> str:
         """
         Generate an image from a text prompt
-        
+
         Args:
             prompt: Text description for image generation
             file_path: Path where the image will be saved
             validate_path: Whether to validate file path
             create_dirs: Whether to create directories if they don't exist
-            
+
         Returns:
             str: Path to the saved image file
-            
+
         Raises:
             WhatFuckError: If prompt is empty or generation fails
         """
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
-            
+
         if not file_path:
             file_path = "default.jpg"
 
@@ -81,7 +81,7 @@ class ImagesOrgAsync:
             file_path = self._validate_file_path(file_path, create_dirs)
 
         client = self._get_client()
-        
+
         try:
             self.logger.debug(f"Generating image with prompt: {prompt[:50]}...")
             response_content = await client.get(
@@ -91,18 +91,18 @@ class ImagesOrgAsync:
                 params=client.get_kwargs(prompt=prompt.strip()),
                 use_type=ResponseType.IMAGE
             )
-            
+
             if not response_content:
                 raise WhatFuckError("Empty response from image generation API")
 
             saved_path = await client.to_image_class(response_content, file_path)
-            
+
             if not saved_path:
                 raise WhatFuckError("Failed to save generated image")
-                
+
             self.logger.info(f"Successfully generated and saved image to: {saved_path}")
             return saved_path
-            
+
         except Exception as e:
             self.logger.error(f"Image generation failed: {e}")
             raise WhatFuckError(f"Image generation failed: {e}")
@@ -113,14 +113,14 @@ class ImagesOrgAsync:
     def _validate_file_path(self, file_path: str, create_dirs: bool = True) -> str:
         """
         Validate and prepare file path
-        
+
         Args:
             file_path: Original file path
             create_dirs: Whether to create directories
-            
+
         Returns:
             str: Validated file path
-            
+
         Raises:
             WhatFuckError: If path is invalid
         """
@@ -140,7 +140,7 @@ class ImagesOrgAsync:
                     self.logger.debug(f"Created directory: {dir_path}")
                 except OSError as e:
                     raise WhatFuckError(f"Cannot create directory {dir_path}: {e}")
-        
+
         return file_path
 
     @Benchmark.performance(level=logging.DEBUG)
@@ -154,24 +154,24 @@ class ImagesOrgAsync:
     ) -> list[str]:
         """
         Generate multiple images from a list of prompts
-        
+
         Args:
             prompts: List of text prompts
             base_path: Base directory for saving images
             file_extension: File extension for images
             concurrent_limit: Maximum concurrent generations
-            
+
         Returns:
             list[str]: List of saved image paths
-            
+
         Raises:
             WhatFuckError: If prompts list is empty or invalid
         """
         import asyncio
-        
+
         if not prompts:
             raise WhatFuckError("Prompts list cannot be empty")
-        
+
         if not all(isinstance(p, str) and p.strip() for p in prompts):
             raise WhatFuckError("All prompts must be non-empty strings")
 
@@ -180,7 +180,7 @@ class ImagesOrgAsync:
             filename = f"image_{i:03d}{file_extension}"
             file_path = os.path.join(base_path, filename)
             file_paths.append(file_path)
-        
+
         semaphore = asyncio.Semaphore(concurrent_limit)
 
         async def generate_single(prompt: str, file_path: str) -> str:
@@ -194,14 +194,14 @@ class ImagesOrgAsync:
             results = await asyncio.gather(*tasks, return_exceptions=True)
             successful_paths = []
             failed_count = 0
-            
+
             for i, result in enumerate(results):
                 if isinstance(result, Exception):
                     self.logger.error(f"Failed to generate image {i}: {result}")
                     failed_count += 1
                 else:
                     successful_paths.append(result)
-            
+
             if failed_count > 0:
                 self.logger.warning(f"Failed to generate {failed_count} out of {len(prompts)} images")
             return successful_paths

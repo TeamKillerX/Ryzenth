@@ -59,7 +59,7 @@ class RyzenthOrg:
     async def _get_session(self):
         if self._closed:
             raise RuntimeError("RyzenthOrg client is closed")
-            
+
         if self._session is None:
             connector = aiohttp.TCPConnector(limit=100, limit_per_host=20)
             timeout = aiohttp.ClientTimeout(total=30)
@@ -86,7 +86,7 @@ class RyzenthXAsync:
     def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
         if not api_key:
             raise WhatFuckError("API key is required")
-            
+
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {
@@ -135,7 +135,7 @@ class RyzenthXAsync:
     async def _get_session(self):
         if self._closed:
             raise RuntimeError("RyzenthXAsync client is closed")
-            
+
         if self._session is None:
             async with self._session_lock:
                 if self._session is None:
@@ -184,7 +184,7 @@ class RyzenthXAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            
+
             json_data = response.json()
             return self.obj(json_data or {}) if dot_access else json_data
         except Exception as e:
@@ -201,10 +201,10 @@ class RyzenthXAsync:
     ):
         if not model_param:
             raise WhatFuckError("model_param is required")
-            
+
         url = f"{self.base_url}/v1/ai/akenox/{model_param}"
         request_params = params.model_dump() if params and hasattr(params, 'model_dump') else {}
-        
+
         return await client.get(
             url,
             params=request_params,
@@ -223,13 +223,13 @@ class RyzenthXAsync:
     ):
         if not model_name:
             raise WhatFuckError("model_name is required")
-            
+
         url = f"{self.base_url}/v1/dl/{model_name}"
         request_params = None
-        
+
         if params_only and params and hasattr(params, 'model_dump'):
             request_params = params.model_dump()
-        
+
         return await client.get(
             url,
             params=request_params,
@@ -269,7 +269,7 @@ class RyzenthXAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            
+
             json_data = response.json()
             return self.obj(json_data or {}) if dot_access else json_data
         except Exception as e:

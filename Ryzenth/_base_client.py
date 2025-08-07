@@ -30,6 +30,7 @@ from ._shared import UNKNOWN_TEST
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
+
 class RyzenthTools:
     def __init__(self):
         self.aio_client = RyzenthOrg()
@@ -97,10 +98,10 @@ class UrHellFrom:
     def __init__(self, name: str, only_author: bool = False, api_key: str = None):
         if not name:
             raise WhatFuckError("name parameter is required")
-            
+
         self.name = name
         self.only_author = only_author
-        
+
         try:
             # api_client = ApiKeyFrom(api_key) if api_key else ApiKeyFrom()
             self.decorators = Decorators(ApiKeyFrom)
@@ -126,7 +127,7 @@ class FromConvertDot:
     def to_dot(self) -> Box:
         if self.obj is None:
             return Box({})
-        
+
         try:
             return Box(self.obj)
         except Exception as e:
@@ -136,7 +137,7 @@ class FromConvertDot:
     def to_dict(self) -> dict:
         if self.obj is None:
             return {}
-        
+
         if isinstance(self.obj, dict):
             return self.obj
         elif isinstance(self.obj, Box):
