@@ -57,7 +57,7 @@ class ChatOrgAsync:
                 tool="ryzenth-v2",
                 path="/api/v1/openai-v2",
                 timeout=30,
-                params=client.get_kwargs(input=prompt.strip(), model=model),
+                params=client.get_kwargs(input=prompt.strip()),
                 use_type=ResponseType.JSON
             )
             return client.dict_convert_to_dot(response).data.choices[0].message.content
@@ -82,7 +82,7 @@ class ChatOrgAsync:
                 tool="ryzenth-v2",
                 path="/api/v1/ultimate-chat",
                 timeout=30,
-                params=client.get_kwargs(input=prompt.strip()),
+                params=client.get_kwargs(input=prompt.strip(), model=model),
                 use_type=ResponseType.JSON
             )
             return client.dict_convert_to_dot(response).data.content.ultimate[0].text
