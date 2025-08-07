@@ -34,6 +34,7 @@ from ._errors import (
     WhatFuckError,
 )
 from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
+from .new_helper import ImagesOrgAsync
 from .helper import (
     AutoRetry,
     FbanAsync,
@@ -46,6 +47,12 @@ from .helper import (
 )
 from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 
+class RyzenthOrg:
+    def __init__(self):
+        self.images = ImagesOrgAsync(self)
+
+    def _nomethod(self):
+        pass
 
 class RyzenthXAsync:
     def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
