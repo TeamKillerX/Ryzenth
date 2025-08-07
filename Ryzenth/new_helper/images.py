@@ -24,6 +24,7 @@ from typing import Optional
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import WhatFuckError
+from .._export_class import GeneratedImage, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
 
@@ -49,7 +50,7 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def upload_ask(self, captions: str, file_path: str):
+    async def create_upload_ask(self, captions: str, file_path: str, is_json: bool = False):
         if not captions or not captions.strip():
             raise WhatFuckError("Captions cannot be empty")
 
@@ -68,7 +69,9 @@ class ImagesOrgAsync:
                 },
                 use_type=ResponseType.JSON
             )
-            return client.dict_convert_to_dot(response).data.choices[0].message.content
+            if self.is_json:
+                return ResponseResult(client=None, response)
+            return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"Image vision failed: {e}")
             raise WhatFuckError(f"Image vision failed: {e}") from e
@@ -103,6 +106,7 @@ class ImagesOrgAsync:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
+
         if not file_path:
             file_path = "default.jpg"
 
@@ -124,14 +128,7 @@ class ImagesOrgAsync:
             if not response_content:
                 raise WhatFuckError("Empty response from image generation API")
 
-            saved_path = await client.to_image_class(response_content, file_path)
-
-            if not saved_path:
-                raise WhatFuckError("Failed to save generated image")
-
-            self.logger.info(f"Successfully generated and saved image to: {saved_path}")
-            return saved_path
-
+            return GeneratedImage(client, response_content, file_path, self.logger)
         except Exception as e:
             self.logger.error(f"Image generation failed: {e}")
             raise WhatFuckError(f"Image generation failed: {e}") from e
