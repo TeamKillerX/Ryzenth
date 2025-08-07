@@ -17,8 +17,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import logging
+import os
+from typing import Optional
+
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
+from .._errors import WhatFuckError
 from ..enums import ResponseType
 from ..helper import AutoRetry
 
@@ -26,21 +31,190 @@ from ..helper import AutoRetry
 class ImagesOrgAsync:
     def __init__(self, parent):
         self.parent = parent
+        self._client = None
+        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+
+    def _get_client(self) -> RyzenthApiClient:
+        if self._client is None:
+            try:
+                self._client = RyzenthApiClient(
+                    tools_name=["ryzenth-v2"],
+                    api_key={"ryzenth-v2": [{}]},
+                    rate_limit=100,
+                    use_default_headers=True
+                )
+            except Exception as e:
+                raise WhatFuckError(f"Failed to initialize API client: {e}")
+        return self._client
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create(self, prompt: str, file_path: str = "default.jpg"):
-        clients = RyzenthApiClient(
-            tools_name=["ryzenth-v2"],
-            api_key={"ryzenth-v2": [{}]},
-            rate_limit=100,
-            use_default_headers=True
-        )
-        response_content = await clients.get(
-            tool="ryzenth-v2",
-            path="/api/tools/generate-image",
-            timeout=30,
-            params=clients.get_kwargs(prompt=prompt),
-            use_type=ResponseType.IMAGE
-        )
-        return await clients.to_image_class(response_content, file_path)
+    async def create(
+        self, 
+        prompt: str, 
+        file_path: str = "default.jpg",
+        validate_path: bool = True,
+        create_dirs: bool = True
+    ) -> str:
+        """
+        Generate an image from a text prompt
+        
+        Args:
+            prompt: Text description for image generation
+            file_path: Path where the image will be saved
+            validate_path: Whether to validate file path
+            create_dirs: Whether to create directories if they don't exist
+            
+        Returns:
+            str: Path to the saved image file
+            
+        Raises:
+            WhatFuckError: If prompt is empty or generation fails
+        """
+        if not prompt or not prompt.strip():
+            raise WhatFuckError("Prompt cannot be empty")
+            
+        if not file_path:
+            file_path = "default.jpg"
+
+        if validate_path:
+            file_path = self._validate_file_path(file_path, create_dirs)
+
+        client = self._get_client()
+        
+        try:
+            self.logger.debug(f"Generating image with prompt: {prompt[:50]}...")
+            response_content = await client.get(
+                tool="ryzenth-v2",
+                path="/api/tools/generate-image",
+                timeout=30,
+                params=client.get_kwargs(prompt=prompt.strip()),
+                use_type=ResponseType.IMAGE
+            )
+            
+            if not response_content:
+                raise WhatFuckError("Empty response from image generation API")
+
+            saved_path = await client.to_image_class(response_content, file_path)
+            
+            if not saved_path:
+                raise WhatFuckError("Failed to save generated image")
+                
+            self.logger.info(f"Successfully generated and saved image to: {saved_path}")
+            return saved_path
+            
+        except Exception as e:
+            self.logger.error(f"Image generation failed: {e}")
+            raise WhatFuckError(f"Image generation failed: {e}")
+        finally:
+            # Note: Don't close the client here as it might be reused
+            pass
+
+    def _validate_file_path(self, file_path: str, create_dirs: bool = True) -> str:
+        """
+        Validate and prepare file path
+        
+        Args:
+            file_path: Original file path
+            create_dirs: Whether to create directories
+            
+        Returns:
+            str: Validated file path
+            
+        Raises:
+            WhatFuckError: If path is invalid
+        """
+        allowed_extensions = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
+        if not any(file_path.lower().endswith(ext) for ext in allowed_extensions):
+            if '.' not in os.path.basename(file_path):
+                file_path += '.jpg'
+            else:
+                raise WhatFuckError(
+                    f"Unsupported file extension. Allowed: {allowed_extensions}"
+                )
+        if create_dirs:
+            dir_path = os.path.dirname(file_path)
+            if dir_path and not os.path.exists(dir_path):
+                try:
+                    os.makedirs(dir_path, exist_ok=True)
+                    self.logger.debug(f"Created directory: {dir_path}")
+                except OSError as e:
+                    raise WhatFuckError(f"Cannot create directory {dir_path}: {e}")
+        
+        return file_path
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def create_multiple(
+        self,
+        prompts: list[str],
+        base_path: str = "generated",
+        file_extension: str = ".jpg",
+        concurrent_limit: int = 3
+    ) -> list[str]:
+        """
+        Generate multiple images from a list of prompts
+        
+        Args:
+            prompts: List of text prompts
+            base_path: Base directory for saving images
+            file_extension: File extension for images
+            concurrent_limit: Maximum concurrent generations
+            
+        Returns:
+            list[str]: List of saved image paths
+            
+        Raises:
+            WhatFuckError: If prompts list is empty or invalid
+        """
+        import asyncio
+        
+        if not prompts:
+            raise WhatFuckError("Prompts list cannot be empty")
+        
+        if not all(isinstance(p, str) and p.strip() for p in prompts):
+            raise WhatFuckError("All prompts must be non-empty strings")
+
+        file_paths = []
+        for i, prompt in enumerate(prompts):
+            filename = f"image_{i:03d}{file_extension}"
+            file_path = os.path.join(base_path, filename)
+            file_paths.append(file_path)
+        
+        semaphore = asyncio.Semaphore(concurrent_limit)
+
+        async def generate_single(prompt: str, file_path: str) -> str:
+            async with semaphore:
+                return await self.create(prompt, file_path)
+        try:
+            tasks = [
+                generate_single(prompt, file_path)
+                for prompt, file_path in zip(prompts, file_paths)
+            ]
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+            successful_paths = []
+            failed_count = 0
+            
+            for i, result in enumerate(results):
+                if isinstance(result, Exception):
+                    self.logger.error(f"Failed to generate image {i}: {result}")
+                    failed_count += 1
+                else:
+                    successful_paths.append(result)
+            
+            if failed_count > 0:
+                self.logger.warning(f"Failed to generate {failed_count} out of {len(prompts)} images")
+            return successful_paths
+        except Exception as e:
+            raise WhatFuckError(f"Batch image generation failed: {e}")
+
+    async def close(self):
+        if self._client:
+            await self._client.close()
+            self._client = None
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
