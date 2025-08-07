@@ -37,10 +37,10 @@ class GeneratedImage:
 
     async def to_buffer_and_list(self):
         file_save = self._client.to_buffer(
-            content["data"]["base64Image"],
+            self._content["data"]["base64Image"],
             return_image_base64=True
         )
-        return file_save, content["data"]["content_text"]
+        return file_save, self._content["data"]["content_text"]
 
     async def to_base64(self):
         if not self._content:
