@@ -32,9 +32,6 @@ class RyzenthTools:
     def __init__(self):
         self.aio_client = RyzenthOrg(self)
 
-    def something(self):
-        pass
-
 class ApiKeyFrom:
     def __init__(self, api_key: str = None, is_ok=False):
         if api_key == Ellipsis:
