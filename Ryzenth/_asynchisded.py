@@ -17,9 +17,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import asyncio
 import logging
-import platform
 import typing as t
+from contextlib import asynccontextmanager
 
 import aiohttp
 import httpx
@@ -51,13 +52,41 @@ from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 class RyzenthOrg:
     def __init__(self):
         self._api_key = ""
+        self._session = None
+        self._closed = False
         self.images = ImagesOrgAsync(self)
 
-    def _nomethod(self):
-        pass
+    async def _get_session(self):
+        if self._closed:
+            raise RuntimeError("RyzenthOrg client is closed")
+
+        if self._session is None:
+            connector = aiohttp.TCPConnector(limit=100, limit_per_host=20)
+            timeout = aiohttp.ClientTimeout(total=30)
+            self._session = aiohttp.ClientSession(
+                connector=connector,
+                timeout=timeout
+            )
+        return self._session
+
+    async def close(self):
+        self._closed = True
+        if self._session:
+            await self._session.close()
+            self._session = None
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
+
 
 class RyzenthXAsync:
     def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
+        if not api_key:
+            raise WhatFuckError("API key is required")
+
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {
@@ -66,6 +95,10 @@ class RyzenthXAsync:
         }
         self.timeout = 10
         self.params = {}
+        self._session = None
+        self._closed = False
+        self._session_lock = asyncio.Lock()
+
         self.images = ImagesAsync(self)
         self.what = WhatAsync(self)
         self.openai_audio = WhisperAsync(self)
@@ -75,14 +108,45 @@ class RyzenthXAsync:
         self.humanizer = HumanizeAsync(self)
         self.obj = Box
         self.httpx = httpx
+        self._setup_logging()
+
+    def _setup_logging(self):
         self.logger = logging.getLogger("Ryzenth Bot")
         self.logger.setLevel(logging.INFO)
+
         logging.getLogger('httpx').setLevel(logging.WARNING)
         logging.getLogger('httpcore').setLevel(logging.WARNING)
+        logging.getLogger('aiohttp').setLevel(logging.WARNING)
+
         if not self.logger.handlers:
-            handler = logging.FileHandler("RyzenthLib.log", encoding="utf-8")
-            handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
-            self.logger.addHandler(handler)
+            try:
+                handler = logging.FileHandler("RyzenthLib.log", encoding="utf-8")
+                handler.setFormatter(
+                    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+                )
+                self.logger.addHandler(handler)
+            except Exception as e:
+                console_handler = logging.StreamHandler()
+                console_handler.setFormatter(
+                    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+                )
+                self.logger.addHandler(console_handler)
+
+    async def _get_session(self):
+        if self._closed:
+            raise RuntimeError("RyzenthXAsync client is closed")
+
+        if self._session is None:
+            async with self._session_lock:
+                if self._session is None:
+                    self._session = httpx.AsyncClient(
+                        timeout=httpx.Timeout(30.0),
+                        limits=httpx.Limits(
+                            max_connections=100,
+                            max_keepalive_connections=20
+                        )
+                    )
+        return self._session
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -91,23 +155,26 @@ class RyzenthXAsync:
         *,
         switch_name: str,
         params: t.Union[
-        DownloaderBy,
-        QueryParameter,
-        Username,
-        RequestXnxx
+            DownloaderBy,
+            QueryParameter,
+            Username,
+            RequestXnxx
         ] = None,
         timeout: t.Union[int, float] = 5,
         params_only: bool = True,
         on_render: bool = False,
         dot_access: bool = False
     ) -> t.Union[dict, Box]:
+        if not switch_name:
+            raise WhatFuckError("switch_name is required")
 
         dl_dict = BASE_DICT_RENDER if on_render else BASE_DICT_OFFICIAL
         model_name = dl_dict.get(switch_name)
         if not model_name:
             raise InvalidModelError(f"Invalid switch_name: {switch_name}")
 
-        async with httpx.AsyncClient() as client:
+        client = await self._get_session()
+        try:
             response = await self._client_downloader_get(
                 client=client,
                 params=params,
@@ -117,7 +184,12 @@ class RyzenthXAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.obj(response.json() or {}) if dot_access else response.json()
+
+            json_data = response.json()
+            return self.obj(json_data or {}) if dot_access else json_data
+        except Exception as e:
+            self.logger.error(f"Downloader request failed for {switch_name}: {e}")
+            raise
 
     async def _client_message_get(
         self,
@@ -127,9 +199,15 @@ class RyzenthXAsync:
         timeout,
         model_param
     ):
+        if not model_param:
+            raise WhatFuckError("model_param is required")
+
+        url = f"{self.base_url}/v1/ai/akenox/{model_param}"
+        request_params = params.model_dump() if params and hasattr(params, 'model_dump') else {}
+
         return await client.get(
-            f"{self.base_url}/v1/ai/akenox/{model_param}",
-            params=params.model_dump(),
+            url,
+            params=request_params,
             headers=self.headers,
             timeout=timeout
         )
@@ -141,11 +219,20 @@ class RyzenthXAsync:
         params,
         timeout,
         params_only,
-        model_param
+        model_name
     ):
+        if not model_name:
+            raise WhatFuckError("model_name is required")
+
+        url = f"{self.base_url}/v1/dl/{model_name}"
+        request_params = None
+
+        if params_only and params and hasattr(params, 'model_dump'):
+            request_params = params.model_dump()
+
         return await client.get(
-            f"{self.base_url}/v1/dl/{model_param}",
-            params=params.model_dump() if params_only else None,
+            url,
+            params=request_params,
             headers=self.headers,
             timeout=timeout
         )
@@ -157,9 +244,14 @@ class RyzenthXAsync:
         *,
         model: str,
         params: QueryParameter,
+        timeout: t.Union[int, float] = 10,
         use_full_model_list: bool = False,
         dot_access: bool = False
     ) -> t.Union[dict, Box]:
+        if not model:
+            raise WhatFuckError("model is required")
+        if not params:
+            raise WhatFuckError("params is required")
 
         model_dict = BASE_DICT_AI_RYZENTH if use_full_model_list else {"hybrid": "AkenoX-1.9-Hybrid"}
         model_param = model_dict.get(model)
@@ -167,7 +259,8 @@ class RyzenthXAsync:
         if not model_param:
             raise InvalidModelError(f"Invalid model name: {model}")
 
-        async with httpx.AsyncClient() as client:
+        client = await self._get_session()
+        try:
             response = await self._client_message_get(
                 client=client,
                 params=params,
@@ -176,4 +269,21 @@ class RyzenthXAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.obj(response.json() or {}) if dot_access else response.json()
+
+            json_data = response.json()
+            return self.obj(json_data or {}) if dot_access else json_data
+        except Exception as e:
+            self.logger.error(f"Message request failed for model {model}: {e}")
+            raise
+
+    async def close(self):
+        self._closed = True
+        if self._session:
+            await self._session.aclose()
+            self._session = None
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
