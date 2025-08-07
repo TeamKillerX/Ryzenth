@@ -69,8 +69,6 @@ class ImagesOrgAsync:
                 },
                 use_type=ResponseType.JSON
             )
-            if is_json:
-                return ResponseResult(client=None, response=response)
             return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"Image vision failed: {e}")
