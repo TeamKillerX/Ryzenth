@@ -22,11 +22,17 @@ from os import environ
 
 from box import Box
 
-from ._asynchisded import RyzenthXAsync
+from ._asynchisded import RyzenthXAsync, RyzenthOrg
 from ._shared import UNKNOWN_TEST
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
+class RyzenthTools:
+    def __init__(self):
+        self.aio_client = RyzenthOrg(self)
+
+    def something(self):
+        pass
 
 class ApiKeyFrom:
     def __init__(self, api_key: str = None, is_ok=False):
