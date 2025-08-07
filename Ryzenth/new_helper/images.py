@@ -50,7 +50,7 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_upload_ask(self, captions: str, file_path: str, is_json: bool = False):
+    async def create_upload_to_ask(self, captions: str, file_path: str) -> ResponseResult:
         if not captions or not captions.strip():
             raise WhatFuckError("Captions cannot be empty")
 
@@ -76,7 +76,6 @@ class ImagesOrgAsync:
             self.logger.error(f"Image vision failed: {e}")
             raise WhatFuckError(f"Image vision failed: {e}") from e
         finally:
-            # Note: Don't close the client here as it might be reused
             pass
 
     @Benchmark.performance(level=logging.DEBUG)
@@ -197,7 +196,6 @@ class ImagesOrgAsync:
             self.logger.error(f"Image generation failed: {e}")
             raise WhatFuckError(f"Image generation failed: {e}") from e
         finally:
-            # Note: Don't close the client here as it might be reused
             pass
 
     def _validate_file_path(self, file_path: str, create_dirs: bool = True) -> str:
