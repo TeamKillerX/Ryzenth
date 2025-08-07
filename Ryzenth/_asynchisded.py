@@ -49,6 +49,7 @@ from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 
 class RyzenthOrg:
     def __init__(self):
+        self._api_key = ""
         self.images = ImagesOrgAsync(self)
 
     def _nomethod(self):
