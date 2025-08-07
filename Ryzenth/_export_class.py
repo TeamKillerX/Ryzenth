@@ -38,8 +38,7 @@ class GeneratedImage:
     async def to_base64(self):
         if not self._content:
             raise WhatFuckError("No content available")
-
-      return base64.b64encode(self._content).decode()
+        return base64.b64encode(self._content).decode()
 
     async def to_fileobj(self):
         if not self._content:
