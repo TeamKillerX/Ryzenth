@@ -1,5 +1,6 @@
 from .chat_ask import ChatOrgAsync
 from .images import ImagesOrgAsync
+from ._qwen_images import ImagesQwenAsync
 
 __all__ = ["ImagesOrgAsync", "ChatOrgAsync"]
 
