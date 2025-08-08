@@ -19,7 +19,7 @@ class ResponseResult:
     async def to_json(self):
         return self._response
 
-class GeneratedImage:
+class GeneratedImageOrVideo:
     def __init__(self, client, content=None, file_path=None, logger=None):
         self._client = client
         self._content = content
