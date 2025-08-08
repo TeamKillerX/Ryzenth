@@ -29,7 +29,7 @@ from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
 
 
-class ImagesQwenAsync:
+class VideosQwenAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
@@ -64,8 +64,8 @@ class ImagesQwenAsync:
         prompt: str,
         *,
         negative_prompt: str = "",
-        seed: Union[int, float, None] = 0,
-        size: str = "1024*1024",
+        seed: Union[int, str, None] = 0,
+        size: str = "624×624",
         prompt_extend: bool = True,
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
@@ -75,17 +75,16 @@ class ImagesQwenAsync:
         try:
             response = await client.post(
                 tool="alibaba",
-                path="/api/v1/services/aigc/text2image/image-synthesis",
-                timeout=30,
+                path="/api/v1/services/aigc/video-generation/video-synthesis",
+                timeout=100,
                 json={
-                    "model": "wan2.2-t2i-flash",
+                    "model": "wan2.2-t2v-plus",
                     "input": {
                         "prompt": prompt,
                         "negative_prompt": negative_prompt,
                     },
                     "parameters": {
                         "size": size,
-                        "n": 1,
                         "seed": seed,
                         "prompt_extend": prompt_extend
                     }
