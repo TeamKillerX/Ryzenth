@@ -37,12 +37,15 @@ class ImagesQwenAsync:
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
+            api_key = getattr(self.parent, "_api_key", None)
+            if not api_key or not isinstance(api_key, str) or not api_key.strip():
+                raise WhatFuckError("Missing or invalid API key for Alibaba client initialization.")
             try:
                 self._client = RyzenthApiClient(
                     tools_name=["alibaba"],
                     api_key={"alibaba": [
                       {
-                        "Authorization": f"Bearer {self.parent._api_key}",
+                        "Authorization": f"Bearer {api_key}",
                         "Content-Type": "application/json",
                         "X-DashScope-Async": "enable"
                       }
