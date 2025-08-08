@@ -24,7 +24,7 @@ from typing import Optional
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import WhatFuckError
-from .._export_class import GeneratedImage, ResponseResult
+from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
 
@@ -78,7 +78,7 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_gemini_to_edit(self, prompt: str, file_path: str) -> GeneratedImage:
+    async def create_gemini_to_edit(self, prompt: str, file_path: str) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -100,7 +100,7 @@ class ImagesOrgAsync:
             if not response:
                 raise WhatFuckError("Empty response from gemini edit image API")
 
-            return GeneratedImage(client=client, content=response)
+            return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Gemini Image generation failed: {e}")
             raise WhatFuckError(f"Gemini Image generation failed: {e}") from e
@@ -109,7 +109,7 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_gemini_and_captions(self, prompt: str) -> GeneratedImage:
+    async def create_gemini_and_captions(self, prompt: str) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -128,7 +128,7 @@ class ImagesOrgAsync:
             if not response:
                 raise WhatFuckError("Empty response from gemini image generation API")
 
-            return GeneratedImage(client=client, content=response)
+            return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Gemini Image generation failed: {e}")
             raise WhatFuckError(f"Gemini Image generation failed: {e}") from e
@@ -143,7 +143,7 @@ class ImagesOrgAsync:
         file_path: str = "default.jpg",
         validate_path: bool = True,
         create_dirs: bool = True
-    ) -> GeneratedImage:
+    ) -> GeneratedImageOrVideo:
         """
         Generate an image from a text prompt
 
@@ -184,7 +184,7 @@ class ImagesOrgAsync:
             if not response_content:
                 raise WhatFuckError("Empty response from image generation API")
 
-            return GeneratedImage(
+            return GeneratedImageOrVideo(
                 client=client,
                 content=response_content,
                 file_path=file_path,
