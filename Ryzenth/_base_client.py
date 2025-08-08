@@ -34,12 +34,12 @@ from .helper import Decorators
 class RyzenthTools:
     def __init__(self, api_key: str = None):
         self._api_key = api_key
-        self.aio_client = RyzenthOrg(self._api_key)
+        self.aio = RyzenthOrg(self._api_key)
         self._logger = logging.getLogger(__name__)
 
     async def close(self):
-        if hasattr(self.aio_client, 'close'):
-            await self.aio_client.close()
+        if hasattr(self.aio, 'close'):
+            await self.aio.close()
 
     async def __aenter__(self):
         return self
