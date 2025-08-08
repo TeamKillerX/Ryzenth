@@ -62,9 +62,10 @@ class ImagesQwenAsync:
     async def create(
         self,
         prompt: str,
+        *,
         negative_prompt: str = "",
         seed: Union[int, float, None] = 0,
-        prompt_extend: bool = False
+        prompt_extend: bool = False,
     ) -> GeneratedImage:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
