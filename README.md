@@ -91,11 +91,21 @@ response_content = await new.aio_client.images.create("make a generate cat blue"
 await response_content.to_save()
 
 # Upload + Ask
-response_see = await new.aio_client.images.create_upload_ask("Describe this image:", "/path/to/example.jpg")
+response_see = await new.aio_client.images.create_upload_to_ask("Describe this image:", "/path/to/example.jpg")
 await response_see.to_result()
 
 # After close
 await new.aio_client.images.close()
+```
+- New Method 🌟
+```py
+await new.aio_client.images.create()
+await new.aio_client.images.create_gemini_and_captions()
+await new.aio_client.images.create_gemini_to_edit("add background Lamborghini", "/path/to/example.jpg") # use response.to_buffer_and_list()
+await new.aio_client.images.create_upload_to_ask()
+await new.aio_client.images.create_multiple()
+await new.aio_client.chat.ask()
+await new.aio_client.chat.ask_ultimate()
 ```
 
 ### Tool for developers
