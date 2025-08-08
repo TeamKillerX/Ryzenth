@@ -24,7 +24,7 @@ class GeneratedImage:
         self._file_path = file_path
         self._logger = logger
 
-    async def create_task_id_and_wait_from_qwen(self, return_url: bool = False):
+    async def create_task_and_wait(self, return_url: bool = False):
         while True:
             task_id = self._content["output"]["task_id"]
             result = await self._client.get(
