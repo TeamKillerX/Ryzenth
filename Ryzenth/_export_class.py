@@ -26,7 +26,12 @@ class GeneratedImageOrVideo:
         self._file_path = file_path
         self._logger = logger
 
-    async def create_task_and_wait(self, max_retries: int = 120, poll_interval: float = 1.0, return_url: bool = False):
+    async def create_task_and_wait(
+        self,
+        max_retries: int = 120,
+        poll_interval: float = 1.0,
+        return_img_url: bool = False,
+    ):
         retries = 0
         while retries < max_retries:
             task_id = self._content["output"]["task_id"]
@@ -37,7 +42,7 @@ class GeneratedImageOrVideo:
             )
             status = result["output"]["task_status"]
             if status == "SUCCEEDED":
-                return result["output"]["results"][0]["url"] if return_url else result["output"]
+                return result["output"]["results"][0]["url"] if return_img_url else result["output"]["video_url"]
             elif status == "FAILED":
                 raise WhatFuckError("Qwen Failed to generate image")
             await asyncio.sleep(poll_interval)
