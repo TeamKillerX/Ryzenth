@@ -24,7 +24,7 @@ from typing import Optional, Union
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import WhatFuckError
-from .._export_class import GeneratedImage, ResponseResult
+from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
 
@@ -65,8 +65,9 @@ class ImagesQwenAsync:
         *,
         negative_prompt: str = "",
         seed: Union[int, float, None] = 0,
-        prompt_extend: bool = False,
-    ) -> GeneratedImage:
+        size: str = "1024*1024",
+        prompt_extend: bool = True,
+    ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -83,7 +84,7 @@ class ImagesQwenAsync:
                         "negative_prompt": negative_prompt,
                     },
                     "parameters": {
-                        "size": "1024*1024",
+                        "size": size,
                         "n": 1,
                         "seed": seed,
                         "prompt_extend": prompt_extend
@@ -95,7 +96,7 @@ class ImagesQwenAsync:
             if not response:
                 raise WhatFuckError("Empty response from image generation API")
 
-            return GeneratedImage(client=client, content=response)
+            return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Qwen image generation failed: {e}")
             raise WhatFuckError(f"Qwen image generation failed: {e}") from e
