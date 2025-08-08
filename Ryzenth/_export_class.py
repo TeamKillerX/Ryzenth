@@ -42,9 +42,9 @@ class GeneratedImageOrVideo:
             )
             status = result["output"]["task_status"]
             if status == "SUCCEEDED":
-                return result["output"]["results"][0]["url"] if return_img_url else result["output"]["video_url"]
+                return self._client.dict_convert_to_dot(result["output"])
             elif status == "FAILED":
-                raise WhatFuckError("Qwen Failed to generate image")
+                raise WhatFuckError("Qwen Failed to generate image or video")
             await asyncio.sleep(poll_interval)
             retries += 1
         raise WhatFuckError(f"Task polling exceeded maximum retries ({max_retries})")
@@ -77,4 +77,4 @@ class GeneratedImageOrVideo:
         return io.BytesIO(self._content)
 
     def __repr__(self):
-        return f"<GeneratedImage path={self._file_path}>"
+        return f"<GeneratedImageOrVideo path={self._file_path}>"
