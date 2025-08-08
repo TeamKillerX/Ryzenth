@@ -34,7 +34,11 @@ from ._errors import (
     SyncStatusError,
     WhatFuckError,
 )
-from ._shared import BASE_DICT_AI_RYZENTH, BASE_DICT_OFFICIAL, BASE_DICT_RENDER
+from ._shared import (
+    BASE_DICT_AI_RYZENTH,
+    BASE_DICT_OFFICIAL,
+    BASE_DICT_RENDER,
+)
 from .helper import (
     AutoRetry,
     FbanAsync,
@@ -45,9 +49,18 @@ from .helper import (
     WhatAsync,
     WhisperAsync,
 )
-from .new_helper import ChatOrgAsync, ImagesOrgAsync, ImagesQwenAsync
-from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
-
+from .new_helper import (
+    ChatOrgAsync,
+    ImagesOrgAsync,
+    ImagesQwenAsync,
+    VideosQwenAsync,
+)
+from .types import (
+    DownloaderBy,
+    QueryParameter,
+    RequestXnxx,
+    Username,
+)
 
 class RyzenthOrg:
     def __init__(self, api_key: str = None):
@@ -55,6 +68,7 @@ class RyzenthOrg:
         self._session = None
         self._closed = False
         self.qwen_images = ImagesQwenAsync(self)
+        self.qwen_videos = VideosQwenAsync(self)
         self.images = ImagesOrgAsync(self)
         self.chat = ChatOrgAsync(self)
 
