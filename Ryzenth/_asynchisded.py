@@ -45,7 +45,7 @@ from .helper import (
     WhatAsync,
     WhisperAsync,
 )
-from .new_helper import ChatOrgAsync, ImagesOrgAsync
+from .new_helper import ChatOrgAsync, ImagesOrgAsync, ImagesQwenAsync
 from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 
 
