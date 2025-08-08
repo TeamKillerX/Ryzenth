@@ -26,8 +26,9 @@ class GeneratedImage:
         self._file_path = file_path
         self._logger = logger
 
-    async def create_task_and_wait(self, return_url: bool = False):
-        while True:
+    async def create_task_and_wait(self, return_url: bool = False, max_retries: int = 120, poll_interval: float = 1.0):
+        retries = 0
+        while retries < max_retries:
             task_id = self._content["output"]["task_id"]
             result = await self._client.get(
                 tool="alibaba",
@@ -39,7 +40,9 @@ class GeneratedImage:
                 return result["output"]["results"][0]["url"] if return_url else result["output"]
             elif status == "FAILED":
                 raise WhatFuckError("Qwen Failed to generate image")
-            await asyncio.sleep(1)
+            await asyncio.sleep(poll_interval)
+            retries += 1
+        raise WhatFuckError(f"Task polling exceeded maximum retries ({max_retries})")
 
     async def to_save(self):
         if not self._content:
