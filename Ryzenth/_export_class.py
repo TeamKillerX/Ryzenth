@@ -26,7 +26,7 @@ class GeneratedImage:
         self._file_path = file_path
         self._logger = logger
 
-    async def create_task_and_wait(self, return_url: bool = False, max_retries: int = 120, poll_interval: float = 1.0):
+    async def create_task_and_wait(self, max_retries: int = 120, poll_interval: float = 1.0, return_url: bool = False):
         retries = 0
         while retries < max_retries:
             task_id = self._content["output"]["task_id"]
