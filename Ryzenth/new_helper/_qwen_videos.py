@@ -64,12 +64,15 @@ class VideosQwenAsync:
         prompt: str,
         *,
         negative_prompt: str = "",
-        seed: Union[int, str, None] = 0,
-        size: str = "624×624",
+        seed: Optional [int] = 0,
+        size: str = "624*624",
         prompt_extend: bool = True,
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
+
+        if seed is not None and not isinstance(seed, int):
+            raise WhatFuckError(f"Seed must be an integer or None, got {type(seed).__name__}")
 
         client = self._get_client()
         try:
