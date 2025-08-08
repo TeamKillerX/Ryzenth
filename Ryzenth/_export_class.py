@@ -1,7 +1,9 @@
+import asyncio
 import base64
 import io
-import asyncio
+
 from ._errors import WhatFuckError
+
 
 class ResponseResult:
     def __init__(self, client=None, response=None, is_ultimate: bool = False):
