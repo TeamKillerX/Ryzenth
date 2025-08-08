@@ -19,7 +19,7 @@
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -63,8 +63,8 @@ class ImagesQwenAsync:
         self,
         prompt: str,
         negative_prompt: str = "",
-        seed: Optional[int, float] = 0,
-        prompt_extend: bool: False,
+        seed: Union[int, float, None] = 0,
+        prompt_extend: bool = False
     ) -> GeneratedImage:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
@@ -84,6 +84,7 @@ class ImagesQwenAsync:
                     "parameters": {
                         "size": "1024*1024",
                         "n": 1,
+                        "seed": seed,
                         "prompt_extend": prompt_extend
                     }
                 },
