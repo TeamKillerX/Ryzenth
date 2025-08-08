@@ -51,7 +51,7 @@ class ImagesQwenAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(f"Failed to initialize API client: {e}")
+                raise WhatFuckError(f"Failed to initialize API client: {e}") from e
         return self._client
 
     @Benchmark.performance(level=logging.DEBUG)
