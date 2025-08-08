@@ -59,7 +59,13 @@ class ImagesQwenAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create(self, prompt: str) -> GeneratedImage:
+    async def create(
+        self,
+        prompt: str,
+        negative_prompt: str = "",
+        seed: Optional[int, float] = 0,
+        prompt_extend: bool: False,
+    ) -> GeneratedImage:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -70,14 +76,16 @@ class ImagesQwenAsync:
                 path="/api/v1/services/aigc/text2image/image-synthesis",
                 timeout=30,
                 json={
-                  "model": "wan2.2-t2i-flash",
-                  "input": {
-                    "prompt": prompt
-                  },
-                  "parameters": {
-                    "size": "1024*1024",
-                    "n": 1
-                  }
+                    "model": "wan2.2-t2i-flash",
+                    "input": {
+                        "prompt": prompt,
+                        "negative_prompt": negative_prompt,
+                    },
+                    "parameters": {
+                        "size": "1024*1024",
+                        "n": 1,
+                        "prompt_extend": prompt_extend
+                    }
                 },
                 use_type=ResponseType.JSON
             )
