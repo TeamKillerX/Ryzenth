@@ -32,8 +32,9 @@ from .helper import Decorators
 
 
 class RyzenthTools:
-    def __init__(self):
-        self.aio_client = RyzenthOrg()
+    def __init__(self, api_key: str = None):
+        self._api_key = api_key
+        self.aio_client = RyzenthOrg(self._api_key)
         self._logger = logging.getLogger(__name__)
 
     async def close(self):

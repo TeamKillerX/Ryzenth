@@ -18,16 +18,18 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+import os
+from typing import Optional
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import WhatFuckError
-from .._export_class import ResponseResult
+from .._export_class import GeneratedImage, ResponseResult
 from ..enums import ResponseType
-from ..helper import AutoRetry
+from ..helper import AutoRetry, Helpers
 
 
-class ChatOrgAsync:
+class ImagesQwenAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
@@ -35,60 +37,58 @@ class ChatOrgAsync:
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
+            api_key = getattr(self.parent, "_api_key", None)
+            if not api_key or not isinstance(api_key, str) or not api_key.strip():
+                raise WhatFuckError("Missing or invalid API key for Alibaba client initialization.")
             try:
                 self._client = RyzenthApiClient(
-                    tools_name=["ryzenth-v2"],
-                    api_key={"ryzenth-v2": [{}]},
+                    tools_name=["alibaba"],
+                    api_key={"alibaba": [
+                      {
+                        "Authorization": f"Bearer {api_key}",
+                        "Content-Type": "application/json",
+                        "X-DashScope-Async": "enable"
+                      }
+                    ]},
                     rate_limit=100,
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(f"Failed to initialize API client: {e}")
+                raise WhatFuckError(f"Failed to initialize API client: {e}") from e
         return self._client
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask(self, prompt: str) -> ResponseResult:
+    async def create_qwen_flash(self, prompt: str) -> GeneratedImage:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
-        client = self._get_client()
-        try:
-            self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
-            response = await client.get(
-                tool="ryzenth-v2",
-                path="/api/v1/openai-v2",
-                timeout=30,
-                params=client.get_kwargs(input=prompt.strip()),
-                use_type=ResponseType.JSON
-            )
-            return ResponseResult(client, response)
-        except Exception as e:
-            self.logger.error(f"chat ask failed: {e}")
-            raise WhatFuckError(f"chat ask failed: {e}") from e
-        finally:
-            pass
 
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def ask_ultimate(self, prompt: str, model: str = "grok") -> ResponseResult:
-        if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
-        if not model or not model.strip():
-            raise WhatFuckError("model cannot be empty")
         client = self._get_client()
         try:
-            self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
-            response = await client.get(
-                tool="ryzenth-v2",
-                path="/api/v1/ultimate-chat",
+            response = await client.post(
+                tool="alibaba",
+                path="/api/v1/services/aigc/text2image/image-synthesis",
                 timeout=30,
-                params=client.get_kwargs(input=prompt.strip(), model=model),
+                json={
+                  "model": "wan2.2-t2i-flash",
+                  "input": {
+                    "prompt": prompt
+                  },
+                  "parameters": {
+                    "size": "1024*1024",
+                    "n": 1
+                  }
+                },
                 use_type=ResponseType.JSON
             )
-            return ResponseResult(client, response, is_ultimate=True)
+
+            if not response:
+                raise WhatFuckError("Empty response from image generation API")
+
+            return GeneratedImage(client=client, content=response)
         except Exception as e:
-            self.logger.error(f"chat ask failed: {e}")
-            raise WhatFuckError(f"chat ask failed: {e}") from e
+            self.logger.error(f"Qwen image generation failed: {e}")
+            raise WhatFuckError(f"Qwen image generation failed: {e}") from e
         finally:
             pass
 

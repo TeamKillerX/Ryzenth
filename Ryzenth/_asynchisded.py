@@ -45,15 +45,16 @@ from .helper import (
     WhatAsync,
     WhisperAsync,
 )
-from .new_helper import ChatOrgAsync, ImagesOrgAsync
+from .new_helper import ChatOrgAsync, ImagesOrgAsync, ImagesQwenAsync
 from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 
 
 class RyzenthOrg:
-    def __init__(self):
-        self._api_key = ""
+    def __init__(self, api_key: str = None):
+        self._api_key = api_key
         self._session = None
         self._closed = False
+        self.qwen_images = ImagesQwenAsync(self)
         self.images = ImagesOrgAsync(self)
         self.chat = ChatOrgAsync(self)
 
