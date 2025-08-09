@@ -96,7 +96,7 @@ class VideosQwenAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from image generation API")
+                raise WhatFuckError("Empty response from video generation API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
