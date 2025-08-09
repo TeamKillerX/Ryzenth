@@ -1,3 +1,23 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Copyright 2019-2025 (c) Randy W @xtdevs, @xtsea
+#
+# from : https://github.com/TeamKillerX
+# Channel : @RendyProjects
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
 import asyncio
 import base64
 import io
@@ -50,6 +70,9 @@ class GeneratedImageOrVideo:
             await asyncio.sleep(poll_interval)
             retries += 1
         raise WhatFuckError(f"Task polling exceeded maximum retries ({max_retries})")
+
+    async def run(self):
+        return await self.create_task_and_wait()
 
     async def to_save(self):
         if not self._content:
