@@ -68,6 +68,7 @@ class ImagesQwenAsync:
         strength: Union[int, float] = 0.5,
         **parameters,
     ) -> GeneratedImageOrVideo:
+
         ALLOWED_FUNCTION_CALL = [
             "stylization_local",
             "stylization_all",
@@ -83,7 +84,7 @@ class ImagesQwenAsync:
             raise InvalidFunctionCallError("function call must be a non-empty string")
 
         if function_call not in ALLOWED_FUNCTION_CALL:
-            raise InvalidFunctionCallError("Invalid function call")
+            raise InvalidFunctionCallError(f"Invalid function call: '{function_call}'")
 
         client = self._get_client()
         try:
