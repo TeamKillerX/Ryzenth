@@ -51,10 +51,10 @@ from .helper import (
 )
 from .new_helper import (
     ChatOrgAsync,
+    ChatsQwenAsync,
     ImagesOrgAsync,
     ImagesQwenAsync,
     VideosQwenAsync,
-    ChatsQwenAsync,
 )
 from .types import (
     DownloaderBy,

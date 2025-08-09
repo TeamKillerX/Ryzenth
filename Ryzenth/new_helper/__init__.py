@@ -1,8 +1,8 @@
 from ._chats import ChatOrgAsync
 from ._images import ImagesOrgAsync
+from ._qwen_chats import ChatsQwenAsync
 from ._qwen_images import ImagesQwenAsync
 from ._qwen_videos import VideosQwenAsync
-from ._qwen_chats import ChatsQwenAsync
 
 __all__ = [
   "ImagesOrgAsync",
