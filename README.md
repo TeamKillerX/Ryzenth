@@ -18,7 +18,7 @@
 
 ---
 
-**Ryzenth** is a powerful Multi-API SDK designed to seamlessly handle API keys and database connections with ease. 
+**Ryzenth** is a powerful Multi-API SDK designed to seamlessly handle API keys and database connections with ease.
 
 It provides native support for both **synchronous and asynchronous** operations, making it ideal for modern applications including AI APIs, Telegram bots, REST services, and automation tools.
 
@@ -111,9 +111,9 @@ print(response)
 
 # 🔧 Traditional client approach
 clients = await RyzenthApiClient(
-    tools_name=["ryzenth-v2"], 
-    api_key={"ryzenth-v2": [{}]}, 
-    rate_limit=100, 
+    tools_name=["ryzenth-v2"],
+    api_key={"ryzenth-v2": [{}]},
+    rate_limit=100,
     use_default_headers=True
 )
 ```
@@ -128,7 +128,7 @@ rt = RyzenthTools()
 
 # 💬 Chat Ultimate - Multiple AI Models
 response_grok = await rt.aio.chat.ask_ultimate(
-    "What is Durov's role in Telegram?", 
+    "What is Durov's role in Telegram?",
     model="grok"
 )
 print(await response_grok.to_result())
@@ -143,7 +143,7 @@ await response_content.to_save()
 
 # 👀 Image Analysis with Upload
 response_see = await rt.aio.images.create_upload_to_ask(
-    "Describe this image:", 
+    "Describe this image:",
     "/path/to/example.jpg"
 )
 result = await response_see.to_result()
@@ -160,7 +160,7 @@ await rt.aio_client.images.close()
 await rt.aio.images.create()
 await rt.aio.images.create_gemini_and_captions()
 await rt.aio_client.images.create_gemini_to_edit(
-    "add Lamborghini background", 
+    "add Lamborghini background",
     "/path/to/example.jpg"
 )  # Use response.to_buffer_and_list()
 
@@ -189,7 +189,7 @@ output = await response.create_task_and_wait(max_retries=120, poll_interval=1.0)
 
 print("🎨 Image URL:", output.results[0].url)
 
-# 🎬 Generate Video  
+# 🎬 Generate Video
 response_video = await rt.aio.qwen_videos.create("blue cat running in slow motion")
 output_video = await response_video.create_task_and_wait(max_retries=120, poll_interval=1.0)
 
@@ -248,7 +248,7 @@ response = await clients.get(
 )
 ```
 
-> **📚 Resources**: 
+> **📚 Resources**:
 > - Example plugins: [`/dev/modules/paxsenix.py`](https://github.com/TeamKillerX/Ryzenth/blob/dev/modules/paxsenix.py)
 > - Shared domains: [`/Ryzenth/_shared.py#L4`](https://github.com/TeamKillerX/Ryzenth/blob/83ea891711c89d3c53e646c866ee5137f81fcb4c/Ryzenth/_shared.py#L4)
 
@@ -338,7 +338,7 @@ print(response)
 
 ### 🌐 API Provider Partners
 - **[PaxSenix](https://api.paxsenix.biz.id)** - PaxSenix Development Team
-- **[Itzpire](https://itzpire.com)** - Itzpire Development Team  
+- **[Itzpire](https://itzpire.com)** - Itzpire Development Team
 - **[Ytdlpyton](https://ytdlpyton.nvlgroup.my.id/)** - Unesa Development Team
 - **[Exonity](https://exonity.tech)** - Exonity Development Team
 - **[Yogik](https://api.yogik.id)** - Yogik Team (Legacy)
