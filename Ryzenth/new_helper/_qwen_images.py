@@ -59,6 +59,50 @@ class ImagesQwenAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
+    async def to_edit(
+        self,
+        prompt: str,
+        base_image_url: str,
+        *,
+        strength: Union[int, float] = 0.5,
+        function_call: str = "stylization_all",
+    ) -> GeneratedImageOrVideo:
+        if not prompt or not prompt.strip():
+            raise WhatFuckError("Prompt cannot be empty")
+
+        client = self._get_client()
+        try:
+            response = await client.post(
+                tool="alibaba",
+                path="/api/v1/services/aigc/image2image/image-synthesis",
+                timeout=30,
+                json={
+                    "model": "wanx2.1-imageedit",
+                    "input": {
+                        "function": function_call,
+                        "prompt": prompt,
+                        "base_image_url": base_image_url
+                    },
+                    "parameters": {
+                        "n": 1,
+                        "strength": strength
+                    }
+                },
+                use_type=ResponseType.JSON
+            )
+
+            if not response:
+                raise WhatFuckError("Empty response from image edit generation API")
+
+            return GeneratedImageOrVideo(client=client, content=response)
+        except Exception as e:
+            self.logger.error(f"Qwen image edit generation failed: {e}")
+            raise WhatFuckError(f"Qwen image edit generation failed: {e}") from e
+        finally:
+            pass
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def create(
         self,
         prompt: str,

@@ -96,12 +96,12 @@ class VideosQwenAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from image generation API")
+                raise WhatFuckError("Empty response from video generation API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
-            self.logger.error(f"Qwen image generation failed: {e}")
-            raise WhatFuckError(f"Qwen image generation failed: {e}") from e
+            self.logger.error(f"Qwen video generation failed: {e}")
+            raise WhatFuckError(f"Qwen video generation failed: {e}") from e
         finally:
             pass
 
