@@ -64,11 +64,23 @@ class ImagesQwenAsync:
         prompt: str,
         base_image_url: str,
         *,
-        strength: Union[int, float] = 0.5,
         function_call: str = "stylization_all",
+        strength: Union[int, float] = 0.5,
+        **parameters,
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
+
+        ALLOWED_FUNCTION_CALL = [
+            "stylization_local",
+            "stylization_all",
+            "description_edit",
+            "description_edit_with_mask",
+            "remove_watermark",
+            "super_resolution"
+        ]
+        if function_call not in ALLOWED_FUNCTION_CALL:
+            raise WhatFuckError("Invalid function call")
 
         client = self._get_client()
         try:
@@ -85,7 +97,8 @@ class ImagesQwenAsync:
                     },
                     "parameters": {
                         "n": 1,
-                        "strength": strength
+                        "strength": strength,
+                        **parameters
                     }
                 },
                 use_type=ResponseType.JSON
