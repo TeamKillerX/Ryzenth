@@ -71,42 +71,78 @@ clients = await RyzenthApiClient(tools_name=["ryzenth-v2"], api_key={"ryzenth-v2
 ```py
 from Ryzenth import RyzenthTools
 
-new = RyzenthTools()
+rt = RyzenthTools()
 
 # Chat ultimate
-response_grok = await new.aio_client.chat.ask_ultimate("what is durov on telegram?", model="grok")
+response_grok = await rt.aio.chat.ask_ultimate("what is durov on telegram?", model="grok")
 
 print(await response_grok.to_result())
 
 # OpenAI V2
-response_openai = await new.aio_client.chat.ask("What's the capital of Japan?")
+response_openai = await rt.aio.chat.ask("What's the capital of Japan?")
 print(await response_openai.to_result())
 
 # After close
-await new.aio_client.chat.close()
+await rt.aio.chat.close()
 
 # Image generation
-response_content = await new.aio_client.images.create("make a generate cat blue")
+response_content = await rt.aio.images.create("make a generate cat blue")
 
 await response_content.to_save()
 
 # Upload + Ask
-response_see = await new.aio_client.images.create_upload_to_ask("Describe this image:", "/path/to/example.jpg")
+response_see = await rt.aio.images.create_upload_to_ask("Describe this image:", "/path/to/example.jpg")
 await response_see.to_result()
 
 # After close
-await new.aio_client.images.close()
+await rt.aio_client.images.close()
 ```
 - New Method 🌟
 ```py
-await new.aio_client.images.create()
-await new.aio_client.images.create_gemini_and_captions()
-await new.aio_client.images.create_gemini_to_edit("add background Lamborghini", "/path/to/example.jpg") # use response.to_buffer_and_list()
-await new.aio_client.images.create_upload_to_ask()
-await new.aio_client.images.create_multiple()
-await new.aio_client.chat.ask()
-await new.aio_client.chat.ask_ultimate()
+await rt.aio.images.create()
+await rt.aio.images.create_gemini_and_captions()
+await rt.aio_client.images.create_gemini_to_edit("add background Lamborghini", "/path/to/example.jpg") # use response.to_buffer_and_list()
+await rt.aio.images.create_upload_to_ask()
+await rt.aio.images.create_multiple()
+await rt.aio.chat.ask()
+await rt.aio.chat.ask_ultimate()
 ```
+
+---
+
+### Image & Video Generation
+Using **Qwen AI** for Image & Video Generation
+
+With **RyzenthTools**, it is simple to use Qwen AI for generating images and videos in an asynchronous manner.
+
+You can also access results by **dot notation** (`output.results[0].url`), which makes your code neater and easier to read.
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools("your-api-key-from-qwen")
+
+# ---------------------------
+# 1. Generate Image
+# ---------------------------
+response = await rt.aio.qwen_images.create("make a generate cat blue")
+output = await response.create_task_and_wait(max_retries=120, poll_interval=1.0)
+
+print("Image URL:", output.results[0].url)
+
+# ---------------------------
+# 2. Generate Video
+# ---------------------------
+response_two = await rt.aio.qwen_videos.create("make a generate cat blue run")
+output_two = await response_two.create_task_and_wait(max_retries=120, poll_interval=1.0)
+
+print("Video URL:", output_two.video_url)
+```
+**Notes:**
+- If you are using version `2.2.3` or above, **dot notation** access may not be available due to the APIs changing.
+
+For associated problems and updates, check the discussion:
+
+- [`GitHub Discussion`](https://github.com/TeamKillerX/Ryzenth/discussions)
 
 ### Tool for developers
 Custom Name:
