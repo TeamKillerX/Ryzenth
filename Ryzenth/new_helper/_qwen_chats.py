@@ -27,7 +27,7 @@ from .._client import RyzenthApiClient
 from .._errors import WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
-from ..helper import AutoRetry, Helpers
+from ..helper import AutoRetry
 
 
 class ChatsQwenAsync:
@@ -93,7 +93,7 @@ class ChatsQwenAsync:
             if not response:
                 raise WhatFuckError("Empty response from image generation API")
 
-            return ResponseResult(client=client, content=response)
+            return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Qwen chats failed: {e}")
             raise WhatFuckError(f"Qwen chats failed: {e}") from e
