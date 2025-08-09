@@ -91,7 +91,7 @@ class ChatsQwenAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from image generation API")
+                raise WhatFuckError("Empty response from chat completion API")
 
             return ResponseResult(client=client, response=response)
         except Exception as e:
