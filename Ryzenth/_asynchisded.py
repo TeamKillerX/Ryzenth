@@ -54,6 +54,7 @@ from .new_helper import (
     ImagesOrgAsync,
     ImagesQwenAsync,
     VideosQwenAsync,
+    ChatsQwenAsync,
 )
 from .types import (
     DownloaderBy,
@@ -68,6 +69,7 @@ class RyzenthOrg:
         self._api_key = api_key
         self._session = None
         self._closed = False
+        self.qwen_chat = ChatsQwenAsync(self)
         self.qwen_images = ImagesQwenAsync(self)
         self.qwen_videos = VideosQwenAsync(self)
         self.images = ImagesOrgAsync(self)
