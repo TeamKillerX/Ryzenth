@@ -23,7 +23,7 @@ from typing import Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError
+from .._errors import WhatFuckError, InvalidFunctionCallError
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
@@ -68,9 +68,6 @@ class ImagesQwenAsync:
         strength: Union[int, float] = 0.5,
         **parameters,
     ) -> GeneratedImageOrVideo:
-        if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
-
         ALLOWED_FUNCTION_CALL = [
             "stylization_local",
             "stylization_all",
@@ -79,8 +76,14 @@ class ImagesQwenAsync:
             "remove_watermark",
             "super_resolution"
         ]
+        if not prompt or not prompt.strip():
+            raise WhatFuckError("Prompt cannot be empty")
+
+        if not isinstance(function_call, str) or not function_call.strip():
+            raise InvalidFunctionCallError("function call must be a non-empty string")
+
         if function_call not in ALLOWED_FUNCTION_CALL:
-            raise WhatFuckError("Invalid function call")
+            raise InvalidFunctionCallError("Invalid function call")
 
         client = self._get_client()
         try:
