@@ -70,6 +70,12 @@ class ImagesQwenAsync:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
+        ALLOWED_FUNCTION_CALL = [
+            "stylization_local",
+            "stylization_all",
+            "description_edit",
+            "description_edit_with_mask"
+        ]
         client = self._get_client()
         try:
             response = await client.post(
