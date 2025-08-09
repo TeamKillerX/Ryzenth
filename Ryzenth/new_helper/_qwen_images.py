@@ -92,7 +92,7 @@ class ImagesQwenAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from image generation API")
+                raise WhatFuckError("Empty response from image edit generation API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
@@ -141,7 +141,7 @@ class ImagesQwenAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from image editing generation API")
+                raise WhatFuckError("Empty response from image generation API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
