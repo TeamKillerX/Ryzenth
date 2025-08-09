@@ -51,6 +51,9 @@ class GeneratedImageOrVideo:
             retries += 1
         raise WhatFuckError(f"Task polling exceeded maximum retries ({max_retries})")
 
+    async def run(self):
+        return await self.create_task_and_wait()
+
     async def to_save(self):
         if not self._content:
             raise WhatFuckError("No content available")
