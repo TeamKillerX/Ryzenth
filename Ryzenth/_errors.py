@@ -23,6 +23,9 @@ import json
 class WhatFuckError(Exception):
     pass
 
+class InvalidFunctionCallError(Exception):
+    pass
+
 class ParamsRequiredError(ValueError):
     pass
 
@@ -197,6 +200,7 @@ __all__ = [
     "InvalidJSONDecodeError",
     "InvalidEmptyError",
     "InvalidModelError",
+    "InvalidFunctionCallError",
     "UnauthorizedAccessError",
     "RequiredError",
     "BadRequestError",
