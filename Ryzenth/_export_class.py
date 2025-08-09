@@ -30,7 +30,6 @@ class GeneratedImageOrVideo:
         self,
         max_retries: int = 120,
         poll_interval: float = 1.0,
-        return_img_url: bool = False,
     ):
         retries = 0
         while retries < max_retries:
