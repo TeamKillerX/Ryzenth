@@ -16,6 +16,9 @@ class ResponseResult:
             return self._client.dict_convert_to_dot(self._response).data.content.ultimate[0].text
         return self._client.dict_convert_to_dot(self._response).data.choices[0].message.content
 
+    async def to_obj(self):
+        return self._client.dict_convert_to_dot(self._response)
+
     async def to_json(self):
         return self._response
 
