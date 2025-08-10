@@ -136,7 +136,11 @@ class RyzenthApiClient:
         return check_ok
 
     def _get_headers_for_tool(self, tool: str) -> dict:
-        base = {"User-Agent": get_user_agent()}
+        base = {
+            "User-Agent": get_user_agent(),
+            "X-Github-Source": "TeamKillerX/Ryzenth",
+            "X-Author": "Ryzenth"
+        }
         if self._use_default_headers and tool in self._api_keys:
             tool_headers = self._api_keys[tool]
             if tool_headers:
