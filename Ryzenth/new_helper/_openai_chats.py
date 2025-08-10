@@ -58,7 +58,7 @@ class ChatsOpenAIAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create(self, prompt: str) -> ResponseResult:
+    async def create(self, prompt: str, model: str = "gpt-5") -> ResponseResult:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -69,7 +69,7 @@ class ChatsOpenAIAsync:
                 path="/responses",
                 timeout=30,
                 json={
-                    "model": "gpt-5",
+                    "model": model,
                     "input": prompt
                 },
                 use_type=ResponseType.JSON
