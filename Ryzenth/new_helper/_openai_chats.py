@@ -66,7 +66,7 @@ class ChatsOpenAIAsync:
         try:
             response = await client.post(
                 tool="openai",
-                path="/v1/responses",
+                path="/responses",
                 timeout=30,
                 json={
                     "model": "gpt-5",
