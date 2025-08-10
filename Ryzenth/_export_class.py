@@ -38,7 +38,7 @@ class ResponseResult:
     async def to_obj(self):
         return self._client.dict_convert_to_dot(self._response)
 
-    async def to_json(self):
+    async def to_dict(self):
         return self._response
 
 class GeneratedImageOrVideo:
@@ -110,7 +110,7 @@ class GeneratedImageOrVideo:
     async def to_obj(self):
         return self._client.dict_convert_to_dot(self._content)
 
-    async def to_json(self):
+    async def to_dict(self):
         return self._content
 
     async def to_base64(self):
