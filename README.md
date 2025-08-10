@@ -67,10 +67,8 @@ The library automatically adds these headers when `use_default_headers=True`:
 - `Content-Type: application/json`
 
 ### Javascript Your own API
-
-- Added headers this
 ```js
-const ua = req.headers['user-agent'];
+const ua = req.headers['User-Agent'];
 const gh = req.headers['X-Github-Source'];
 const ghVersion = req.headers['X-Ryzenth-Version'];
 
