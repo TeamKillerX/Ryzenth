@@ -83,10 +83,10 @@ class GeneratedImageOrVideo:
         self._logger.info(f"Successfully generated and saved image to: {saved_path}")
         return saved_path
 
-    async def to_buffer_request(self):
+    async def to_buffer_request(self, response_content):
         import requests
         try:
-            response = requests.get(self._content)
+            response = requests.get(response_content)
             if response.status_code != 200:
                 raise WhatFuckError(f"Status {response.status_code} Failed Error")
             return self._client.to_buffer(response.content, return_image_base64=False)
