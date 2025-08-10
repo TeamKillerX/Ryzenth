@@ -86,10 +86,10 @@ class GeneratedImageOrVideo:
     async def to_buffer_request(self):
         import requests
         try:
-            response = requests.get(self._content).content
+            response = requests.get(self._content)
             if response.status_code != 200:
                 raise WhatFuckError(f"Status {response.status_code} Failed Error")
-            return self._client.to_buffer(response, return_image_base64=False)
+            return self._client.to_buffer(response.content, return_image_base64=False)
         except Exception as e:
             raise WhatFuckError(f"Error requests: {e}") from e
 
