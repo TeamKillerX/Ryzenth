@@ -32,7 +32,7 @@ import httpx
 import requests
 from box import Box
 
-from .__version__ import get_user_agent
+from .__version__ import __version__, get_user_agent
 from ._benchmark import Benchmark
 from ._errors import (
     AsyncStatusError,
@@ -139,7 +139,8 @@ class RyzenthApiClient:
         base = {
             "User-Agent": get_user_agent(),
             "X-Github-Source": "TeamKillerX/Ryzenth",
-            "X-Author": "Ryzenth"
+            "X-Author": "Ryzenth",
+            "X-Ryzenth-Version": __version__
         }
         if self._use_default_headers and tool in self._api_keys:
             tool_headers = self._api_keys[tool]
