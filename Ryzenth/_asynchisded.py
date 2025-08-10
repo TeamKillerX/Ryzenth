@@ -51,8 +51,8 @@ from .helper import (
 )
 from .new_helper import (
     ChatOrgAsync,
-    ChatsQwenAsync,
     ChatsOpenAIAsync,
+    ChatsQwenAsync,
     ImagesOrgAsync,
     ImagesQwenAsync,
     VideosQwenAsync,
