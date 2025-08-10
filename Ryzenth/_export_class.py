@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import asyncio
 import base64
 import io
@@ -83,6 +82,16 @@ class GeneratedImageOrVideo:
             raise WhatFuckError("Failed to save generated image")
         self._logger.info(f"Successfully generated and saved image to: {saved_path}")
         return saved_path
+
+    async def to_buffer_request(self):
+        import requests
+        try:
+            response = requests.get(self._content).content
+            if response.status_code != 200:
+                raise WhatFuckError(f"Status {response.status_code} Failed Error")
+            return self._client.to_buffer(response, return_image_base64=False)
+        except Exception as e:
+            raise WhatFuckError(f"Error requests: {e}") from e
 
     async def to_buffer_and_list(self):
         file_save = self._client.to_buffer(
