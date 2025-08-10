@@ -73,7 +73,11 @@ const gh = req.headers['X-Github-Source'];
 
 console.log(gh) // check valid whitelist TeamKillerX/Ryzenth
 
-const EXTRA_ALLOWED_UA = ["Ryzenth/Python"];
+const ALLOWED_UA_REGEX = /^Ryzenth\/(Python|TS|Rust)-\d+\.\d+/;
+
+const EXTRA_ALLOWED_UA = [
+  "Mozilla/5.0 ......."
+];
 
 const isAllowed = ALLOWED_UA_REGEX.test(ua || "") ||
                     EXTRA_ALLOWED_UA.some(allowed => ua?.startsWith(allowed));
