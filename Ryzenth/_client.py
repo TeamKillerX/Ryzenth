@@ -32,7 +32,7 @@ import httpx
 import requests
 from box import Box
 
-from .__version__ import get_user_agent, __version__
+from .__version__ import __version__, get_user_agent
 from ._benchmark import Benchmark
 from ._errors import (
     AsyncStatusError,
