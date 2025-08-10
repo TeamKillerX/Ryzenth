@@ -107,6 +107,12 @@ class GeneratedImageOrVideo:
         )
         return file_save, self._content["data"]["content_text"]
 
+    async def to_obj(self):
+        return self._client.dict_convert_to_dot(self._content)
+
+    async def to_json(self):
+        return self._content
+
     async def to_base64(self):
         if not self._content:
             raise WhatFuckError("No content available")
