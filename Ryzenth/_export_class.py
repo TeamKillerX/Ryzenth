@@ -83,13 +83,20 @@ class GeneratedImageOrVideo:
         self._logger.info(f"Successfully generated and saved image to: {saved_path}")
         return saved_path
 
-    async def to_buffer_request(self, response_content):
+    async def to_buffer_request(
+        self,
+        response_content,
+        return_image_base64=False,
+        disabled_http=False,
+    ):
         import requests
         try:
+            if disabled_http:
+                return self._client.to_buffer(response_content, return_image_base64=return_image_base64)
             response = requests.get(response_content)
             if response.status_code != 200:
                 raise WhatFuckError(f"Status {response.status_code} Failed Error")
-            return self._client.to_buffer(response.content, return_image_base64=False)
+            return self._client.to_buffer(response.content, return_image_base64=return_image_base64)
         except Exception as e:
             raise WhatFuckError(f"Error requests: {e}") from e
 
