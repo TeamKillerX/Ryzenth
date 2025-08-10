@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import logging
 import os
 from typing import Optional, Union
@@ -25,12 +24,12 @@ from typing import Optional, Union
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import WhatFuckError
-from .._export_class import ResponseResult
+from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
 from ..helper import AutoRetry
 
 
-class ChatsOpenAIAsync:
+class ImagesOpenAIAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
@@ -45,9 +44,10 @@ class ChatsOpenAIAsync:
                 self._client = RyzenthApiClient(
                     tools_name=["openai"],
                     api_key={"openai": [
-                      {
-                        "Authorization": f"Bearer {api_key}",
-                      }
+                        {
+                          "Authorization": f"Bearer {api_key}",
+                          "Content-type": "application/json"
+                        }
                     ]},
                     rate_limit=100,
                     use_default_headers=True
@@ -58,7 +58,12 @@ class ChatsOpenAIAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create(self, prompt: str, model: str = "gpt-5") -> ResponseResult:
+    async def create(
+        self,
+        prompt: str,
+        *,
+        model: str = "gpt-image-1",
+    ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -66,22 +71,22 @@ class ChatsOpenAIAsync:
         try:
             response = await client.post(
                 tool="openai",
-                path="/responses",
-                timeout=30,
+                path="/images/generations",
+                timeout=100,
                 json={
                     "model": model,
-                    "input": prompt
+                    "prompt": prompt
                 },
                 use_type=ResponseType.JSON
             )
 
             if not response:
-                raise WhatFuckError("Empty response from chat completion API")
+                raise WhatFuckError("Empty response from openai image generation API")
 
-            return ResponseResult(client=client, response=response)
+            return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
-            self.logger.error(f"OpenAI chats failed: {e}")
-            raise WhatFuckError(f"OpenAI chats failed: {e}") from e
+            self.logger.error(f"Openai image generation failed: {e}")
+            raise WhatFuckError(f"Openai image generation failed: {e}") from e
         finally:
             pass
 
