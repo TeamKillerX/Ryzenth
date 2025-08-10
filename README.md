@@ -66,6 +66,26 @@ The library automatically adds these headers when `use_default_headers=True`:
 - `Accept: application/json`
 - `Content-Type: application/json`
 
+### Javascript Your own API
+```js
+const ua = req.headers['user-agent'];
+const gh = req.headers['X-Github-Source'];
+
+console.log(gh) // check valid whitelist TeamKillerX/Ryzenth
+
+const EXTRA_ALLOWED_UA = ["Ryzenth/Python"];
+
+const isAllowed = ALLOWED_UA_REGEX.test(ua || "") ||
+                    EXTRA_ALLOWED_UA.some(allowed => ua?.startsWith(allowed));
+
+if (!isAllowed) {
+  return res.status(403).json({
+    status: "error",
+    message: "Access blocked: User-Agent not allowed",
+  });
+}
+```
+
 ## ✨ Features
 
 - 🔄 **Dual Mode Support**: Works with both `sync` and `async` clients
