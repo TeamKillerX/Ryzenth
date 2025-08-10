@@ -51,6 +51,7 @@ from .helper import (
 )
 from .new_helper import (
     ChatOrgAsync,
+    ChatsOpenAIAsync,
     ChatsQwenAsync,
     ImagesOrgAsync,
     ImagesQwenAsync,
@@ -69,6 +70,7 @@ class RyzenthOrg:
         self._api_key = api_key
         self._session = None
         self._closed = False
+        self.openai_responses = ChatsOpenAIAsync(self)
         self.qwen_chat = ChatsQwenAsync(self)
         self.qwen_images = ImagesQwenAsync(self)
         self.qwen_videos = VideosQwenAsync(self)
