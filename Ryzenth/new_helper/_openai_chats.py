@@ -20,7 +20,7 @@
 
 import logging
 import os
-from typing import Optional, Union
+from typing import Optional, Union, List, Dict
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -59,7 +59,14 @@ class ChatsOpenAIAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create(self, prompt: str, model: str = "gpt-5") -> ResponseResult:
+    async def create(
+        self,
+        prompt: str | List[Dict] | Dict,
+        *,
+        model: str = "gpt-5",
+        reasoning: dict = None,
+        instructions: str = None,
+    ) -> ResponseResult:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -71,6 +78,8 @@ class ChatsOpenAIAsync:
                 timeout=30,
                 json={
                     "model": model,
+                    "reasoning": reasoning,
+                    "instructions": instructions,
                     "input": prompt
                 },
                 use_type=ResponseType.JSON
