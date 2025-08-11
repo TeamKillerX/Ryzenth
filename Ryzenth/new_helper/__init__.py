@@ -1,3 +1,4 @@
+from ._cohere_chats import ChatsCohereAsync
 from ._default_chats import ChatOrgAsync
 from ._default_images import ImagesOrgAsync
 from ._gemini_chats import ChatsGeminiAsync
@@ -6,7 +7,6 @@ from ._openai_images import ImagesOpenAIAsync
 from ._qwen_chats import ChatsQwenAsync
 from ._qwen_images import ImagesQwenAsync
 from ._qwen_videos import VideosQwenAsync
-from ._cohere_chats import ChatsCohereAsync
 
 __all__ = [
   "ChatOrgAsync",
