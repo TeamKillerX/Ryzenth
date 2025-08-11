@@ -1,11 +1,11 @@
 from ._chats import ChatOrgAsync
+from ._gemini_chats import ChatsGeminiAsync
 from ._images import ImagesOrgAsync
 from ._openai_chats import ChatsOpenAIAsync
 from ._openai_images import ImagesOpenAIAsync
 from ._qwen_chats import ChatsQwenAsync
 from ._qwen_images import ImagesQwenAsync
 from ._qwen_videos import VideosQwenAsync
-from ._gemini_chats import ChatsGeminiAsync
 
 __all__ = [
   "ChatOrgAsync",
