@@ -5,11 +5,13 @@ from ._openai_images import ImagesOpenAIAsync
 from ._qwen_chats import ChatsQwenAsync
 from ._qwen_images import ImagesQwenAsync
 from ._qwen_videos import VideosQwenAsync
+from ._gemini_chats import ChatsGeminiAsync
 
 __all__ = [
   "ChatOrgAsync",
   "ChatsQwenAsync",
   "ChatsOpenAIAsync",
+  "ChatsGeminiAsync",
   "ImagesQwenAsync",
   "ImagesOrgAsync",
   "ImagesOpenAIAsync",
