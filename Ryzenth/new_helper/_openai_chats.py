@@ -20,7 +20,7 @@
 
 import logging
 import os
-from typing import Optional, Union, List, Dict
+from typing import Dict, List, Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
