@@ -15,7 +15,7 @@ TOOL_DOMAIN_MAP = {
     "yogik": "https://api.yogik.id",
     "ytdlpyton": "https://ytdlpyton.nvlgroup.my.id",
     "openai": "https://api.openai.com/v1",
-    "cohere": "https://api.cohere.com/v1",
+    "cohere": "https://api.cohere.com",
     "claude": "https://api.anthropic.com/v1",
     "grok": "https://api.x.ai/v1",
     "alibaba": "https://dashscope-intl.aliyuncs.com",
