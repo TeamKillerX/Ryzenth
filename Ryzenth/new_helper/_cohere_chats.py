@@ -90,8 +90,8 @@ class ChatsCohereAsync:
 
             return ResponseResult(client=client, response=response)
         except Exception as e:
-            self.logger.error(f"Gemini chats failed: {e}")
-            raise WhatFuckError(f"Gemini chats failed: {e}") from e
+            self.logger.error(f"Cohere chats failed: {e}")
+            raise WhatFuckError(f"Cohere chats failed: {e}") from e
         finally:
             pass
 
