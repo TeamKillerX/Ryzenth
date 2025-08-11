@@ -68,7 +68,9 @@ class ChatsCohereAsync:
         chat_history: list[dict] = None,
         connectors: list[dict] = None,
     ) -> ResponseResult:
-        if not prompt or not prompt.strip():
+        if not isinstance(prompt, str):
+            raise WhatFuckError("Prompt must be a string")
+        if not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
         client = self._get_client()
