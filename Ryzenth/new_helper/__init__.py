@@ -6,12 +6,14 @@ from ._openai_images import ImagesOpenAIAsync
 from ._qwen_chats import ChatsQwenAsync
 from ._qwen_images import ImagesQwenAsync
 from ._qwen_videos import VideosQwenAsync
+from ._cohere_chats import ChatsCohereAsync
 
 __all__ = [
   "ChatOrgAsync",
   "ChatsQwenAsync",
   "ChatsOpenAIAsync",
   "ChatsGeminiAsync",
+  "ChatsCohereAsync",
   "ImagesQwenAsync",
   "ImagesOrgAsync",
   "ImagesOpenAIAsync",
