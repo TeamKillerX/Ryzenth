@@ -67,8 +67,8 @@ class ChatsOpenAIAsync:
         reasoning: dict = None,
         instructions: str = None,
     ) -> ResponseResult:
-        if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+        if not prompt:
+            raise WhatFuckError("Prompt is Required")
 
         client = self._get_client()
         try:
