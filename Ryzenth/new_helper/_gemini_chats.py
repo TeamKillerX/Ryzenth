@@ -38,9 +38,8 @@ class ChatsGeminiAsync:
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
-            api_key = getattr(self.parent, "_api_key", None)
-            if not api_key:
-                api_key = os.environ.get("GEMINI_API_KEY")
+            api_key = getattr(self.parent, "_api_key", None) or os.environ.get("GEMINI_API_KEY")
+
             if not api_key or not isinstance(api_key, str) or not api_key.strip():
                 raise WhatFuckError("Missing or invalid API key for Gemini client initialization.")
             try:
