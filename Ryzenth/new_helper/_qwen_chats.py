@@ -71,6 +71,11 @@ class ChatsQwenAsync:
     ) -> ResponseResult:
         if not messages:
             raise WhatFuckError("Messages is required")
+        for idx, msg in enumerate(messages):
+            if not isinstance(msg, dict):
+                raise WhatFuckError(f"Message at index {idx} must be a dict")
+            if "role" not in msg or "content" not in msg:
+                raise WhatFuckError(f"Message at index {idx} must contain 'role' and 'content' keys")
 
         client = self._get_client()
         try:
