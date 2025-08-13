@@ -59,7 +59,17 @@ class ChatsGeminiAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask(self, messages: List[Dict], model: str = "gemini-2.5-flash") -> ResponseResult:
+    async def ask(
+        self,
+        messages: List[Dict],
+        *,
+        model: str = "gemini-2.5-flash",
+        reasoning_effort: str = "none",
+        tools: List[Dict] = None,
+        extra_body: Dict = None,
+        tool_choice: str = "none",
+        stream: bool = False,
+    ) -> ResponseResult:
         if not isinstance(messages, list) or len(messages) == 0:
             raise InvalidMessageError("Messages must be a non-empty list")
         for idx, msg in enumerate(messages):
@@ -76,7 +86,11 @@ class ChatsGeminiAsync:
                 timeout=30,
                 json={
                     "model": model,
-                    "messages": messages
+                    "messages": messages,
+                    "reasoning_effort": reasoning_effort,
+                    "extra_body": extra_body,
+                    "stream": stream,
+                    "tools": tools
                 },
                 use_type=ResponseType.JSON
             )
