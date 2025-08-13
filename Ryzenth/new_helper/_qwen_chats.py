@@ -20,7 +20,7 @@
 
 import logging
 import os
-from typing import Optional, Union
+from typing import Optional, Union, List, Dict
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -62,14 +62,20 @@ class ChatsQwenAsync:
     @AutoRetry(max_retries=3, delay=1.5)
     async def ask(
         self,
-        prompt: str,
+        messages: List[Dict],
         *,
+        model: str = "qwen-plus-2025-04-28",
         stream: bool = False,
         include_usage: bool = False,
         enable_thinking: bool = True,
     ) -> ResponseResult:
-        if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+        if not messages:
+            raise WhatFuckError("Messages is required")
+        for idx, msg in enumerate(messages):
+            if not isinstance(msg, dict):
+                raise WhatFuckError(f"Message at index {idx} must be a dict")
+            if "role" not in msg or "content" not in msg:
+                raise WhatFuckError(f"Message at index {idx} must contain 'role' and 'content' keys")
 
         client = self._get_client()
         try:
@@ -78,10 +84,8 @@ class ChatsQwenAsync:
                 path="/compatible-mode/v1/chat/completions",
                 timeout=30,
                 json={
-                    "model": "qwen-plus-2025-04-28",
-                    "messages": [
-                      {"role": "user", "content": prompt}
-                    ],
+                    "model": model,
+                    "messages": messages,
                     "stream": stream,
                     "stream_options": {
                         "include_usage": include_usage
