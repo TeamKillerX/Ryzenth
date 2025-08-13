@@ -20,7 +20,7 @@
 
 import logging
 import os
-from typing import Optional, Union
+from typing import Optional, Union, List Dict
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -59,9 +59,12 @@ class ChatsGeminiAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask(self, prompt: str, model: str = "gemini-2.5-flash") -> ResponseResult:
-        if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+    async def ask(self, messages: List[Dict], model: str = "gemini-2.5-flash") -> ResponseResult:
+        for idx, msg in enumerate(messages):
+            if not isinstance(msg, dict):
+                raise WhatFuckError(f"Message at index {idx} must be a dict")
+            if "role" not in msg or "content" not in msg:
+                raise WhatFuckError(f"Message at index {idx} must contain 'role' and 'content' keys")
 
         client = self._get_client()
         try:
@@ -71,9 +74,7 @@ class ChatsGeminiAsync:
                 timeout=30,
                 json={
                     "model": model,
-                    "messages": [
-                      {"role": "user", "content": prompt}
-                    ]
+                    "messages": messages
                 },
                 use_type=ResponseType.JSON
             )
