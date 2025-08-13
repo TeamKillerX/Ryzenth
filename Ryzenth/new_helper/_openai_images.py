@@ -23,7 +23,7 @@ from typing import Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError
+from .._errors import WhatFuckError, EmptyResponseError
 from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -82,7 +82,7 @@ class ImagesOpenAIAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from openai image generation API")
+                raise EmptyResponseError("Empty response from openai image generation API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
