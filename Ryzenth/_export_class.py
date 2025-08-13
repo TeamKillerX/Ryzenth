@@ -39,8 +39,11 @@ class ResponseResult:
     async def to_obj(self):
         return self._client.dict_convert_to_dot(self._response)
 
-    async def to_dict(self, allow_indent_load: bool = False):
-        return json.dumps(self._response, indent=4) if allow_indent_load else self._response
+    async def to_raw(self, indent=4):
+        return json.dumps(self._response, indent=indent)
+
+    async def to_dict(self):
+        return self._response
 
 class GeneratedImageOrVideo:
     def __init__(self, client, content=None, file_path=None, logger=None):
@@ -111,8 +114,11 @@ class GeneratedImageOrVideo:
     async def to_obj(self):
         return self._client.dict_convert_to_dot(self._content)
 
-    async def to_dict(self, allow_indent_load: bool = False):
-        return json.dumps(self._content, indent=4) if allow_indent_load else self._content
+    async def to_raw(self, indent=4):
+        return json.dumps(self._content, indent=indent)
+
+    async def to_dict(self):
+        return self._content
 
     async def to_base64(self):
         if not self._content:
