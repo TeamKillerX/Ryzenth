@@ -121,7 +121,7 @@ class ImagesQwenAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def get_task(self, task_id) -> ResponseResult:
+    async def get_task(self, task_id: str) -> ResponseResult:
         client = self._get_client()
         response = await client.get(
             tool="alibaba",
