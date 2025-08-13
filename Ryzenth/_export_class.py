@@ -39,7 +39,7 @@ class ResponseResult:
     async def to_obj(self):
         return self._client.dict_convert_to_dot(self._response)
 
-    async def to_raw(self, indent=4):
+    async def to_json_dumps(self, indent=4):
         return json.dumps(self._response, indent=indent)
 
     async def to_dict(self):
@@ -114,7 +114,7 @@ class GeneratedImageOrVideo:
     async def to_obj(self):
         return self._client.dict_convert_to_dot(self._content)
 
-    async def to_raw(self, indent=4):
+    async def to_json_dumps(self, indent=4):
         return json.dumps(self._content, indent=indent)
 
     async def to_dict(self):
