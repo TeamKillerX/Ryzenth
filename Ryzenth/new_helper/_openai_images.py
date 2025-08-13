@@ -23,7 +23,7 @@ from typing import Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError, EmptyResponseError
+from .._errors import EmptyResponseError, WhatFuckError
 from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
 from ..helper import AutoRetry

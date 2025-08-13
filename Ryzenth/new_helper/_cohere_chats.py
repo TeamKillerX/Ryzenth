@@ -20,11 +20,11 @@
 
 import logging
 import os
-from typing import Optional, Union, List, Dict
+from typing import Dict, List, Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError, EmptyResponseError
+from .._errors import EmptyResponseError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
