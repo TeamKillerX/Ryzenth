@@ -23,7 +23,7 @@ from typing import Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import InvalidFunctionCallError, WhatFuckError
+from .._errors import EmptyResponseError, InvalidFunctionCallError, WhatFuckError
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
@@ -110,7 +110,7 @@ class ImagesQwenAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from image edit generation API")
+                raise EmptyResponseError("Empty response from image edit generation API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:

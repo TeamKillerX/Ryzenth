@@ -23,7 +23,7 @@ from typing import Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError
+from .._errors import EmptyResponseError, WhatFuckError
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
@@ -64,7 +64,7 @@ class VideosQwenAsync:
         self,
         prompt: str,
         *,
-        negative_prompt: str = "",
+        negative_prompt: str = None,
         seed: Optional [int] = 0,
         size: str = "624*624",
         prompt_extend: bool = True,
@@ -85,7 +85,7 @@ class VideosQwenAsync:
                     "model": "wan2.2-t2v-plus",
                     "input": {
                         "prompt": prompt,
-                        "negative_prompt": negative_prompt,
+                        **({"negative_prompt": negative_prompt} if negative_prompt is not None else {})
                     },
                     "parameters": {
                         "size": size,
@@ -97,7 +97,7 @@ class VideosQwenAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from video generation API")
+                raise EmptyResponseError("Empty response from video generation API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:

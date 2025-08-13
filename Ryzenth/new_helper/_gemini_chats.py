@@ -24,7 +24,7 @@ from typing import Dict, List, Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import InvalidMessageError, WhatFuckError
+from .._errors import EmptyResponseError, InvalidMessageError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -96,7 +96,7 @@ class ChatsGeminiAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from chat completion API")
+                raise EmptyResponseError("Empty response from chat completion API")
 
             return ResponseResult(client=client, response=response)
         except Exception as e:

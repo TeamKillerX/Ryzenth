@@ -20,11 +20,11 @@
 
 import logging
 import os
-from typing import Optional, Union
+from typing import Dict, List, Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError
+from .._errors import EmptyResponseError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -65,8 +65,8 @@ class ChatsCohereAsync:
         self,
         prompt: str,
         *,
-        chat_history: list[dict] = None,
-        connectors: list[dict] = None,
+        chat_history: List[Dict] = None,
+        connectors: List[Dict] = None,
     ) -> ResponseResult:
         if not isinstance(prompt, str):
             raise WhatFuckError("Prompt must be a string")
@@ -80,15 +80,15 @@ class ChatsCohereAsync:
                 path="/v1/chat",
                 timeout=30,
                 json={
-                    "chat_history": chat_history,
                     "message": prompt,
-                    "connectors": connectors
+                    **({"chat_history": chat_history} if chat_history is not None else {}),
+                    **({"connectors": connectors} if connectors is not None else {})
                 },
                 use_type=ResponseType.JSON
             )
 
             if not response:
-                raise WhatFuckError("Empty response from chat completion API")
+                raise EmptyResponseError("Empty response from chat completion API")
 
             return ResponseResult(client=client, response=response)
         except Exception as e:

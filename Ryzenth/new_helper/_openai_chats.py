@@ -24,7 +24,7 @@ from typing import Dict, List, Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError
+from .._errors import EmptyResponseError, Whatfuckerror
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -64,7 +64,7 @@ class ChatsOpenAIAsync:
         prompt: str | List[Dict] | Dict,
         *,
         model: str = "gpt-5",
-        reasoning: dict = None,
+        reasoning: Dict = None,
         instructions: str = None,
     ) -> ResponseResult:
         if not prompt:
@@ -77,16 +77,16 @@ class ChatsOpenAIAsync:
                 path="/responses",
                 timeout=30,
                 json={
+                    "input": prompt,
                     "model": model,
-                    "reasoning": reasoning,
-                    "instructions": instructions,
-                    "input": prompt
+                    **({"reasoning": reasoning} if reasoning is not None else {}),
+                    **({"instructions": instructions} if instructions is not None else {})
                 },
                 use_type=ResponseType.JSON
             )
 
             if not response:
-                raise WhatFuckError("Empty response from chat completion API")
+                raise EmptyResponseError("Empty response from chat completion API")
 
             return ResponseResult(client=client, response=response)
         except Exception as e:
