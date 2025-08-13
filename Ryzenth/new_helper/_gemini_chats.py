@@ -60,6 +60,8 @@ class ChatsGeminiAsync:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def ask(self, messages: List[Dict], model: str = "gemini-2.5-flash") -> ResponseResult:
+        if not isinstance(messages, list) or len(messages) == 0:
+            raise WhatFuckError("Messages must be a non-empty list")
         for idx, msg in enumerate(messages):
             if not isinstance(msg, dict):
                 raise WhatFuckError(f"Message at index {idx} must be a dict")
