@@ -88,9 +88,9 @@ class ChatsGeminiAsync:
                     "model": model,
                     "messages": messages,
                     "reasoning_effort": reasoning_effort,
-                    "extra_body": extra_body,
                     "stream": stream,
-                    "tools": tools
+                    **({"extra_body": extra_body} if extra_body is not None else {}),
+                    **({"tools": tools} if tools is not None else {})
                 },
                 use_type=ResponseType.JSON
             )
