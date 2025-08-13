@@ -24,7 +24,7 @@ from typing import Dict, List, Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError
+from .._errors import InvalidMessageError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -69,13 +69,13 @@ class ChatsQwenAsync:
         include_usage: bool = False,
         enable_thinking: bool = True,
     ) -> ResponseResult:
-        if not messages:
-            raise WhatFuckError("Messages is required")
+        if not isinstance(messages, list) or len(messages) == 0:
+            raise InvalidMessageError("Messages must be a non-empty list")
         for idx, msg in enumerate(messages):
             if not isinstance(msg, dict):
-                raise WhatFuckError(f"Message at index {idx} must be a dict")
+                raise InvalidMessageError(f"Message at index {idx} must be a dict")
             if "role" not in msg or "content" not in msg:
-                raise WhatFuckError(f"Message at index {idx} must contain 'role' and 'content' keys")
+                raise InvalidMessageError(f"Message at index {idx} must contain 'role' and 'content' keys")
 
         client = self._get_client()
         try:
