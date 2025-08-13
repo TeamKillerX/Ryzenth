@@ -23,6 +23,9 @@ import json
 class WhatFuckError(Exception):
     pass
 
+class EmptyResponseError(Exception):
+    pass
+
 class InvalidMessageError(Exception):
     pass
 
@@ -193,6 +196,7 @@ def SyncStatusError(resp, status_httpx=False):
 
 __all__ = [
     "WhatFuckError",
+    "EmptyResponseError",
     "ForbiddenError",
     "InternalServerError",
     "AuthenticationError",
