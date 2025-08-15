@@ -63,6 +63,7 @@ class ChatsOpenAIAsync:
         self,
         prompt: str | List[Dict] | Dict,
         *,
+        timeout: Union[int, float] = 100,
         model: str = "gpt-5",
         reasoning: Dict = None,
         instructions: str = None,
@@ -75,7 +76,7 @@ class ChatsOpenAIAsync:
             response = await client.post(
                 tool="openai",
                 path="/responses",
-                timeout=30,
+                timeout=timeout,
                 json={
                     "input": prompt,
                     "model": model,
