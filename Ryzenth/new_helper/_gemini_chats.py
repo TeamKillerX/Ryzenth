@@ -63,6 +63,7 @@ class ChatsGeminiAsync:
         self,
         messages: List[Dict],
         *,
+        timeout: Union[int, float] = 100,
         model: str = "gemini-2.5-flash",
         reasoning_effort: str = "none",
         tools: List[Dict] = None,
@@ -83,7 +84,7 @@ class ChatsGeminiAsync:
             response = await client.post(
                 tool="gemini-openai",
                 path="/chat/completions",
-                timeout=30,
+                timeout=timeout,
                 json={
                     "model": model,
                     "messages": messages,
