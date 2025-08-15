@@ -211,6 +211,15 @@ print("🎥 Video URL:", output_video.video_url)
 
 ## 🛠️ Developer Tools & Supported APIs
 
+## Pricing & Free Tier (Ryzenth)
+
+| Endpoints | Free | Description |
+|-----------|--------|-------------|
+| `kimi-latest` | ✅ Free | Kimi AI |
+| `openai-v2/oss` | ✅ Free | GPT oss |
+| `ultimate-chat` | ✅ Free | Custom Model |
+| `openai-v2` | ✅ Free | openAI |
+
 ### Available API Tools
 Choose from our extensive list of supported APIs:
 
