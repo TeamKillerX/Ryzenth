@@ -64,6 +64,7 @@ class VideosQwenAsync:
         self,
         prompt: str,
         *,
+        timeout: Union[int, float] = 100,
         negative_prompt: str = None,
         seed: Optional [int] = 0,
         size: str = "624*624",
@@ -80,7 +81,7 @@ class VideosQwenAsync:
             response = await client.post(
                 tool="alibaba",
                 path="/api/v1/services/aigc/video-generation/video-synthesis",
-                timeout=100,
+                timeout=timeout,
                 json={
                     "model": "wan2.2-t2v-plus",
                     "input": {
