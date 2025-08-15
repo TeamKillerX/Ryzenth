@@ -65,6 +65,7 @@ class ChatsCohereAsync:
         self,
         prompt: str,
         *,
+        timeout: Union[int, float] = 100,
         chat_history: List[Dict] = None,
         connectors: List[Dict] = None,
     ) -> ResponseResult:
@@ -78,7 +79,7 @@ class ChatsCohereAsync:
             response = await client.post(
                 tool="cohere",
                 path="/v1/chat",
-                timeout=30,
+                timeout=timeout,
                 json={
                     "message": prompt,
                     **({"chat_history": chat_history} if chat_history is not None else {}),
