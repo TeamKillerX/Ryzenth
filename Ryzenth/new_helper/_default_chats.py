@@ -22,7 +22,7 @@ import logging
 from typing import List, Dict
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError
+from .._errors import WhatFuckError, InvalidMessageError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -50,6 +50,14 @@ class ChatOrgAsync:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def ask_kimi(self, messages: List[Dict]) -> ResponseResult:
+        if not isinstance(messages, list) or len(messages) == 0:
+            raise InvalidMessageError("Messages must be a non-empty list")
+        for idx, msg in enumerate(messages):
+            if not isinstance(msg, dict):
+                raise InvalidMessageError(f"Message at index {idx} must be a dict")
+            if "role" not in msg or "content" not in msg:
+                raise InvalidMessageError(f"Message at index {idx} must contain 'role' and 'content' keys")
+
         client = self._get_client()
         try:
             self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
