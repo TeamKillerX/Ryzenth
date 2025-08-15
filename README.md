@@ -219,6 +219,10 @@ print("🎥 Video URL:", output_video.video_url)
 | `openai-v2/oss` | ✅ Free | GPT oss |
 | `ultimate-chat` | ✅ Free | Custom Model |
 | `openai-v2` | ✅ Free | openAI |
+| `openai-v2/image-vision` | ✅ Free | openAI image vision |
+| `gemini-latest/imagen/edit` | ✅ Free | Gemini imagen edit |
+| `gemini-latest/imagen` | ✅ Free | Gemini imagen |
+| `tools/generate-image` | ✅ Free | Tool Generate image |
 
 ### Available API Tools
 Choose from our extensive list of supported APIs:
