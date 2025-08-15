@@ -50,7 +50,7 @@ class ChatOrgAsync:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def ask_kimi(self, messages: List[Dict]) -> ResponseResult:
-        if not isinstance(messages, list) or len(messages) == 0:
+        if not isinstance(messages, list) or not messages:
             raise InvalidMessageError("Messages must be a non-empty list")
         for idx, msg in enumerate(messages):
             if not isinstance(msg, dict):
