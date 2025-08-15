@@ -2,7 +2,7 @@
 
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/TeamKillerX/Ryzenth)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green)](https://github.com/TeamKillerX/Ryzenth/graphs/commit-activity)
-[![License](https://img.shields.io/badge/License-GPL-pink)](https://github.com/TeamKillerX/Ryzenth/blob/dev/LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-pink)](https://github.com/TeamKillerX/Ryzenth/blob/dev/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 [![Ryzenth - Version](https://img.shields.io/pypi/v/Ryzenth?style=round)](https://pypi.org/project/Ryzenth)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/Ryzenth/dev.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/Ryzenth/dev)
@@ -210,6 +210,15 @@ print("🎥 Video URL:", output_video.video_url)
 ---
 
 ## 🛠️ Developer Tools & Supported APIs
+
+## Pricing & Free Tier (Ryzenth)
+
+| Endpoints | Free | Description |
+|-----------|--------|-------------|
+| `kimi-latest` | ✅ Free | Kimi AI |
+| `openai-v2/oss` | ✅ Free | GPT oss |
+| `ultimate-chat` | ✅ Free | Custom Model |
+| `openai-v2` | ✅ Free | openAI |
 
 ### Available API Tools
 Choose from our extensive list of supported APIs:
