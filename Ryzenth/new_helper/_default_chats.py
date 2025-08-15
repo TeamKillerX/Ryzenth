@@ -54,7 +54,12 @@ class ChatOrgAsync:
         client = self._get_client()
         try:
             self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
-            path = "/api/v1/openai-v2/oss" if turbo_fast else "/api/v1/kimi-latest" if kimi_turn else "/api/v1/openai-v2"
+            if turbo_fast:
+                path = "/api/v1/openai-v2/oss"
+            elif kimi_turn:
+                path = "/api/v1/kimi-latest"
+            else:
+                path = "/api/v1/openai-v2"
             response = await client.get(
                 tool="ryzenth-v2",
                 path=path,
