@@ -19,7 +19,7 @@
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union, List
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -50,7 +50,13 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_upload_to_ask(self, captions: str, file_path: str) -> ResponseResult:
+    async def create_upload_to_ask(
+        self,
+        captions: str,
+        file_path: str,
+        *,
+        timeout: Union[int, float] = 100
+    ) -> ResponseResult:
         if not captions or not captions.strip():
             raise WhatFuckError("Captions cannot be empty")
 
@@ -62,7 +68,7 @@ class ImagesOrgAsync:
             response = await client.post(
                 tool="ryzenth-v2",
                 path="/api/v1/openai-v2/image-vision",
-                timeout=30,
+                timeout=timeout,
                 json={
                     "input": captions,
                     "base64Image": Helpers.encode_image_base64(file_path)
@@ -78,7 +84,13 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_gemini_to_edit(self, prompt: str, file_path: str) -> GeneratedImageOrVideo:
+    async def create_gemini_to_edit(
+        self,
+        prompt: str,
+        file_path: str,
+        *,
+        timeout: Union[int, float] = 100
+    ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -90,7 +102,7 @@ class ImagesOrgAsync:
             response = await client.post(
                 tool="ryzenth-v2",
                 path="/api/v1/gemini-latest/imagen/edit",
-                timeout=30,
+                timeout=timeout,
                 json={
                     "input": prompt,
                     "base64Image": Helpers.encode_image_base64(file_path)
@@ -109,7 +121,12 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_gemini_and_captions(self, prompt: str) -> GeneratedImageOrVideo:
+    async def create_gemini_and_captions(
+        self,
+        prompt: str,
+        *,
+        timeout: Union[int, float] = 100
+    ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
@@ -120,7 +137,7 @@ class ImagesOrgAsync:
             response = await client.get(
                 tool="ryzenth-v2",
                 path="/api/v1/gemini-latest/imagen",
-                timeout=30,
+                timeout=timeout,
                 params=client.get_kwargs(input=prompt.strip()),
                 use_type=ResponseType.JSON
             )
@@ -140,6 +157,8 @@ class ImagesOrgAsync:
     async def create(
         self,
         prompt: str,
+        *,
+        timeout: Union[int, float] = 100,
         file_path: str = "default.jpg",
         validate_path: bool = True,
         create_dirs: bool = True
@@ -176,7 +195,7 @@ class ImagesOrgAsync:
             response_content = await client.get(
                 tool="ryzenth-v2",
                 path="/api/tools/generate-image",
-                timeout=30,
+                timeout=timeout,
                 params=client.get_kwargs(prompt=prompt.strip()),
                 use_type=ResponseType.IMAGE
             )
@@ -233,7 +252,8 @@ class ImagesOrgAsync:
     @AutoRetry(max_retries=3, delay=1.5)
     async def create_multiple(
         self,
-        prompts: list[str],
+        prompts: List[str],
+        *,
         base_path: str = "generated",
         file_extension: str = ".jpg",
         concurrent_limit: int = 3
