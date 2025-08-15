@@ -18,11 +18,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+from typing import Dict, List
 
-from typing import List, Dict
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError, InvalidMessageError
+from .._errors import InvalidMessageError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
