@@ -60,7 +60,6 @@ class ChatOrgAsync:
 
         client = self._get_client()
         try:
-            self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
             response = await client.post(
                 tool="ryzenth-v2",
                 path="/api/v1/kimi-latest",
