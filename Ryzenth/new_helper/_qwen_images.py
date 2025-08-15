@@ -65,6 +65,7 @@ class ImagesQwenAsync:
         prompt: str,
         base_image_url: str,
         *,
+        timeout: Union[int, float] = 100,
         function_call: str = "stylization_all",
         strength: Union[int, float] = 0.5,
         **parameters,
@@ -92,7 +93,7 @@ class ImagesQwenAsync:
             response = await client.post(
                 tool="alibaba",
                 path="/api/v1/services/aigc/image2image/image-synthesis",
-                timeout=30,
+                timeout=timeout,
                 json={
                     "model": "wanx2.1-imageedit",
                     "input": {
@@ -136,7 +137,8 @@ class ImagesQwenAsync:
         self,
         prompt: str,
         *,
-        negative_prompt: str = "",
+        timeout: Union[int, float] = 100,
+        negative_prompt: str = None,
         seed: Optional[int] = 0,
         size: str = "1024*1024",
         prompt_extend: bool = True,
@@ -157,7 +159,7 @@ class ImagesQwenAsync:
                     "model": "wan2.2-t2i-flash",
                     "input": {
                         "prompt": prompt,
-                        "negative_prompt": negative_prompt,
+                        **({"negative_prompt": negative_prompt} if negative_prompt is not None else {}),
                     },
                     "parameters": {
                         "size": size,
