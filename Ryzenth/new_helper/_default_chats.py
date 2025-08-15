@@ -48,15 +48,15 @@ class ChatOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask(self, prompt: str, turbo_fast: bool = False, kimi_turn: bool = False) -> ResponseResult:
+    async def ask(self, prompt: str, use_turbo_fast: bool = False, use_kimi_model: bool = False) -> ResponseResult:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
         client = self._get_client()
         try:
             self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
-            if turbo_fast:
+            if use_turbo_fast:
                 path = "/api/v1/openai-v2/oss"
-            elif kimi_turn:
+            elif use_kimi_model:
                 path = "/api/v1/kimi-latest"
             else:
                 path = "/api/v1/openai-v2"
