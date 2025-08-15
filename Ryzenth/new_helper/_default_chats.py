@@ -18,7 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -49,7 +49,12 @@ class ChatOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask_kimi(self, messages: List[Dict]) -> ResponseResult:
+    async def ask_kimi(
+        self,
+        messages: List[Dict],
+        *,
+        timeout: Union[int, float] = 100
+    ) -> ResponseResult:
         if not isinstance(messages, list) or not messages:
             raise InvalidMessageError("Messages must be a non-empty list")
         for idx, msg in enumerate(messages):
@@ -63,7 +68,7 @@ class ChatOrgAsync:
             response = await client.post(
                 tool="ryzenth-v2",
                 path="/api/v1/kimi-latest",
-                timeout=30,
+                timeout=timeout,
                 json={"messages": messages},
                 use_type=ResponseType.JSON
             )
@@ -76,7 +81,13 @@ class ChatOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask(self, prompt: str, use_turbo_fast: bool = False) -> ResponseResult:
+    async def ask(
+        self,
+        prompt: str,
+        *,
+        timeout: Union[int, float] = 100,
+        use_turbo_fast: bool = False
+    ) -> ResponseResult:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
         client = self._get_client()
@@ -89,7 +100,7 @@ class ChatOrgAsync:
             response = await client.get(
                 tool="ryzenth-v2",
                 path=path,
-                timeout=30,
+                timeout=timeout,
                 params=client.get_kwargs(input=prompt.strip()),
                 use_type=ResponseType.JSON
             )
@@ -102,7 +113,13 @@ class ChatOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask_ultimate(self, prompt: str, model: str = "grok") -> ResponseResult:
+    async def ask_ultimate(
+        self,
+        prompt: str,
+        *,
+        timeout: Union[int, float] = 100,
+        model: str = "grok"
+    ) -> ResponseResult:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
         if not model or not model.strip():
@@ -113,7 +130,7 @@ class ChatOrgAsync:
             response = await client.get(
                 tool="ryzenth-v2",
                 path="/api/v1/ultimate-chat",
-                timeout=30,
+                timeout=timeout,
                 params=client.get_kwargs(input=prompt.strip(), model=model),
                 use_type=ResponseType.JSON
             )

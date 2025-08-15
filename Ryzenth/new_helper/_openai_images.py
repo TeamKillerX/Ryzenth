@@ -63,6 +63,7 @@ class ImagesOpenAIAsync:
         self,
         prompt: str,
         *,
+        timeout: Union[int, float] = 100,
         model: str = "gpt-image-1",
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
@@ -73,7 +74,7 @@ class ImagesOpenAIAsync:
             response = await client.post(
                 tool="openai",
                 path="/images/generations",
-                timeout=100,
+                timeout=timeout,
                 json={
                     "model": model,
                     "prompt": prompt

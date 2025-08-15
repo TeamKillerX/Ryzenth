@@ -64,12 +64,13 @@ class ChatsQwenAsync:
         self,
         messages: List[Dict],
         *,
+        timeout: Union[int, float] = 100,
         model: str = "qwen-plus-2025-04-28",
         stream: bool = False,
         include_usage: bool = False,
         enable_thinking: bool = True,
     ) -> ResponseResult:
-        if not isinstance(messages, list) or len(messages) == 0:
+        if not isinstance(messages, list) or not messages:
             raise InvalidMessageError("Messages must be a non-empty list")
         for idx, msg in enumerate(messages):
             if not isinstance(msg, dict):
@@ -82,7 +83,7 @@ class ChatsQwenAsync:
             response = await client.post(
                 tool="alibaba",
                 path="/compatible-mode/v1/chat/completions",
-                timeout=30,
+                timeout=timeout,
                 json={
                     "model": model,
                     "messages": messages,
