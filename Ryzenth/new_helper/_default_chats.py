@@ -19,6 +19,7 @@
 
 import logging
 
+from typing import List, Dict
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import WhatFuckError
@@ -48,7 +49,27 @@ class ChatOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask(self, prompt: str, use_turbo_fast: bool = False, use_kimi_model: bool = False) -> ResponseResult:
+    async def ask_kimi(self, messages: List[Dict]) -> ResponseResult:
+        client = self._get_client()
+        try:
+            self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
+            response = await client.post(
+                tool="ryzenth-v2",
+                path="/api/v1/kimi-latest",
+                timeout=30,
+                json={"messages": messages},
+                use_type=ResponseType.JSON
+            )
+            return ResponseResult(client, response)
+        except Exception as e:
+            self.logger.error(f"chat ask failed: {e}")
+            raise WhatFuckError(f"chat ask failed: {e}") from e
+        finally:
+            pass
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def ask(self, prompt: str, use_turbo_fast: bool = False) -> ResponseResult:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
         client = self._get_client()
@@ -56,8 +77,6 @@ class ChatOrgAsync:
             self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
             if use_turbo_fast:
                 path = "/api/v1/openai-v2/oss"
-            elif use_kimi_model:
-                path = "/api/v1/kimi-latest"
             else:
                 path = "/api/v1/openai-v2"
             response = await client.get(
