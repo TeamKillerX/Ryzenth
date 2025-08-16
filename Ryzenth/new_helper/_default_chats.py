@@ -53,6 +53,7 @@ class ChatOrgAsync:
         self,
         messages: List[Dict],
         *,
+        use_instruct: bool = False,
         timeout: Union[int, float] = 100
     ) -> ResponseResult:
         if not isinstance(messages, list) or not messages:
@@ -65,9 +66,10 @@ class ChatOrgAsync:
 
         client = self._get_client()
         try:
+            path = "/api/v1/kimi-latest/instruct" if use_instruct else "/api/v1/kimi-latest"
             response = await client.post(
                 tool="ryzenth-v2",
-                path="/api/v1/kimi-latest",
+                path=path,
                 timeout=timeout,
                 json={"messages": messages},
                 use_type=ResponseType.JSON
