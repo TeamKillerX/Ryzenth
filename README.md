@@ -373,7 +373,7 @@ print(response)
 - **AkenoX Project** - Original inspiration and foundation
 - **Google Developer Tools** - AI integration support
 - **Open Source Community** - Contributions and feedback
-- 
+-
 ---
 
 ## 💖 Support Development
