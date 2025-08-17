@@ -369,7 +369,7 @@ print(response)
 - **[xtdevs](https://t.me/xtdevs)** - Lead Developer & Creator
 - **[X-API-JS](https://x-api-js.onrender.com/docs)** - Ryzenth DLR JavaScript Solo Dev
 - **[Ryzenth V2](https://ryzenths.dpdns.org)** - Ryzenth TypeScript Solo Dev
-- **TeamKillerX** - Core Development Team
+- **TeamKillerX** - Solo Dev
 - **AkenoX Project** - Original inspiration and foundation
 - **Google Developer Tools** - AI integration support
 - **Open Source Community** - Contributions and feedback
