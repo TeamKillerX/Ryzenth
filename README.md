@@ -373,7 +373,6 @@ print(response)
 - **AkenoX Project** - Original inspiration and foundation
 - **Google Developer Tools** - AI integration support
 - **Open Source Community** - Contributions and feedback
--
 ---
 
 ## 💖 Support Development
@@ -405,6 +404,6 @@ This project is open source and available under the [MIT License](https://github
 [![GitHub forks](https://img.shields.io/github/forks/TeamKillerX/Ryzenth?style=social)](https://github.com/TeamKillerX/Ryzenth/fork)
 [![GitHub watchers](https://img.shields.io/github/watchers/TeamKillerX/Ryzenth?style=social)](https://github.com/TeamKillerX/Ryzenth)
 
-**Made with ❤️ by the Ryzenth Team**
+**Made with ❤️ by the Ryzenth Solo Dev**
 
 </div>
