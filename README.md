@@ -356,26 +356,24 @@ print(response)
 
 ---
 
-## 🏆 Credits & Contributors
+### 🌐 API Provider Partners (NB Friends)
+- **[PaxSenix](https://api.paxsenix.biz.id)** - PaxSenix
+- **[Itzpire](https://itzpire.com)** - Itzpire
+- **[Ytdlpyton](https://ytdlpyton.nvlgroup.my.id/)** - Unesa
+- **[Exonity](https://exonity.tech)** - Exonity
+- **[Yogik](https://api.yogik.id)** - Yogik (Legacy)
+- **[Siputzx](https://api.siputzx.my.id)** - Siputzx
+- **[FGSI](https://fgsi.koyeb.app)** - FGSI
 
-### 🌐 API Provider Partners
-- **[PaxSenix](https://api.paxsenix.biz.id)** - PaxSenix Development Team
-- **[Itzpire](https://itzpire.com)** - Itzpire Development Team
-- **[Ytdlpyton](https://ytdlpyton.nvlgroup.my.id/)** - Unesa Development Team
-- **[Exonity](https://exonity.tech)** - Exonity Development Team
-- **[Yogik](https://api.yogik.id)** - Yogik Team (Legacy)
-- **[Siputzx](https://api.siputzx.my.id)** - Siputzx Development Team
-- **[FGSI](https://fgsi.koyeb.app)** - FGSI Development Team
-- **[X-API-JS](https://x-api-js.onrender.com/docs)** - Ryzenth DLR JavaScript Team
-- **[Ryzenth V2](https://ryzenths.dpdns.org)** - Ryzenth TypeScript Team
-
-### 🙏 Special Thanks
+## 🏆 Credits Developer
 - **[xtdevs](https://t.me/xtdevs)** - Lead Developer & Creator
-- **TeamKillerX** - Core Development Team
+- **[X-API-JS](https://x-api-js.onrender.com/docs)** - Ryzenth DLR JavaScript Solo Dev
+- **[Ryzenth V2](https://ryzenths.dpdns.org)** - Ryzenth TypeScript Solo Dev
+- **TeamKillerX** - Solo Dev
 - **AkenoX Project** - Original inspiration and foundation
 - **Google Developer Tools** - AI integration support
 - **Open Source Community** - Contributions and feedback
-
+-
 ---
 
 ## 💖 Support Development
