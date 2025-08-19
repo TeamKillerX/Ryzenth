@@ -110,7 +110,7 @@ class ChatOrgAsync:
                 path=path,
                 timeout=timeout,
                 json=json,
-                params=client.get_kwargs(input=prompt) if not use_conversation else None,
+                params=None if use_conversation else client.get_kwargs(input=prompt),
                 use_type=ResponseType.JSON
             )
             return ResponseResult(client, response)
