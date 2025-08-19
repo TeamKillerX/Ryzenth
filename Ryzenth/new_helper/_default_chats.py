@@ -104,7 +104,7 @@ class ChatOrgAsync:
             if use_conversation:
                 response = await client.post(
                     tool="ryzenth-v2",
-                    path=path,
+                    path="/api/v1/openai-v2/conversation",
                     timeout=timeout,
                     json={"messages": prompt},
                     use_type=ResponseType.JSON
@@ -112,8 +112,8 @@ class ChatOrgAsync:
             else:
                 response = await client.get(
                     tool="ryzenth-v2",
-                    path="/api/v1/openai-v2/conversation",
-                    timeout=timeout
+                    path=path,
+                    timeout=timeout,
                     params=None if use_conversation else client.get_kwargs(input=prompt),
                     use_type=ResponseType.JSON
                 )
