@@ -80,13 +80,20 @@ class ChatOrgAsync:
     @AutoRetry(max_retries=3, delay=1.5)
     async def ask(
         self,
-        prompt: str,
+        prompt: str | List[Dict],
         *,
         timeout: Union[int, float] = 100,
+        use_conversation: bool = False,
         use_turbo_fast: bool = False
     ) -> ResponseResult:
-        if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+        if isinstance(prompt, str):
+            if not prompt.strip():
+                raise WhatFuckError("Prompt cannot be empty")
+        elif isinstance(prompt, list):
+            if not prompt or all(isinstance(item, dict) and not item for item in prompt):
+                raise WhatFuckError("Prompt cannot be empty")
+        else:
+            raise WhatFuckError("Prompt type is invalid")
         client = self._get_client()
         try:
             self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
@@ -94,13 +101,22 @@ class ChatOrgAsync:
                 path = "/api/v1/openai-v2/oss"
             else:
                 path = "/api/v1/openai-v2"
-            response = await client.get(
-                tool="ryzenth-v2",
-                path=path,
-                timeout=timeout,
-                params=client.get_kwargs(input=prompt.strip()),
-                use_type=ResponseType.JSON
-            )
+            if use_conversation:
+                response = await client.post(
+                    tool="ryzenth-v2",
+                    path="/api/v1/openai-v2/conversation",
+                    timeout=timeout,
+                    json={"messages": prompt},
+                    use_type=ResponseType.JSON
+                )
+            else:
+                response = await client.get(
+                    tool="ryzenth-v2",
+                    path=path,
+                    timeout=timeout,
+                    params=None if use_conversation else client.get_kwargs(input=prompt),
+                    use_type=ResponseType.JSON
+                )
             return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
