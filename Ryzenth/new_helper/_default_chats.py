@@ -99,20 +99,24 @@ class ChatOrgAsync:
             self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
             if use_turbo_fast:
                 path = "/api/v1/openai-v2/oss"
-            elif use_conversation:
-                path = "/api/v1/openai-v2/conversation"
-                json = {"messages": prompt}
             else:
                 path = "/api/v1/openai-v2"
-                json = None
-            response = await client.get(
-                tool="ryzenth-v2",
-                path=path,
-                timeout=timeout,
-                json=json,
-                params=None if use_conversation else client.get_kwargs(input=prompt),
-                use_type=ResponseType.JSON
-            )
+            if use_conversation:
+                response = await client.post(
+                    tool="ryzenth-v2",
+                    path=path,
+                    timeout=timeout,
+                    json={"messages": prompt},
+                    use_type=ResponseType.JSON
+                )
+            else:
+                response = await client.get(
+                    tool="ryzenth-v2",
+                    path="/api/v1/openai-v2/conversation",
+                    timeout=timeout
+                    params=None if use_conversation else client.get_kwargs(input=prompt),
+                    use_type=ResponseType.JSON
+                )
             return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
