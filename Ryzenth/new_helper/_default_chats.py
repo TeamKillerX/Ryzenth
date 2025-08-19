@@ -80,25 +80,31 @@ class ChatOrgAsync:
     @AutoRetry(max_retries=3, delay=1.5)
     async def ask(
         self,
-        prompt: str,
+        prompt: str | List[Dict],
         *,
         timeout: Union[int, float] = 100,
+        use_conversation: bool = False,
         use_turbo_fast: bool = False
     ) -> ResponseResult:
-        if not prompt or not prompt.strip():
+        if not prompt:
             raise WhatFuckError("Prompt cannot be empty")
         client = self._get_client()
         try:
             self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
             if use_turbo_fast:
                 path = "/api/v1/openai-v2/oss"
+            elif use_conversation:
+                path = "/api/v1/openai-v2/conversation"
+                json = {"messages": prompt}
             else:
                 path = "/api/v1/openai-v2"
+                json = None
             response = await client.get(
                 tool="ryzenth-v2",
                 path=path,
                 timeout=timeout,
-                params=client.get_kwargs(input=prompt.strip()),
+                json=json,
+                params=client.get_kwargs(input=prompt) if not use_conversation else None,
                 use_type=ResponseType.JSON
             )
             return ResponseResult(client, response)
