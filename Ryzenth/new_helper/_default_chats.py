@@ -86,8 +86,14 @@ class ChatOrgAsync:
         use_conversation: bool = False,
         use_turbo_fast: bool = False
     ) -> ResponseResult:
-        if not prompt:
-            raise WhatFuckError("Prompt cannot be empty")
+        if isinstance(prompt, str):
+            if not prompt.strip():
+                raise WhatFuckError("Prompt cannot be empty")
+        elif isinstance(prompt, list):
+            if not prompt or all(isinstance(item, dict) and not item for item in prompt):
+                raise WhatFuckError("Prompt cannot be empty")
+        else:
+            raise WhatFuckError("Prompt type is invalid")
         client = self._get_client()
         try:
             self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
