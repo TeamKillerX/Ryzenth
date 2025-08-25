@@ -68,7 +68,10 @@ class ImagesQwenAsync:
         timeout: Union[int, float] = 100,
         function_call: str = "stylization_all",
         strength: Union[int, float] = 0.5,
-        **parameters,
+        top_scale: Union[int, float] = None,
+        bottom_scale: Union[int, float] = None,
+        left_scale: Union[int, float] = None,
+        right_scale: Union[int, float] = None,
     ) -> GeneratedImageOrVideo:
 
         ALLOWED_FUNCTION_CALL = [
@@ -104,7 +107,10 @@ class ImagesQwenAsync:
                     "parameters": {
                         "n": 1,
                         "strength": strength,
-                        **parameters
+                        **({"top_scale": top_scale} if top_scale is not None else {}),
+                        **({"bottom_scale": bottom_scale} if bottom_scale is not None else {}),
+                        **({"left_scale": left_scale} if left_scale is not None else {}),
+                        **({"right_scale": right_scale} if right_scale is not None else {})
                     }
                 },
                 use_type=ResponseType.JSON
@@ -112,6 +118,9 @@ class ImagesQwenAsync:
 
             if not response:
                 raise EmptyResponseError("Empty response from image edit generation API")
+
+            if strength is not None:
+                self.logger.warning("Use 'strength' work this warning just ignore")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
