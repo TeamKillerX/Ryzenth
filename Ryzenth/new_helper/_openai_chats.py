@@ -93,7 +93,9 @@ class ChatsOpenAIAsync:
                 self.logger.warning("Default 'instructions' this warning just ignore")
 
             if reasoning is not None:
-                self.logger.warning("Default 'reasoning' this warning just ignore")
+                self.logger.warning(
+                    "'reasoning' parameter was provided but is not used in this context. No action is required; this is informational only."
+                )
 
             return ResponseResult(client=client, response=response)
         except Exception as e:
