@@ -26,6 +26,9 @@ class WhatFuckError(Exception):
 class EmptyResponseError(Exception):
     pass
 
+class EmptyMessageError(Exception):
+    pass
+
 class InvalidMessageError(Exception):
     pass
 
@@ -197,6 +200,7 @@ def SyncStatusError(resp, status_httpx=False):
 __all__ = [
     "WhatFuckError",
     "EmptyResponseError",
+    "EmptyMessageError",
     "ForbiddenError",
     "InternalServerError",
     "AuthenticationError",
