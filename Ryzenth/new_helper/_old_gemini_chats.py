@@ -61,14 +61,20 @@ class OldChatsGeminiAsync:
     @AutoRetry(max_retries=3, delay=1.5)
     async def ask(
         self,
-        messages: List[Dict] | str,
+        messages: str | List[Dict],
         *,
         timeout: Union[int, float] = 100,
         model: str = "gemini-2.5-flash",
         use_multi_chat: bool = False
     ) -> ResponseResult:
-        if not isinstance(messages, list) or not messages:
-            raise InvalidMessageError("Messages must be a non-empty list")
+        if isinstance(messages, str):
+            if not messages.strip():
+                raise WhatFuckError("messages cannot be empty")
+        elif isinstance(messages, list):
+            if not messages or all(isinstance(item, dict) and not item for item in prompt):
+                raise WhatFuckError("messages cannot be empty")
+        else:
+            raise WhatFuckError(f"messages type is invalid: received type '{type(messages).__name__}'")
 
         client = self._get_client()
         try:
