@@ -24,7 +24,12 @@ from typing import Dict, List, Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyResponseError, InvalidMessageError, WhatFuckError
+from .._errors import (
+    EmptyResponseError,
+    EmptyMessageError,
+    InvalidMessageError,
+    WhatFuckError
+)
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -69,12 +74,12 @@ class OldChatsGeminiAsync:
     ) -> ResponseResult:
         if isinstance(messages, str):
             if not messages.strip():
-                raise WhatFuckError("messages cannot be empty")
+                raise EmptyMessageError("messages cannot be empty")
         elif isinstance(messages, list):
-            if not messages or all(isinstance(item, dict) and not item for item in prompt):
-                raise WhatFuckError("messages cannot be empty")
+            if not messages or all(isinstance(item, dict) and not item for item in messages):
+                raise EmptyMessageError("messages cannot be empty")
         else:
-            raise WhatFuckError(f"messages type is invalid: received type '{type(messages).__name__}'")
+            raise EmptyMessageError(f"messages type is invalid: received type '{type(messages).__name__}'")
 
         client = self._get_client()
         try:
