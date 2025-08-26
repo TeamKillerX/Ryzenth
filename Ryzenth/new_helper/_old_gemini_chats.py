@@ -74,7 +74,7 @@ class OldChatsGeminiAsync:
             if not messages or all(isinstance(item, dict) and not item for item in prompt):
                 raise WhatFuckError("messages cannot be empty")
         else:
-            raise WhatFuckError("messages type is invalid")
+            raise WhatFuckError(f"messages type is invalid: received type '{type(messages).__name__}'")
 
         client = self._get_client()
         try:
