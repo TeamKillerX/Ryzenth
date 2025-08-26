@@ -58,6 +58,7 @@ from .new_helper import (
     ImagesOpenAIAsync,
     ImagesOrgAsync,
     ImagesQwenAsync,
+    OldChatsGeminiAsync,
     VideosQwenAsync,
 )
 from .types import (
@@ -75,6 +76,7 @@ class RyzenthOrg:
         self._closed = False
         self.cohere_chat = ChatsCohereAsync(self)
         self.gemini_chat = ChatsGeminiAsync(self)
+        self.old_gemini_chat = OldChatsGeminiAsync(self)
         self.openai_images = ImagesOpenAIAsync(self)
         self.openai_responses = ChatsOpenAIAsync(self)
         self.qwen_chat = ChatsQwenAsync(self)
