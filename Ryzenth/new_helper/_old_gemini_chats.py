@@ -65,14 +65,14 @@ class OldChatsGeminiAsync:
         *,
         timeout: Union[int, float] = 100,
         model: str = "gemini-2.5-flash",
-        use_multi: bool = False
+        use_multi_chat: bool = False
     ) -> ResponseResult:
         if not isinstance(messages, list) or not messages:
             raise InvalidMessageError("Messages must be a non-empty list")
 
         client = self._get_client()
         try:
-            if use_multi:
+            if use_multi_chat:
                 json = {"contents": messages}
             else:
                 json = {
