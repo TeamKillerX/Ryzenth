@@ -24,12 +24,7 @@ from typing import Dict, List, Optional, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import (
-    EmptyResponseError,
-    EmptyMessageError,
-    InvalidMessageError,
-    WhatFuckError
-)
+from .._errors import EmptyMessageError, EmptyResponseError, InvalidMessageError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
