@@ -187,7 +187,8 @@ class ImagesQwenAsync:
                     use_type=ResponseType.JSON
                 )
                 if not response:
-                    raise WhatFuckError("Empty response from image generation API")
+                    raise WhatFuckError(
+                        "Empty response from image generation API")
                 return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Qwen image generation failed: {e}")
