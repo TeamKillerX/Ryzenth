@@ -30,7 +30,7 @@ jobs:
       run: |
         black .
         isort .
-        ruff --fix .
+        ruff check . --fix
 
     - name: Run Pylint (Check Code Quality)
       run: |
