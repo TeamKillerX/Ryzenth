@@ -53,6 +53,7 @@ from .new_helper import (
     ChatOrgAsync,
     ChatsClaudeAsync,
     ChatsCohereAsync,
+    ChatsDeepseekAsync,
     ChatsGeminiAsync,
     ChatsGrokAsync,
     ChatsOpenAIAsync,
@@ -76,6 +77,7 @@ class RyzenthOrg:
         self._api_key = api_key
         self._session = None
         self._closed = False
+        self.deepseek_chat = ChatsDeepseekAsync(self)
         self.claude_chat = ChatsClaudeAsync(self)
         self.grok_chat = ChatsGrokAsync(self)
         self.cohere_chat = ChatsCohereAsync(self)

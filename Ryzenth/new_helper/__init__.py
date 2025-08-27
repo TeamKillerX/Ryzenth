@@ -1,5 +1,6 @@
 from ._claude_chats import ChatsClaudeAsync
 from ._cohere_chats import ChatsCohereAsync
+from ._deepseek_chats import ChatsDeepseekAsync
 from ._default_chats import ChatOrgAsync
 from ._default_images import ImagesOrgAsync
 from ._gemini_chats import ChatsGeminiAsync
@@ -19,6 +20,7 @@ __all__ = [
   "OldChatsGeminiAsync",
   "ChatsGrokAsync",
   "ChatsCohereAsync",
+  "ChatsDeepseekAsync",
   "ImagesQwenAsync",
   "ImagesOrgAsync",
   "ImagesOpenAIAsync",
