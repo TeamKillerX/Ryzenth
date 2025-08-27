@@ -81,28 +81,26 @@ class ChatsGeminiAsync:
         if not isinstance(messages, list) or not messages:
             raise InvalidMessageError("Messages must be a non-empty list")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="gemini-openai",
-                path="/chat/completions",
-                timeout=timeout,
-                json={
-                    "model": model,
-                    "messages": messages,
-                    "reasoning_effort": reasoning_effort,
-                    "stream": stream,
-                    **({"extra_body": extra_body} if extra_body is not None else {}),
-                    **({"tools": tools} if tools is not None else {})
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from chat completion API")
-
-            return ResponseResult(client=client, response=response)
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="gemini-openai",
+                    path="/chat/completions",
+                    timeout=timeout,
+                    json={
+                        "model": model,
+                        "messages": messages,
+                        "reasoning_effort": reasoning_effort,
+                        "stream": stream,
+                        **({"extra_body": extra_body} if extra_body is not None else {}),
+                        **({"tools": tools} if tools is not None else {})
+                    },
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from chat completion API")
+                return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Gemini chats failed: {e}")
             raise WhatFuckError(f"Gemini chats failed: {e}") from e
