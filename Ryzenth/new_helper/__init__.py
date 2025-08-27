@@ -1,3 +1,4 @@
+from ._claude_chats import ChatsClaudeAsync
 from ._cohere_chats import ChatsCohereAsync
 from ._default_chats import ChatOrgAsync
 from ._default_images import ImagesOrgAsync
