@@ -24,7 +24,6 @@ import typing as t
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from ..enums import ResponseType
 from ..helper import AutoRetry
 
 
@@ -43,7 +42,12 @@ class OpenAIClient:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def images_generations(self, *, prompt: str, model: str = "gpt-image-1", **kwargs):
+    async def images_generations(
+            self,
+            *,
+            prompt: str,
+            model: str = "gpt-image-1",
+            **kwargs):
         clients = await self.start()
         return await clients.post(
             tool="openai",

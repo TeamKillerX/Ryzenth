@@ -19,12 +19,8 @@
 
 # BASED API: https://api.deepseek.com
 
-import logging
 
-from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from ..enums import ResponseType
-from ..helper import AutoRetry
 
 
 class DeepSeekClient:
@@ -39,4 +35,4 @@ class DeepSeekClient:
             use_default_headers=True,
             **kwargs
         )
-    #TODO: HERE ADDED
+    # TODO: HERE ADDED

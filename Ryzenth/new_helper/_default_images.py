@@ -19,7 +19,7 @@
 
 import logging
 import os
-from typing import List, Optional, Union
+from typing import List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -33,7 +33,8 @@ class ImagesOrgAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
-        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = logging.getLogger(
+            f"{__name__}.{self.__class__.__name__}")
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
@@ -45,7 +46,8 @@ class ImagesOrgAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(f"Failed to initialize API client: {e}") from e
+                raise WhatFuckError(
+                    f"Failed to initialize API client: {e}") from e
         return self._client
 
     @Benchmark.performance(level=logging.DEBUG)
@@ -110,7 +112,8 @@ class ImagesOrgAsync:
                 use_type=ResponseType.JSON
             )
             if not response:
-                raise WhatFuckError("Empty response from gemini edit image API")
+                raise WhatFuckError(
+                    "Empty response from gemini edit image API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
@@ -133,7 +136,8 @@ class ImagesOrgAsync:
         client = self._get_client()
 
         try:
-            self.logger.debug(f"Generating gemini image with prompt: {prompt[:50]}...")
+            self.logger.debug(
+                f"Generating gemini image with prompt: {prompt[:50]}...")
             response = await client.get(
                 tool="ryzenth-v2",
                 path="/api/v1/gemini-latest/imagen",
@@ -143,7 +147,8 @@ class ImagesOrgAsync:
             )
 
             if not response:
-                raise WhatFuckError("Empty response from gemini image generation API")
+                raise WhatFuckError(
+                    "Empty response from gemini image generation API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
@@ -181,7 +186,6 @@ class ImagesOrgAsync:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
-
         if not file_path:
             file_path = "default.jpg"
 
@@ -191,7 +195,8 @@ class ImagesOrgAsync:
         client = self._get_client()
 
         try:
-            self.logger.debug(f"Generating image with prompt: {prompt[:50]}...")
+            self.logger.debug(
+                f"Generating image with prompt: {prompt[:50]}...")
             response_content = await client.get(
                 tool="ryzenth-v2",
                 path="/api/tools/generate-image",
@@ -215,7 +220,10 @@ class ImagesOrgAsync:
         finally:
             pass
 
-    def _validate_file_path(self, file_path: str, create_dirs: bool = True) -> str:
+    def _validate_file_path(
+            self,
+            file_path: str,
+            create_dirs: bool = True) -> str:
         """
         Validate and prepare file path
 
@@ -230,7 +238,8 @@ class ImagesOrgAsync:
             WhatFuckError: If path is invalid
         """
         allowed_extensions = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
-        if not any(file_path.lower().endswith(ext) for ext in allowed_extensions):
+        if not any(file_path.lower().endswith(ext)
+                   for ext in allowed_extensions):
             if '.' not in os.path.basename(file_path):
                 file_path += '.jpg'
             else:
@@ -244,7 +253,8 @@ class ImagesOrgAsync:
                     os.makedirs(dir_path, exist_ok=True)
                     self.logger.debug(f"Created directory: {dir_path}")
                 except OSError as e:
-                    raise WhatFuckError(f"Cannot create directory {dir_path}: {e}")
+                    raise WhatFuckError(
+                        f"Cannot create directory {dir_path}: {e}")
 
         return file_path
 
@@ -303,13 +313,15 @@ class ImagesOrgAsync:
 
             for i, result in enumerate(results):
                 if isinstance(result, Exception):
-                    self.logger.error(f"Failed to generate image {i}: {result}")
+                    self.logger.error(
+                        f"Failed to generate image {i}: {result}")
                     failed_count += 1
                 else:
                     successful_paths.append(result)
 
             if failed_count > 0:
-                self.logger.warning(f"Failed to generate {failed_count} out of {len(prompts)} images")
+                self.logger.warning(
+                    f"Failed to generate {failed_count} out of {len(prompts)} images")
             return successful_paths
         except Exception as e:
             raise WhatFuckError(f"Batch image generation failed: {e}") from e

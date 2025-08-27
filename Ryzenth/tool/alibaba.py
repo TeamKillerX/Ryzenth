@@ -19,12 +19,8 @@
 
 # BASED API: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
 
-import logging
 
-from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from ..enums import ResponseType
-from ..helper import AutoRetry
 
 
 class AlibabaClient:
@@ -39,4 +35,4 @@ class AlibabaClient:
             use_default_headers=True,
             **kwargs
         )
-    #TODO: HERE ADDED
+    # TODO: HERE ADDED

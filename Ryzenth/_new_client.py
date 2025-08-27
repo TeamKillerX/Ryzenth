@@ -18,13 +18,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
-import logging
 import typing as t
 
-from ._benchmark import Benchmark
 from ._client import RyzenthApiClient
-from .enums import ResponseType
-from .helper import AutoRetry
 
 
 class RyzenthAuthClient:

@@ -19,6 +19,7 @@ clients = RyzenthApiClient(
     }
 )
 
+
 async def main():
     resp = await clients.post(
         tool="openai",

@@ -18,7 +18,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-import platform
 import typing as t
 
 import httpx
@@ -27,7 +26,6 @@ from box import Box
 
 from .__version__ import get_user_agent
 from ._errors import (
-    AsyncStatusError,
     InvalidModelError,
     SyncStatusError,
     WhatFuckError,
@@ -46,7 +44,10 @@ from .types import DownloaderBy, QueryParameter, RequestXnxx, Username
 
 
 class RyzenthXSync:
-    def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
+    def __init__(
+            self,
+            api_key: str,
+            base_url: str = "https://randydev-ryu-js.hf.space/api"):
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.headers = {
@@ -70,7 +71,8 @@ class RyzenthXSync:
         logging.getLogger('httpcore').setLevel(logging.WARNING)
         if not self.logger.handlers:
             handler = logging.FileHandler("RyzenthLib.log", encoding="utf-8")
-            handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+            handler.setFormatter(logging.Formatter(
+                "%(asctime)s - %(levelname)s - %(message)s"))
             self.logger.addHandler(handler)
 
     def send_downloader(
@@ -78,10 +80,10 @@ class RyzenthXSync:
         *,
         switch_name: str,
         params: t.Union[
-        DownloaderBy,
-        QueryParameter,
-        Username,
-        RequestXnxx
+            DownloaderBy,
+            QueryParameter,
+            Username,
+            RequestXnxx
         ] = None,
         timeout: t.Union[int, float] = 5,
         params_only: bool = True,
@@ -101,7 +103,8 @@ class RyzenthXSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.obj(response.json() or {}) if dot_access else response.json()
+            return self.obj(
+                response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
             self.logger.error(f"[SYNC] Error fetching from downloader {e}")
             raise WhatFuckError("[SYNC] Error fetching from downloader") from e
@@ -116,10 +119,13 @@ class RyzenthXSync:
                 )
                 response_.raise_for_status()
                 SyncStatusError(response_, status_httpx=True)
-                return self.obj(response.json() or {}) if dot_access else response.json()
+                return self.obj(
+                    response.json() or {}) if dot_access else response.json()
             except Exception as e:
-                self.logger.error(f"[SYNC] Error fetching from downloader {str(e)}")
-                raise WhatFuckError("[SYNC] Error fetching from downloader") from e
+                self.logger.error(
+                    f"[SYNC] Error fetching from downloader {str(e)}")
+                raise WhatFuckError(
+                    "[SYNC] Error fetching from downloader") from e
 
     def send_message(
         self,
@@ -130,7 +136,8 @@ class RyzenthXSync:
         use_full_model_list: bool = False,
         dot_access: bool = False
     ) -> t.Union[dict, Box]:
-        model_dict = BASE_DICT_AI_RYZENTH if use_full_model_list else {"hybrid": "AkenoX-1.9-Hybrid"}
+        model_dict = BASE_DICT_AI_RYZENTH if use_full_model_list else {
+            "hybrid": "AkenoX-1.9-Hybrid"}
         model_param = model_dict.get(model)
         if not model_param:
             raise InvalidModelError(f"Invalid model name: {model}")
@@ -144,7 +151,8 @@ class RyzenthXSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.obj(response.json() or {}) if dot_access else response.json()
+            return self.obj(
+                response.json() or {}) if dot_access else response.json()
         except httpx.HTTPError as e:
             self.logger.error(f"[SYNC] Error fetching from akenox: {e}")
             raise WhatFuckError("[SYNC] Error fetching from akenox") from e
@@ -159,7 +167,9 @@ class RyzenthXSync:
                 )
                 response_.raise_for_status()
                 SyncStatusError(response_, status_httpx=True)
-                return self.obj(response.json() or {}) if dot_access else response.json()
+                return self.obj(
+                    response.json() or {}) if dot_access else response.json()
             except Exception as e:
-                self.logger.error(f"[SYNC] Error fetching from akenox: {str(e)}")
+                self.logger.error(
+                    f"[SYNC] Error fetching from akenox: {str(e)}")
                 raise WhatFuckError("[SYNC] Error fetching from akenox") from e

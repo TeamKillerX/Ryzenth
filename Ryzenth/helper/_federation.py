@@ -48,7 +48,8 @@ class FbanSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from newfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from newfed") from e
@@ -72,7 +73,8 @@ class FbanSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from subfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from subfed") from e
@@ -94,7 +96,8 @@ class FbanSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from getfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from getfed") from e
@@ -118,7 +121,8 @@ class FbanSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from unban {e}")
             raise WhatFuckError("[SYNC] Error fetching from unban") from e
@@ -130,7 +134,7 @@ class FbanSync:
         federation_uuid: str,
         user_id: int,
         timeout: t.Union[int, float] = 5,
-        dot_access: bool =False
+        dot_access: bool = False
     ):
         url = f"{self.parent.base_url}/v2/federation/ban"
         try:
@@ -142,7 +146,8 @@ class FbanSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from ban {e}")
             raise WhatFuckError("[SYNC] Error fetching from ban") from e
@@ -166,9 +171,11 @@ class FbanSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
-            self.parent.logger.error(f"[SYNC] Error fetching from ban-check {e}")
+            self.parent.logger.error(
+                f"[SYNC] Error fetching from ban-check {e}")
             raise WhatFuckError("[SYNC] Error fetching from ban-check") from e
 
     @Benchmark.sync(level=logging.DEBUG)
@@ -189,9 +196,11 @@ class FbanSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
-            self.parent.logger.error(f"[SYNC] Error fetching from fedstats {e}")
+            self.parent.logger.error(
+                f"[SYNC] Error fetching from fedstats {e}")
             raise WhatFuckError("[SYNC] Error fetching from fedstats") from e
 
     @Benchmark.sync(level=logging.DEBUG)
@@ -213,9 +222,11 @@ class FbanSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
-            self.parent.logger.error(f"[SYNC] Error fetching from unsubfed {e}")
+            self.parent.logger.error(
+                f"[SYNC] Error fetching from unsubfed {e}")
             raise WhatFuckError("[SYNC] Error fetching from unsubfed") from e
 
     @Benchmark.sync(level=logging.DEBUG)
@@ -231,16 +242,20 @@ class FbanSync:
         try:
             response = self.parent.httpx.post(
                 url,
-                json={"federation_uuid": federation_uuid, "new_name": new_name},
+                json={
+                    "federation_uuid": federation_uuid,
+                    "new_name": new_name},
                 headers=self.parent.headers,
-                timeout=timeout
-            )
+                timeout=timeout)
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
-            self.parent.logger.error(f"[SYNC] Error fetching from renamefed {e}")
+            self.parent.logger.error(
+                f"[SYNC] Error fetching from renamefed {e}")
             raise WhatFuckError("[SYNC] Error fetching from renamefed") from e
+
 
 class FbanAsync:
     def __init__(self, parent):
@@ -266,7 +281,8 @@ class FbanAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -288,7 +304,8 @@ class FbanAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -308,7 +325,8 @@ class FbanAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -330,7 +348,8 @@ class FbanAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -352,7 +371,8 @@ class FbanAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -374,7 +394,8 @@ class FbanAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -395,7 +416,8 @@ class FbanAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -417,7 +439,8 @@ class FbanAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -439,4 +462,5 @@ class FbanAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()

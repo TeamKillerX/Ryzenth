@@ -4,6 +4,7 @@ from functools import wraps
 
 logger = logging.getLogger(__name__)
 
+
 class Benchmark:
     @classmethod
     def performance(cls, level=logging.INFO):

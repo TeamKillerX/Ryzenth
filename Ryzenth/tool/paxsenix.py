@@ -25,7 +25,6 @@ import logging
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import InternalServerError
-from ..enums import ResponseType
 from ..helper import AutoRetry
 
 

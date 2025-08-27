@@ -24,7 +24,6 @@ from os import getenv
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from ..enums import ResponseType
 from ..helper import AutoRetry
 
 
@@ -33,9 +32,11 @@ class Cloudflare:
         if auth_token is None:
             auth_token = getenv("CLOUDFLARE_AUTH_TOKEN")
         if not account_id:
-            raise ValueError("Cloudflare account_id must be provided and non-empty.")
+            raise ValueError(
+                "Cloudflare account_id must be provided and non-empty.")
         if not auth_token:
-            raise ValueError("Cloudflare auth_token must be provided and non-empty (either as argument or CLOUDFLARE_AUTH_TOKEN env var).")
+            raise ValueError(
+                "Cloudflare auth_token must be provided and non-empty (either as argument or CLOUDFLARE_AUTH_TOKEN env var).")
         self._account_id = account_id
         self._auth_token = auth_token
 

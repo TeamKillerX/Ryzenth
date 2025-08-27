@@ -42,7 +42,8 @@ class FontsAsync:
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
         if not text:
             raise ParamsRequiredError("Invalid Params Text")
-        _params = self.parent.params if use_parent_params_dict else {"query": text}
+        _params = self.parent.params if use_parent_params_dict else {
+            "query": text}
         async with self.parent.httpx.AsyncClient() as client:
             response = await client.get(
                 url,
@@ -52,7 +53,9 @@ class FontsAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
+
 
 class FontsSync:
     def __init__(self, parent):
@@ -69,7 +72,8 @@ class FontsSync:
         url = f"{self.parent.base_url}/v1/fonts-stylish/detected"
         if not text:
             raise ParamsRequiredError("Invalid Params Text")
-        _params = self.parent.params if use_parent_params_dict else {"query": text}
+        _params = self.parent.params if use_parent_params_dict else {
+            "query": text}
         try:
             response = self.parent.httpx.get(
                 url,
@@ -79,7 +83,8 @@ class FontsSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
             self.parent.logger.error(f"[SYNC] Error fetching from fonts {e}")
             raise WhatFuckError("[SYNC] Error fetching from fonts") from e

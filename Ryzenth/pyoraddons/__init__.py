@@ -38,10 +38,12 @@ def unauthorized_access(
             return await func(client, message)
 
         if sum([author_only, member_only]) > 1:
-            raise UnauthorizedAccessError("Only one of author_only, or member_only can be True")
+            raise UnauthorizedAccessError(
+                "Only one of author_only, or member_only can be True")
 
         return wrapper
     return decorator
+
 
 def callback_unauthorized_access(
     user_list: list = None,
@@ -59,10 +61,12 @@ def callback_unauthorized_access(
             return await func(client, callback)
 
         if sum([author_only, member_only]) > 1:
-            raise UnauthorizedAccessError("Only one of author_only, or member_only can be True")
+            raise UnauthorizedAccessError(
+                "Only one of author_only, or member_only can be True")
 
         return wrapper
     return decorator
+
 
 def admin_only(enums_type=None):
     "Credits by @xtdevs"
@@ -72,11 +76,14 @@ def admin_only(enums_type=None):
             if enums_type is None:
                 raise RequiredError("Required enums_type")
             member = await client.get_chat_member(message.chat.id, message.from_user.id)
-            if member.status not in {enums_type.ADMINISTRATOR, enums_type.OWNER}:
+            if member.status not in {
+                    enums_type.ADMINISTRATOR,
+                    enums_type.OWNER}:
                 return await message.reply_text("Only admin can!")
             return await func(client, message)
         return wrapper
     return decorator
+
 
 __all__ = [
     "unauthorized_access",

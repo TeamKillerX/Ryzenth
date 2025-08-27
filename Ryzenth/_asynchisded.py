@@ -20,7 +20,6 @@
 import asyncio
 import logging
 import typing as t
-from contextlib import asynccontextmanager
 
 import aiohttp
 import httpx
@@ -31,7 +30,6 @@ from ._benchmark import Benchmark
 from ._errors import (
     AsyncStatusError,
     InvalidModelError,
-    SyncStatusError,
     WhatFuckError,
 )
 from ._shared import (
@@ -120,7 +118,10 @@ class RyzenthOrg:
 
 
 class RyzenthXAsync:
-    def __init__(self, api_key: str, base_url: str = "https://randydev-ryu-js.hf.space/api"):
+    def __init__(
+            self,
+            api_key: str,
+            base_url: str = "https://randydev-ryu-js.hf.space/api"):
         if not api_key:
             raise WhatFuckError("API key is required")
 
@@ -157,16 +158,15 @@ class RyzenthXAsync:
 
         if not self.logger.handlers:
             try:
-                handler = logging.FileHandler("RyzenthLib.log", encoding="utf-8")
-                handler.setFormatter(
-                    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-                )
+                handler = logging.FileHandler(
+                    "RyzenthLib.log", encoding="utf-8")
+                handler.setFormatter(logging.Formatter(
+                    "%(asctime)s - %(levelname)s - %(message)s"))
                 self.logger.addHandler(handler)
-            except Exception as e:
+            except Exception:
                 console_handler = logging.StreamHandler()
-                console_handler.setFormatter(
-                    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-                )
+                console_handler.setFormatter(logging.Formatter(
+                    "%(asctime)s - %(levelname)s - %(message)s"))
                 self.logger.addHandler(console_handler)
 
     async def _get_session(self):
@@ -225,7 +225,8 @@ class RyzenthXAsync:
             json_data = response.json()
             return self.obj(json_data or {}) if dot_access else json_data
         except Exception as e:
-            self.logger.error(f"Downloader request failed for {switch_name}: {e}")
+            self.logger.error(
+                f"Downloader request failed for {switch_name}: {e}")
             raise
 
     async def _client_message_get(
@@ -240,7 +241,8 @@ class RyzenthXAsync:
             raise WhatFuckError("model_param is required")
 
         url = f"{self.base_url}/v1/ai/akenox/{model_param}"
-        request_params = params.model_dump() if params and hasattr(params, 'model_dump') else {}
+        request_params = params.model_dump() if params and hasattr(
+            params, 'model_dump') else {}
 
         return await client.get(
             url,
@@ -290,7 +292,8 @@ class RyzenthXAsync:
         if not params:
             raise WhatFuckError("params is required")
 
-        model_dict = BASE_DICT_AI_RYZENTH if use_full_model_list else {"hybrid": "AkenoX-1.9-Hybrid"}
+        model_dict = BASE_DICT_AI_RYZENTH if use_full_model_list else {
+            "hybrid": "AkenoX-1.9-Hybrid"}
         model_param = model_dict.get(model)
 
         if not model_param:

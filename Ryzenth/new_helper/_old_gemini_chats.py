@@ -20,11 +20,11 @@
 
 import logging
 import os
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyMessageError, EmptyResponseError, InvalidMessageError, WhatFuckError
+from .._errors import EmptyMessageError, EmptyResponseError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -34,27 +34,34 @@ class OldChatsGeminiAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
-        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = logging.getLogger(
+            f"{__name__}.{self.__class__.__name__}")
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
-            api_key = getattr(self.parent, "_api_key", None) or os.environ.get("GEMINI_API_KEY")
+            api_key = getattr(
+                self.parent,
+                "_api_key",
+                None) or os.environ.get("GEMINI_API_KEY")
 
-            if not api_key or not isinstance(api_key, str) or not api_key.strip():
-                raise WhatFuckError("Missing or invalid API key for Gemini client initialization.")
+            if not api_key or not isinstance(
+                    api_key, str) or not api_key.strip():
+                raise WhatFuckError(
+                    "Missing or invalid API key for Gemini client initialization.")
             try:
                 self._client = RyzenthApiClient(
                     tools_name=["gemini"],
                     api_key={"gemini": [
-                      {
-                        "x-goog-api-key": api_key
-                      }
+                        {
+                            "x-goog-api-key": api_key
+                        }
                     ]},
                     rate_limit=100,
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(f"Failed to initialize API client: {e}") from e
+                raise WhatFuckError(
+                    f"Failed to initialize API client: {e}") from e
         return self._client
 
     @Benchmark.performance(level=logging.DEBUG)
@@ -71,10 +78,14 @@ class OldChatsGeminiAsync:
             if not messages.strip():
                 raise EmptyMessageError("messages cannot be empty")
         elif isinstance(messages, list):
-            if not messages or all(isinstance(item, dict) and not item for item in messages):
+            if not messages or all(
+                isinstance(
+                    item,
+                    dict) and not item for item in messages):
                 raise EmptyMessageError("messages cannot be empty")
         else:
-            raise EmptyMessageError(f"messages type is invalid: received type '{type(messages).__name__}'")
+            raise EmptyMessageError(
+                f"messages type is invalid: received type '{type(messages).__name__}'")
 
         client = self._get_client()
         try:
@@ -97,7 +108,8 @@ class OldChatsGeminiAsync:
             )
 
             if not response:
-                raise EmptyResponseError("Empty response from chat completion API")
+                raise EmptyResponseError(
+                    "Empty response from chat completion API")
 
             return ResponseResult(client=client, response=response)
         except Exception as e:

@@ -49,7 +49,9 @@ class WhatAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
+
 
 class WhatSync:
     def __init__(self, parent):
@@ -72,7 +74,9 @@ class WhatSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
-            self.parent.logger.error(f"[SYNC] Error fetching from deepseek {e}")
+            self.parent.logger.error(
+                f"[SYNC] Error fetching from deepseek {e}")
             raise WhatFuckError("[SYNC] Error fetching from deepseek") from e

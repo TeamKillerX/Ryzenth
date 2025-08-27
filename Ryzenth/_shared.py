@@ -24,7 +24,7 @@ TOOL_DOMAIN_MAP = {
     "zai": "https://api.z.ai"
 }
 
-###-------------AI-----------------###
+### -------------AI-----------------###
 
 # GROK AI
 """
@@ -102,27 +102,27 @@ deepseek_response = await clients.post(
     }
 )
 """
-###-------------END AI-----------------###
+### -------------END AI-----------------###
 
 # this API is different
 BASE_DICT_RENDER = {
-    "transcript": "transcript-dl", #url #render
-    "pinterest": "pinterest-dl", #url #render
-    "fbvideo": "fbvideo-dl", #url #render
-    "fbphoto": "fbphoto-dl", #url #render
-    "tiktok": "tiktok-dl", #url #render
-    "youtube-mp3": "youtube-mp3-dl", #url #render
-    "youtube-mp4": "youtube-mp4-dl", #url #render
-    "instagram": "instagram-dl", #url # render
-    "lyrics-search": "lyrics-search-dl", #query #render
-    "yt-search": "yt-search-dl", #query #render
-    "google-search": "google-search-dl", #query #render
-    "pinterest-search": "pinterest-search-dl", #query #render
-    "tiktok-search": "tiktok-search-dl", #query #render
-    "yt-username": "yt-username", #username #render
-    "tiktok-username": "tiktok-username", #username #render
-    "xnxx-dl": "xnxx-dl", #types optional #render
-    "hentai-anime": "hentai-anime" #None, render
+    "transcript": "transcript-dl",  # url #render
+    "pinterest": "pinterest-dl",  # url #render
+    "fbvideo": "fbvideo-dl",  # url #render
+    "fbphoto": "fbphoto-dl",  # url #render
+    "tiktok": "tiktok-dl",  # url #render
+    "youtube-mp3": "youtube-mp3-dl",  # url #render
+    "youtube-mp4": "youtube-mp4-dl",  # url #render
+    "instagram": "instagram-dl",  # url # render
+    "lyrics-search": "lyrics-search-dl",  # query #render
+    "yt-search": "yt-search-dl",  # query #render
+    "google-search": "google-search-dl",  # query #render
+    "pinterest-search": "pinterest-search-dl",  # query #render
+    "tiktok-search": "tiktok-search-dl",  # query #render
+    "yt-username": "yt-username",  # username #render
+    "tiktok-username": "tiktok-username",  # username #render
+    "xnxx-dl": "xnxx-dl",  # types optional #render
+    "hentai-anime": "hentai-anime"  # None, render
 }
 
 BASE_DICT_OFFICIAL = {
