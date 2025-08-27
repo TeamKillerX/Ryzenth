@@ -127,6 +127,34 @@ clients = await RyzenthApiClient(
 )
 ```
 
+### 🔥 Multi Client Tools
+- support environment
+```py
+# COHERE_API_KEY
+# GEMINI_API_KEY
+# XAI_API_KEY
+# OPENAI_API_KEY
+# ALIBABA_API_KEY
+
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools()
+# your own code logic
+```
+## Attribute Tools
+```py
+.grok_chat
+.gemini_chat
+.old_gemini_chat
+.openai_images
+.openai_responses
+.qwen_chat
+.qwen_images
+.qwen_videos
+.images
+.chat
+```
+
 ### 🤖 AI Features (No API Key Required)
 Supports multiple AI models: `grok`, `deepseek-reasoning`, `evil`, `unity`, `sur`, `rtist`, `hypnosis-tracy`, `llama-roblox`
 
