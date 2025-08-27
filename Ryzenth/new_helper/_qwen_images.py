@@ -100,40 +100,34 @@ class ImagesQwenAsync:
             raise InvalidFunctionCallError(
                 f"Invalid function call: '{function_call}'")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="alibaba",
-                path="/api/v1/services/aigc/image2image/image-synthesis",
-                timeout=timeout,
-                json={
-                    "model": "wanx2.1-imageedit",
-                    "input": {
-                        "function": function_call,
-                        "prompt": prompt,
-                        "base_image_url": base_image_url
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="alibaba",
+                    path="/api/v1/services/aigc/image2image/image-synthesis",
+                    timeout=timeout,
+                    json={
+                        "model": "wanx2.1-imageedit",
+                        "input": {
+                            "function": function_call,
+                            "prompt": prompt,
+                            "base_image_url": base_image_url
+                        },
+                        "parameters": {
+                            "n": 1,
+                            "strength": strength,
+                            **({"top_scale": top_scale} if top_scale is not None else {}),
+                            **({"bottom_scale": bottom_scale} if bottom_scale is not None else {}),
+                            **({"left_scale": left_scale} if left_scale is not None else {}),
+                            **({"right_scale": right_scale} if right_scale is not None else {})
+                        }
                     },
-                    "parameters": {
-                        "n": 1,
-                        "strength": strength,
-                        **({"top_scale": top_scale} if top_scale is not None else {}),
-                        **({"bottom_scale": bottom_scale} if bottom_scale is not None else {}),
-                        **({"left_scale": left_scale} if left_scale is not None else {}),
-                        **({"right_scale": right_scale} if right_scale is not None else {})
-                    }
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from image edit generation API")
-
-            if strength is not None:
-                self.logger.warning(
-                    "Use 'strength' work this warning just ignore")
-
-            return GeneratedImageOrVideo(client=client, content=response)
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from image edit generation API")
+                return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Qwen image edit generation failed: {e}")
             raise WhatFuckError(
@@ -144,13 +138,13 @@ class ImagesQwenAsync:
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def get_task(self, task_id: str) -> ResponseResult:
-        client = self._get_client()
-        response = await client.get(
-            tool="alibaba",
-            path=f"/api/v1/tasks/{task_id}",
-            timeout=30
-        )
-        return ResponseResult(client=client, response=response)
+        async with self._get_client() as client:
+            response = await client.get(
+                tool="alibaba",
+                path=f"/api/v1/tasks/{task_id}",
+                timeout=30
+            )
+            return ResponseResult(client=client, response=response)
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -171,32 +165,30 @@ class ImagesQwenAsync:
             raise WhatFuckError(
                 f"Seed must be an integer or None, got {type(seed).__name__}")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="alibaba",
-                path="/api/v1/services/aigc/text2image/image-synthesis",
-                timeout=30,
-                json={
-                    "model": "wan2.2-t2i-flash",
-                    "input": {
-                        "prompt": prompt,
-                        **({"negative_prompt": negative_prompt} if negative_prompt is not None else {}),
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="alibaba",
+                    path="/api/v1/services/aigc/text2image/image-synthesis",
+                    timeout=30,
+                    json={
+                        "model": "wan2.2-t2i-flash",
+                        "input": {
+                            "prompt": prompt,
+                            **({"negative_prompt": negative_prompt} if negative_prompt is not None else {}),
+                        },
+                        "parameters": {
+                            "size": size,
+                            "n": 1,
+                            "seed": seed,
+                            "prompt_extend": prompt_extend
+                        }
                     },
-                    "parameters": {
-                        "size": size,
-                        "n": 1,
-                        "seed": seed,
-                        "prompt_extend": prompt_extend
-                    }
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise WhatFuckError("Empty response from image generation API")
-
-            return GeneratedImageOrVideo(client=client, content=response)
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise WhatFuckError("Empty response from image generation API")
+                return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Qwen image generation failed: {e}")
             raise WhatFuckError(f"Qwen image generation failed: {e}") from e
