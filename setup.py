@@ -31,6 +31,7 @@ setuptools.setup(
         "pydantic",
         "typing",
         "aiohttp",
+        "motor",
         "httpx[http2]",
         "bs4",
         "python-box",
@@ -38,6 +39,7 @@ setuptools.setup(
     extras_require={
         "fast": [
             "aiohttp",
+            "motor",
             "wget",
             "requests",
             "httpx[http2]",
