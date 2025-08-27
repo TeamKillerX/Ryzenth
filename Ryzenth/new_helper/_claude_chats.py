@@ -86,25 +86,23 @@ class ChatsClaudeAsync:
             raise EmptyMessageError(
                 f"messages type is invalid: received type '{type(messages).__name__}'")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="claude",
-                path="/messages",
-                timeout=timeout,
-                json={
-                    "model": model,
-                    "messages": messages,
-                    "max_tokens": max_tokens
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from chat completion API")
-
-            return ResponseResult(client=client, response=response)
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="claude",
+                    path="/messages",
+                    timeout=timeout,
+                    json={
+                        "model": model,
+                        "messages": messages,
+                        "max_tokens": max_tokens
+                    },
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from chat completion API")
+                return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Claude chats failed: {e}")
             raise WhatFuckError(f"Claude chats failed: {e}") from e
