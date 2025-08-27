@@ -23,6 +23,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pylint black
+        pip install .
 
     - name: Run Pylint
       run: |
