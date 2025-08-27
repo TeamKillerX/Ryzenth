@@ -20,7 +20,8 @@ TOOL_DOMAIN_MAP = {
     "grok": "https://api.x.ai/v1",
     "alibaba": "https://dashscope-intl.aliyuncs.com",
     "gemini": "https://generativelanguage.googleapis.com/v1beta",
-    "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai"
+    "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai",
+    "zai": "https://api.z.ai"
 }
 
 ###-------------AI-----------------###

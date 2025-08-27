@@ -136,6 +136,7 @@ clients = await RyzenthApiClient(
 # OPENAI_API_KEY
 # ALIBABA_API_KEY
 # DEEPSEEK_API_KEY
+# ZAI_API_KEY
 
 from Ryzenth import RyzenthTools
 
@@ -152,6 +153,7 @@ rt = RyzenthTools()
 .aio.openai_responses
 .aio.qwen_chat
 .aio.deepseek_chat
+.aio.zai_chat
 .aio.qwen_images
 .aio.qwen_videos
 .aio.images
