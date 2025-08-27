@@ -61,22 +61,20 @@ class ChatOrgAsync:
         if not isinstance(messages, list) or not messages:
             raise InvalidMessageError("Messages must be a non-empty list")
 
-        client = self._get_client()
         try:
-            path = "/api/v1/kimi-latest/instruct" if use_instruct else "/api/v1/kimi-latest"
-            response = await client.post(
-                tool="ryzenth-v2",
-                path=path,
-                timeout=timeout,
-                json={"messages": messages},
-                use_type=ResponseType.JSON
-            )
-            return ResponseResult(client, response)
+            async with self._get_client() as client:
+                path = "/api/v1/kimi-latest/instruct" if use_instruct else "/api/v1/kimi-latest"
+                response = await client.post(
+                    tool="ryzenth-v2",
+                    path=path,
+                    timeout=timeout,
+                    json={"messages": messages},
+                    use_type=ResponseType.JSON
+                )
+                return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
-        finally:
-            pass
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -99,35 +97,34 @@ class ChatOrgAsync:
                 raise WhatFuckError("Prompt cannot be empty")
         else:
             raise WhatFuckError("Prompt type is invalid")
-        client = self._get_client()
+
         try:
-            self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
             if use_turbo_fast:
                 path = "/api/v1/openai-v2/oss"
             else:
                 path = "/api/v1/openai-v2"
-            if use_conversation:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/openai-v2/conversation",
-                    timeout=timeout,
-                    json={"messages": prompt},
-                    use_type=ResponseType.JSON
-                )
-            else:
-                response = await client.get(
-                    tool="ryzenth-v2",
-                    path=path,
-                    timeout=timeout,
-                    params=None if use_conversation else client.get_kwargs(input=prompt),
-                    use_type=ResponseType.JSON
-                )
-            return ResponseResult(client, response)
+
+            async with self._get_client() as client:
+                if use_conversation:
+                    response = await client.post(
+                        tool="ryzenth-v2",
+                        path="/api/v1/openai-v2/conversation",
+                        timeout=timeout,
+                        json={"messages": prompt},
+                        use_type=ResponseType.JSON
+                    )
+                else:
+                    response = await client.get(
+                        tool="ryzenth-v2",
+                        path=path,
+                        timeout=timeout,
+                        params=None if use_conversation else client.get_kwargs(input=prompt),
+                        use_type=ResponseType.JSON
+                    )
+                return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
-        finally:
-            pass
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -142,22 +139,20 @@ class ChatOrgAsync:
             raise WhatFuckError("Prompt cannot be empty")
         if not model or not model.strip():
             raise WhatFuckError("model cannot be empty")
-        client = self._get_client()
+
         try:
-            self.logger.debug(f"chat ask with prompt: {prompt[:50]}...")
-            response = await client.get(
-                tool="ryzenth-v2",
-                path="/api/v1/ultimate-chat",
-                timeout=timeout,
-                params=client.get_kwargs(input=prompt.strip(), model=model),
-                use_type=ResponseType.JSON
-            )
-            return ResponseResult(client, response, is_ultimate=True)
+            async with self._get_client() as client:
+                response = await client.get(
+                    tool="ryzenth-v2",
+                    path="/api/v1/ultimate-chat",
+                    timeout=timeout,
+                    params=client.get_kwargs(input=prompt.strip(), model=model),
+                    use_type=ResponseType.JSON
+                )
+                return ResponseResult(client, response, is_ultimate=True)
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
-        finally:
-            pass
 
     async def close(self):
         if self._client:
