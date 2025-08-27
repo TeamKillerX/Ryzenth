@@ -78,25 +78,23 @@ class ChatsDeepseekAsync:
         if not isinstance(messages, list) or not messages:
             raise InvalidMessageError("Messages must be a non-empty list")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="deepseek",
-                path="/chat/completions",
-                timeout=timeout,
-                json={
-                    "model": model,
-                    "messages": messages,
-                    "stream": stream
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from chat completion API")
-
-            return ResponseResult(client=client, response=response)
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="deepseek",
+                    path="/chat/completions",
+                    timeout=timeout,
+                    json={
+                        "model": model,
+                        "messages": messages,
+                        "stream": stream
+                    },
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from chat completion API")
+                return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Deepseek chats failed: {e}")
             raise WhatFuckError(f"Deepseek chats failed: {e}") from e
