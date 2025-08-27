@@ -4,6 +4,7 @@ from ._default_images import ImagesOrgAsync
 from ._gemini_chats import ChatsGeminiAsync
 from ._grok_chats import ChatsGrokAsync
 from ._old_gemini_chats import OldChatsGeminiAsync
+from ._claude_chats import ChatsClaudeAsync
 from ._openai_chats import ChatsOpenAIAsync
 from ._openai_images import ImagesOpenAIAsync
 from ._qwen_chats import ChatsQwenAsync
