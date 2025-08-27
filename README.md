@@ -143,16 +143,137 @@ rt = RyzenthTools()
 ```
 ## Attribute Tools
 ```py
-.grok_chat
-.gemini_chat
-.old_gemini_chat
-.openai_images
-.openai_responses
-.qwen_chat
-.qwen_images
-.qwen_videos
-.images
-.chat
+.aio.grok_chat
+.aio.claude_chat
+.aio.gemini_chat
+.aio.old_gemini_chat
+.aio.openai_images
+.aio.openai_responses
+.aio.qwen_chat
+.aio.qwen_images
+.aio.qwen_videos
+.aio.images
+.aio.chat
+```
+
+## Examples full code
+### gemini-openai tools
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools("api-key-from-gemini")
+
+results = await rt.aio.gemini_chat.ask([
+    {"role": "system", "content": "You are a helpful assistant"},
+    {"role": "user", "content": "What is Gemini?"}
+], model="gemini-2.5-flash")
+
+print(await results.to_dict())
+```
+- Use tools
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools("api-key-from-gemini")
+
+results = await rt.aio.gemini_chat.ask([
+    {"role": "user", "content": "What's the weather like in Chicago today?"}
+], tools=[
+  {
+    "type": "function",
+    "function": {
+      "name": "get_weather",
+      "description": "Get the current weather in a given location",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "The city and state, e.g. Chicago, IL"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["celsius", "fahrenheit"]
+          }
+        },
+        "required": ["location"]
+      }
+    }
+  }
+],tool_choice="auto")
+
+print(await results.to_json_dumps())
+```
+
+### qwen-image tools
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools("api-key-from-qwen")
+
+response = await rt.aio.qwen_images.create("make a generate cat blue and background car Lamborghini gold")
+
+output = await response.run()
+
+img = await response.to_buffer_request(output.results[0].url)
+
+print(img)
+```
+- Use task id manually
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools()
+
+response = await rt.aio.qwen_images.create("...")
+obj = await response.to_obj()
+task_id = obj.output.task_id
+
+response_status = await rt.aio.qwen_images.get_task(task_id)
+
+obj_res = await response_status.to_obj()
+
+if obj_res.output.task_status == "SUCCEEDED":
+    print(obj_res.output)
+```
+
+### Ryzenth-Chat tools (Free)
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools()
+
+results = await rt.aio.chat.ask([
+    {"role": "system", "content": "You are helpful assistant"},
+    {"role": "user", "content": "oh good job"}
+], use_conversation=True)
+
+print(await results.to_json_dumps())
+```
+- Use Kimi AI (free)
+- support `use_instruct` for multi turn conversation
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools()
+
+results = await rt.aio.chat.ask_kimi([
+    {"role": "system", "content": "...."},
+    {"role": "user", "content": "hello world!"}
+], use_instruct=True)
+
+obj = await results.to_obj()
+print(obj.data.choices[0].message.content)
+```
+- You can one prompt
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools()
+
+results = await rt.aio.chat.ask("Hello world")
+
+print(await results.to_json_dumps()
 ```
 
 ### 🤖 AI Features (No API Key Required)
