@@ -75,6 +75,8 @@ class ChatOrgAsync:
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
+        finally:
+            pass
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -125,6 +127,8 @@ class ChatOrgAsync:
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
+        finally:
+            pass
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -153,6 +157,8 @@ class ChatOrgAsync:
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
             raise WhatFuckError(f"chat ask failed: {e}") from e
+        finally:
+            pass
 
     async def close(self):
         if self._client:
