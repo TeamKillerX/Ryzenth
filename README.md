@@ -265,7 +265,7 @@ results = await rt.aio.chat.ask_kimi([
 obj = await results.to_obj()
 print(obj.data.choices[0].message.content)
 ```
-- You can one prompt
+- You can use one prompt
 ```py
 from Ryzenth import RyzenthTools
 
