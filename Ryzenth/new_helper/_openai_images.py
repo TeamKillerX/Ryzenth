@@ -76,24 +76,22 @@ class ImagesOpenAIAsync:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="openai",
-                path="/images/generations",
-                timeout=timeout,
-                json={
-                    "model": model,
-                    "prompt": prompt
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from openai image generation API")
-
-            return GeneratedImageOrVideo(client=client, content=response)
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="openai",
+                    path="/images/generations",
+                    timeout=timeout,
+                    json={
+                        "model": model,
+                        "prompt": prompt
+                    },
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from openai image generation API")
+                return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Openai image generation failed: {e}")
             raise WhatFuckError(f"Openai image generation failed: {e}") from e
