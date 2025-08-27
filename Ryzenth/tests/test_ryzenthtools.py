@@ -2,6 +2,7 @@ import pytest
 
 from .._base_client import RyzenthTools
 
+
 @pytest.mark.asyncio
 async def test_rtools():
     rt = RyzenthTools()
