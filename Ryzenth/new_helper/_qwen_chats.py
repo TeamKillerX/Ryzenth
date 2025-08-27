@@ -80,29 +80,27 @@ class ChatsQwenAsync:
         if not isinstance(messages, list) or not messages:
             raise InvalidMessageError("Messages must be a non-empty list")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="alibaba",
-                path="/compatible-mode/v1/chat/completions",
-                timeout=timeout,
-                json={
-                    "model": model,
-                    "messages": messages,
-                    "stream": stream,
-                    "stream_options": {
-                        "include_usage": include_usage
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="alibaba",
+                    path="/compatible-mode/v1/chat/completions",
+                    timeout=timeout,
+                    json={
+                        "model": model,
+                        "messages": messages,
+                        "stream": stream,
+                        "stream_options": {
+                            "include_usage": include_usage
+                        },
+                        "enable_thinking": enable_thinking
                     },
-                    "enable_thinking": enable_thinking
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from chat completion API")
-
-            return ResponseResult(client=client, response=response)
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from chat completion API")
+                return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Qwen chats failed: {e}")
             raise WhatFuckError(f"Qwen chats failed: {e}") from e

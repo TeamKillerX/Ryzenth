@@ -78,35 +78,24 @@ class ChatsOpenAIAsync:
         if not prompt:
             raise WhatFuckError("Prompt is Required")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="openai",
-                path="/responses",
-                timeout=timeout,
-                json={
-                    "input": prompt,
-                    "model": model,
-                    **({"reasoning": reasoning} if reasoning is not None else {}),
-                    **({"instructions": instructions} if instructions is not None else {})
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from chat completion API")
-
-            if instructions is not None:
-                self.logger.warning(
-                    "Default 'instructions' this warning just ignore")
-
-            if reasoning is not None:
-                self.logger.warning(
-                    "'reasoning' parameter was provided but is not used in this context. No action is required; this is informational only."
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="openai",
+                    path="/responses",
+                    timeout=timeout,
+                    json={
+                        "input": prompt,
+                        "model": model,
+                        **({"reasoning": reasoning} if reasoning is not None else {}),
+                        **({"instructions": instructions} if instructions is not None else {})
+                    },
+                    use_type=ResponseType.JSON
                 )
-
-            return ResponseResult(client=client, response=response)
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from chat completion API")
+                return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"OpenAI chats failed: {e}")
             raise WhatFuckError(f"OpenAI chats failed: {e}") from e

@@ -81,25 +81,23 @@ class ChatsCohereAsync:
         if not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="cohere",
-                path="/v1/chat",
-                timeout=timeout,
-                json={
-                    "message": prompt,
-                    **({"chat_history": chat_history} if chat_history is not None else {}),
-                    **({"connectors": connectors} if connectors is not None else {})
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from chat completion API")
-
-            return ResponseResult(client=client, response=response)
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="cohere",
+                    path="/v1/chat",
+                    timeout=timeout,
+                    json={
+                        "message": prompt,
+                        **({"chat_history": chat_history} if chat_history is not None else {}),
+                        **({"connectors": connectors} if connectors is not None else {})
+                    },
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from chat completion API")
+                return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Cohere chats failed: {e}")
             raise WhatFuckError(f"Cohere chats failed: {e}") from e

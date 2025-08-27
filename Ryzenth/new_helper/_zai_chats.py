@@ -81,27 +81,25 @@ class ChatsZaiAsync:
         if not isinstance(messages, list) or not messages:
             raise InvalidMessageError("Messages must be a non-empty list")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="zai",
-                path="/api/paas/v4/chat/completions",
-                timeout=timeout,
-                json={
-                    "model": model,
-                    "messages": messages,
-                    "max_tokens": max_tokens,
-                    "temperature": temperature,
-                    "stream": stream
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from chat completion API")
-
-            return ResponseResult(client=client, response=response)
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="zai",
+                    path="/api/paas/v4/chat/completions",
+                    timeout=timeout,
+                    json={
+                        "model": model,
+                        "messages": messages,
+                        "max_tokens": max_tokens,
+                        "temperature": temperature,
+                        "stream": stream
+                    },
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from chat completion API")
+                return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Zai chats failed: {e}")
             raise WhatFuckError(f"Zai chats failed: {e}") from e
