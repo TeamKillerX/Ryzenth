@@ -19,12 +19,8 @@
 
 # BASED API: https://api.anthropic.com/v1
 
-import logging
 
-from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from ..enums import ResponseType
-from ..helper import AutoRetry
 
 
 class ClaudeClient:
@@ -39,4 +35,4 @@ class ClaudeClient:
             use_default_headers=True,
             **kwargs
         )
-    #TODO: HERE ADDED
+    # TODO: HERE ADDED

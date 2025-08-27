@@ -20,7 +20,7 @@
 import base64
 import logging
 from os import environ
-from typing import Optional, Union
+from typing import Union
 
 from box import Box
 
@@ -47,8 +47,13 @@ class RyzenthTools:
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.close()
 
+
 class ApiKeyFrom:
-    def __init__(self, api_key: str = None, is_ok: bool = False, base_url: str = None):
+    def __init__(
+            self,
+            api_key: str = None,
+            is_ok: bool = False,
+            base_url: str = None):
         if api_key is Ellipsis:
             is_ok = True
             api_key = None
@@ -66,7 +71,8 @@ class ApiKeyFrom:
                 api_key = None
 
         if not api_key:
-            raise WhatFuckError("API key is required. Set RYZENTH_API_KEY environment variable or provide api_key parameter.")
+            raise WhatFuckError(
+                "API key is required. Set RYZENTH_API_KEY environment variable or provide api_key parameter.")
 
         self.api_key = api_key
         try:
@@ -96,7 +102,11 @@ class ApiKeyFrom:
 
 
 class UrHellFrom:
-    def __init__(self, name: str, only_author: bool = False, api_key: str = None):
+    def __init__(
+            self,
+            name: str,
+            only_author: bool = False,
+            api_key: str = None):
         if not name:
             raise WhatFuckError("name parameter is required")
 
@@ -106,7 +116,8 @@ class UrHellFrom:
         try:
             # api_client = ApiKeyFrom(api_key) if api_key else ApiKeyFrom()
             self.decorators = Decorators(ApiKeyFrom)
-            self.ai = self.decorators.send_ai(name=name, only_author=only_author)
+            self.ai = self.decorators.send_ai(
+                name=name, only_author=only_author)
         except Exception as e:
             raise WhatFuckError(f"Failed to initialize UrHellFrom: {e}")
 
@@ -164,11 +175,14 @@ class FromConvertDot:
             return len(self.obj) == 0
         return False
 
+
 def create_api_client(api_key: str = None, base_url: str = None) -> ApiKeyFrom:
     return ApiKeyFrom(api_key=api_key, base_url=base_url)
 
+
 def create_tools_client() -> RyzenthTools:
     return RyzenthTools()
+
 
 def convert_to_dot(obj) -> Box:
     return FromConvertDot(obj).to_dot()

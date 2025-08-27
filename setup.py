@@ -5,8 +5,13 @@ import setuptools
 
 
 def read(fname, version=False):
-    text = open(os.path.join(os.path.dirname(__file__), fname), encoding="utf8").read()
+    text = open(
+        os.path.join(
+            os.path.dirname(__file__),
+            fname),
+        encoding="utf8").read()
     return re.search(r'__version__ = "(.*?)"', text)[1] if version else text
+
 
 setuptools.setup(
     name="Ryzenth",

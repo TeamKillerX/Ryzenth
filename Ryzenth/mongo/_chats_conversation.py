@@ -24,11 +24,13 @@ import motor
 
 log = logging.getLogger(__name__)
 
+
 class ChatHistoryManager:
     def __init__(self, mongo_url: str, client_name: str, limit=100):
         self.mongo_url = mongo_url
         self.client_name = client_name
-        self.client_mongo = motor.motor_asyncio.AsyncIOMotorClient(self.mongo_url)
+        self.client_mongo = motor.motor_asyncio.AsyncIOMotorClient(
+            self.mongo_url)
         self.db = self.client_mongo[self.client_name]
         self.ryzenth = self.db["chatbot"]
         self.limit = limit

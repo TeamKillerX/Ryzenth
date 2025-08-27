@@ -33,8 +33,10 @@ class ResponseResult:
 
     async def to_result(self):
         if self._is_ultimate:
-            return self._client.dict_convert_to_dot(self._response).data.content.ultimate[0].text
-        return self._client.dict_convert_to_dot(self._response).data.choices[0].message.content
+            return self._client.dict_convert_to_dot(
+                self._response).data.content.ultimate[0].text
+        return self._client.dict_convert_to_dot(
+            self._response).data.choices[0].message.content
 
     async def to_obj(self):
         return self._client.dict_convert_to_dot(self._response)
@@ -44,6 +46,7 @@ class ResponseResult:
 
     async def to_dict(self):
         return self._response
+
 
 class GeneratedImageOrVideo:
     def __init__(self, client, content=None, file_path=None, logger=None):
@@ -72,7 +75,8 @@ class GeneratedImageOrVideo:
                 raise WhatFuckError("Qwen Failed to generate image or video")
             await asyncio.sleep(poll_interval)
             retries += 1
-        raise WhatFuckError(f"Task polling exceeded maximum retries ({max_retries})")
+        raise WhatFuckError(
+            f"Task polling exceeded maximum retries ({max_retries})")
 
     async def run(self):
         return await self.create_task_and_wait()
@@ -84,7 +88,8 @@ class GeneratedImageOrVideo:
         saved_path = await self._client.to_image_class(self._content, self._file_path)
         if not saved_path:
             raise WhatFuckError("Failed to save generated image")
-        self._logger.info(f"Successfully generated and saved image to: {saved_path}")
+        self._logger.info(
+            f"Successfully generated and saved image to: {saved_path}")
         return saved_path
 
     async def to_buffer_request(
@@ -96,11 +101,14 @@ class GeneratedImageOrVideo:
         import requests
         try:
             if disabled_http:
-                return self._client.to_buffer(response_content, return_image_base64=return_image_base64)
+                return self._client.to_buffer(
+                    response_content, return_image_base64=return_image_base64)
             response = requests.get(response_content)
             if response.status_code != 200:
-                raise WhatFuckError(f"Status {response.status_code} Failed Error")
-            return self._client.to_buffer(response.content, return_image_base64=return_image_base64)
+                raise WhatFuckError(
+                    f"Status {response.status_code} Failed Error")
+            return self._client.to_buffer(
+                response.content, return_image_base64=return_image_base64)
         except Exception as e:
             raise WhatFuckError(f"Error requests: {e}") from e
 

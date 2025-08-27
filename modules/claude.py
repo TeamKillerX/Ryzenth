@@ -7,7 +7,8 @@ API_KEY_CLAUDE = "api_key"
 
 clients = RyzenthApiClient(
     tools_name=["claude"],
-    api_key={"claude": [{"x-api-key": API_KEY_CLAUDE}]}, # custom header anthropic-version: 2023-06-01
+    api_key={"claude": [{"x-api-key": API_KEY_CLAUDE}]},
+    # custom header anthropic-version: 2023-06-01
     rate_limit=20,
     use_default_headers=True,
     use_httpx=True,
@@ -18,6 +19,7 @@ clients = RyzenthApiClient(
         ]
     }
 )
+
 
 async def main():
     resp = await clients.post(

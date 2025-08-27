@@ -8,6 +8,8 @@ ryz = ApiKeyFrom(..., is_ok=True)
 ryz.aio.timeout = 10
 
 # aigen_image_check
+
+
 async def aigen_image_check(user_id: int, text: str):
     result = {}
     try:
@@ -18,11 +20,11 @@ async def aigen_image_check(user_id: int, text: str):
             dot_access=False
         )
         result[user_id] = {
-            "is_image": response["check_result"].get("is_image", False),
-            "prompt": response["check_result"].get("prompt", ""),
-            "is_anti_porno": response["check_result"].get("is_anti_porno", False),
-            "reason": response["check_result"].get("reason", "")
-        }
+            "is_image": response["check_result"].get(
+                "is_image", False), "prompt": response["check_result"].get(
+                "prompt", ""), "is_anti_porno": response["check_result"].get(
+                "is_anti_porno", False), "reason": response["check_result"].get(
+                    "reason", "")}
         return result
     except Exception:
         return {user_id: {
@@ -33,6 +35,8 @@ async def aigen_image_check(user_id: int, text: str):
         }}
 
 # example usage:
+
+
 async def example(_, message):
     image_data = await aigen_image_check(message.from_user.id, message.text)
     image_result = image_data.get(message.from_user.id, {})

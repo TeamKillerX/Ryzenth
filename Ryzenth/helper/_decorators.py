@@ -46,6 +46,7 @@ def AutoRetry(max_retries: int = 3, delay: float = 1.5):
         return wrapper
     return decorator
 
+
 class Decorators:
     def __init__(self, class_func):
         self._clients_ai = class_func(..., is_ok=True)
@@ -57,8 +58,10 @@ class Decorators:
                 if only_author and message.from_user.id != client.me.id:
                     return await message.reply_text(
                         "Only Developer can use this command.", **kwargs
-                        )
-                query = message.text.split(maxsplit=1)[1] if len(message.text.split()) > 1 else ""
+                    )
+                query = message.text.split(
+                    maxsplit=1)[1] if len(
+                    message.text.split()) > 1 else ""
                 if not query:
                     return await message.reply_text(
                         "Please provide a query after the command.", **kwargs

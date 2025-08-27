@@ -24,7 +24,6 @@ import logging
 import random
 import time
 import typing as t
-from contextlib import asynccontextmanager
 from os import getenv
 
 import aiohttp
@@ -59,9 +58,11 @@ class RyzenthApiClient:
         logger: t.Optional[LoggerService] = None
     ) -> None:
         if not isinstance(api_key, dict) or not api_key:
-            raise WhatFuckError("API Key must be a non-empty dict of tool_name → list of headers")
+            raise WhatFuckError(
+                "API Key must be a non-empty dict of tool_name → list of headers")
         if not tools_name:
-            raise WhatFuckError("A non-empty list of tool names must be provided for 'tools_name'.")
+            raise WhatFuckError(
+                "A non-empty list of tool names must be provided for 'tools_name'.")
 
         self._api_keys = api_key
         self._use_default_headers: bool = use_default_headers
@@ -78,7 +79,8 @@ class RyzenthApiClient:
         for name in tools_name:
             domain = TOOL_DOMAIN_MAP.get(name)
             if domain is None:
-                raise ToolNotFoundError(f"Tool '{name}' not found in domain map")
+                raise ToolNotFoundError(
+                    f"Tool '{name}' not found in domain map")
             self._tools[name] = domain
 
         self._sync_session = requests.Session()
@@ -96,7 +98,11 @@ class RyzenthApiClient:
                 disable_httpx_log = not entry["httpx_log"]
 
         if not logging.getLogger().hasHandlers():
-            logging.basicConfig(level=getattr(logging, log_level, logging.WARNING))
+            logging.basicConfig(
+                level=getattr(
+                    logging,
+                    log_level,
+                    logging.WARNING))
 
         if disable_httpx_log:
             logging.getLogger("httpx").setLevel(logging.CRITICAL)
@@ -111,11 +117,11 @@ class RyzenthApiClient:
                 if self._async_session is None:
                     if self._use_httpx:
                         self._async_session = httpx.AsyncClient(
-                            timeout=httpx.Timeout(30.0),
-                            limits=httpx.Limits(max_connections=100, max_keepalive_connections=20)
-                        )
+                            timeout=httpx.Timeout(30.0), limits=httpx.Limits(
+                                max_connections=100, max_keepalive_connections=20))
                     else:
-                        connector = aiohttp.TCPConnector(limit=100, limit_per_host=20)
+                        connector = aiohttp.TCPConnector(
+                            limit=100, limit_per_host=20)
                         timeout = aiohttp.ClientTimeout(total=30)
                         self._async_session = aiohttp.ClientSession(
                             connector=connector,
@@ -151,7 +157,11 @@ class RyzenthApiClient:
     async def to_image_class(self, content: bytes, path: str):
         return await ResponseFileImage(content).to_save(path)
 
-    def to_buffer(self, response=None, filename="default.jpg", return_image_base64=False):
+    def to_buffer(
+            self,
+            response=None,
+            filename="default.jpg",
+            return_image_base64=False):
         """
         Writes the response to a file buffer. Supports common image formats: .jpg, .jpeg, .png, .gif.
 
@@ -186,7 +196,8 @@ class RyzenthApiClient:
             return filename
         except Exception as e:
             if self._logger:
-                asyncio.create_task(self._logger.log(f"Error saving file {filename}: {e}"))
+                asyncio.create_task(
+                    self._logger.log(f"Error saving file {filename}: {e}"))
             return None
 
     def request(self, method: str, url: str, **kwargs):
@@ -216,7 +227,8 @@ class RyzenthApiClient:
         use_httpx = getenv("RYZENTH_USE_HTTPX", "false")
 
         if not tools_raw or not api_key_raw:
-            raise WhatFuckError("Environment variables RYZENTH_TOOLS and RYZENTH_API_KEY_JSON are required.")
+            raise WhatFuckError(
+                "Environment variables RYZENTH_TOOLS and RYZENTH_API_KEY_JSON are required.")
 
         try:
             tools = [t.strip() for t in tools_raw.split(",") if t.strip()]

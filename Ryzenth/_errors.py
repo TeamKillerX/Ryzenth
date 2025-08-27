@@ -23,59 +23,74 @@ import json
 class WhatFuckError(Exception):
     pass
 
+
 class EmptyResponseError(Exception):
     pass
+
 
 class EmptyMessageError(Exception):
     pass
 
+
 class InvalidMessageError(Exception):
     pass
+
 
 class InvalidFunctionCallError(Exception):
     pass
 
+
 class ParamsRequiredError(ValueError):
     pass
 
+
 class ForbiddenError(Exception):
     """Custom exception for 403 Forbidden"""
-    pass
+
 
 class ToolNotFoundError(Exception):
     """Raised when a base URL for a requested tool cannot be found."""
-    pass
+
 
 class RateLimitError(Exception):
     pass
 
+
 class BadRequestError(Exception):
     pass
+
 
 class AuthenticationError(Exception):
     pass
 
+
 class InternalServerError(Exception):
     """Custom exception for 500 Error"""
-    pass
+
 
 class RequiredError(ValueError):
     pass
 
+
 class InvalidModelError(ValueError):
     pass
+
 
 class UnauthorizedAccessError(ValueError):
     pass
 
+
 class InvalidVersionError(ValueError):
     pass
+
 
 class InvalidJSONDecodeError(json.decoder.JSONDecodeError):
     pass
 
+
 class InvalidEmptyError(ValueError):
     pass
+
 
 async def AsyncStatusError(resp, status_httpx=False):
     if status_httpx:
@@ -86,7 +101,7 @@ async def AsyncStatusError(resp, status_httpx=False):
         elif resp.status_code == 402:
             raise ForbiddenError(
                 "Access Forbidden status 402: API Key disabled or invalid. Please upgrade to sk-ryzenth-* format or Different API."
-        )
+            )
         elif resp.status_code == 403:
             raise ForbiddenError(
                 "Access Forbidden status 403: You may be blocked or banned."
@@ -136,6 +151,7 @@ async def AsyncStatusError(resp, status_httpx=False):
         raise InternalServerError(
             "Status 503: Slow Down or The engine is currently overloaded, please try again later"
         )
+
 
 def SyncStatusError(resp, status_httpx=False):
     if status_httpx:
@@ -196,6 +212,7 @@ def SyncStatusError(resp, status_httpx=False):
         raise InternalServerError(
             "Status 503: Slow Down or The engine is currently overloaded, please try again later"
         )
+
 
 __all__ = [
     "WhatFuckError",

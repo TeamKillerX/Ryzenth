@@ -20,7 +20,7 @@
 
 import logging
 import os
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -34,29 +34,36 @@ class ChatsCohereAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
-        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = logging.getLogger(
+            f"{__name__}.{self.__class__.__name__}")
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
-            api_key = getattr(self.parent, "_api_key", None) or os.environ.get("COHERE_API_KEY")
+            api_key = getattr(
+                self.parent,
+                "_api_key",
+                None) or os.environ.get("COHERE_API_KEY")
 
-            if not api_key or not isinstance(api_key, str) or not api_key.strip():
-                raise WhatFuckError("Missing or invalid API key for Cohere client initialization.")
+            if not api_key or not isinstance(
+                    api_key, str) or not api_key.strip():
+                raise WhatFuckError(
+                    "Missing or invalid API key for Cohere client initialization.")
             try:
                 self._client = RyzenthApiClient(
                     tools_name=["cohere"],
                     api_key={"cohere": [
-                      {
-                        "Authorization": f"Bearer {api_key}",
-                        "accept": "application/json",
-                        "content-type": "application/json"
-                      }
+                        {
+                            "Authorization": f"Bearer {api_key}",
+                            "accept": "application/json",
+                            "content-type": "application/json"
+                        }
                     ]},
                     rate_limit=100,
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(f"Failed to initialize API client: {e}") from e
+                raise WhatFuckError(
+                    f"Failed to initialize API client: {e}") from e
         return self._client
 
     @Benchmark.performance(level=logging.DEBUG)
@@ -89,7 +96,8 @@ class ChatsCohereAsync:
             )
 
             if not response:
-                raise EmptyResponseError("Empty response from chat completion API")
+                raise EmptyResponseError(
+                    "Empty response from chat completion API")
 
             return ResponseResult(client=client, response=response)
         except Exception as e:

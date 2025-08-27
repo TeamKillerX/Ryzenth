@@ -19,6 +19,7 @@ clients = RyzenthApiClient(
     }
 )
 
+
 async def main():
     generate_resp = await ResponseFileImage(
         response_content=await clients.get(

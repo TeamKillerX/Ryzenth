@@ -58,7 +58,8 @@ class ModeratorAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
@@ -88,7 +89,9 @@ class ModeratorAsync:
             )
             await AsyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
+
 
 class ModeratorSync:
     def __init__(self, parent):
@@ -121,10 +124,13 @@ class ModeratorSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
-            self.parent.logger.error(f"[SYNC] Error fetching from aigen_image_check {e}")
-            raise WhatFuckError("[SYNC] Error fetching from aigen_image_check") from e
+            self.parent.logger.error(
+                f"[SYNC] Error fetching from aigen_image_check {e}")
+            raise WhatFuckError(
+                "[SYNC] Error fetching from aigen_image_check") from e
 
     def antievalai(
         self,
@@ -152,10 +158,14 @@ class ModeratorSync:
             )
             SyncStatusError(response, status_httpx=True)
             response.raise_for_status()
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
-            self.parent.logger.error(f"[SYNC] Error fetching from antievalai {e}")
+            self.parent.logger.error(
+                f"[SYNC] Error fetching from antievalai {e}")
             raise WhatFuckError("[SYNC] Error fetching from antievalai") from e
         except self.parent.httpx.ReadTimeout as e:
-            self.parent.logger.error(f"[SYNC] Error ReadTimeout from antievalai {e}")
-            raise WhatFuckError("[SYNC] Error ReadTimeout from antievalai") from e
+            self.parent.logger.error(
+                f"[SYNC] Error ReadTimeout from antievalai {e}")
+            raise WhatFuckError(
+                "[SYNC] Error ReadTimeout from antievalai") from e

@@ -20,12 +20,8 @@
 # BASED API: https://fgsi.koyeb.app
 # CEWEK PROGRAMMER 🗿
 
-import logging
 
-from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from ..enums import ResponseType
-from ..helper import AutoRetry
 
 
 class FgsiClient:

@@ -24,38 +24,45 @@ from typing import Optional, Union
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import EmptyResponseError, WhatFuckError
-from .._export_class import GeneratedImageOrVideo, ResponseResult
+from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
-from ..helper import AutoRetry, Helpers
+from ..helper import AutoRetry
 
 
 class VideosQwenAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
-        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = logging.getLogger(
+            f"{__name__}.{self.__class__.__name__}")
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
-            api_key = getattr(self.parent, "_api_key", None) or os.environ.get("ALIBABA_API_KEY")
+            api_key = getattr(
+                self.parent,
+                "_api_key",
+                None) or os.environ.get("ALIBABA_API_KEY")
 
-            if not api_key or not isinstance(api_key, str) or not api_key.strip():
-                raise WhatFuckError("Missing or invalid API key for Alibaba client initialization.")
+            if not api_key or not isinstance(
+                    api_key, str) or not api_key.strip():
+                raise WhatFuckError(
+                    "Missing or invalid API key for Alibaba client initialization.")
             try:
                 self._client = RyzenthApiClient(
                     tools_name=["alibaba"],
                     api_key={"alibaba": [
-                      {
-                        "Authorization": f"Bearer {api_key}",
-                        "Content-Type": "application/json",
-                        "X-DashScope-Async": "enable"
-                      }
+                        {
+                            "Authorization": f"Bearer {api_key}",
+                            "Content-Type": "application/json",
+                            "X-DashScope-Async": "enable"
+                        }
                     ]},
                     rate_limit=100,
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(f"Failed to initialize API client: {e}") from e
+                raise WhatFuckError(
+                    f"Failed to initialize API client: {e}") from e
         return self._client
 
     @Benchmark.performance(level=logging.DEBUG)
@@ -66,7 +73,7 @@ class VideosQwenAsync:
         *,
         timeout: Union[int, float] = 100,
         negative_prompt: str = None,
-        seed: Optional [int] = 0,
+        seed: Optional[int] = 0,
         size: str = "624*624",
         prompt_extend: bool = True,
     ) -> GeneratedImageOrVideo:
@@ -74,7 +81,8 @@ class VideosQwenAsync:
             raise WhatFuckError("Prompt cannot be empty")
 
         if seed is not None and not isinstance(seed, int):
-            raise WhatFuckError(f"Seed must be an integer or None, got {type(seed).__name__}")
+            raise WhatFuckError(
+                f"Seed must be an integer or None, got {type(seed).__name__}")
 
         client = self._get_client()
         try:
@@ -98,7 +106,8 @@ class VideosQwenAsync:
             )
 
             if not response:
-                raise EmptyResponseError("Empty response from video generation API")
+                raise EmptyResponseError(
+                    "Empty response from video generation API")
 
             return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:

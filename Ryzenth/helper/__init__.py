@@ -38,7 +38,11 @@ class Helpers:
         except FileNotFoundError:
             return None
 
-def to_buffer(response=None, filename="default.jpg", return_image_base64=False):
+
+def to_buffer(
+        response=None,
+        filename="default.jpg",
+        return_image_base64=False):
     allowed_extensions = (".jpg", ".jpeg", ".png", ".gif")
     if not filename.lower().endswith(allowed_extensions):
         return None
@@ -54,6 +58,7 @@ def to_buffer(response=None, filename="default.jpg", return_image_base64=False):
         else:
             f.write(response)
     return filename
+
 
 __all__ = [
     "WhisperAsync",

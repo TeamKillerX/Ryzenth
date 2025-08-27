@@ -26,21 +26,26 @@ from pydantic import BaseModel, Field
 class QueryParameter(BaseModel):
     query: str
 
+
 class DownloaderBy(BaseModel):
     url: str
 
+
 class Username(BaseModel):
     username: str
+
 
 class OpenaiWhisper(BaseModel):
     url: str
     language: Optional[str] = None
     task: Optional[str] = None
 
+
 class RequestXnxx(BaseModel):
     query: str
     is_download: bool = Field(False, alias="isDownload")
     url: Optional[str] = None
+
 
 class RequestHumanizer(BaseModel):
     text: str

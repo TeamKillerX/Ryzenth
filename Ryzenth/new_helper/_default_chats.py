@@ -32,7 +32,8 @@ class ChatOrgAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
-        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = logging.getLogger(
+            f"{__name__}.{self.__class__.__name__}")
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
@@ -44,7 +45,8 @@ class ChatOrgAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(f"Failed to initialize API client: {e}") from e
+                raise WhatFuckError(
+                    f"Failed to initialize API client: {e}") from e
         return self._client
 
     @Benchmark.performance(level=logging.DEBUG)
@@ -90,7 +92,10 @@ class ChatOrgAsync:
             if not prompt.strip():
                 raise WhatFuckError("Prompt cannot be empty")
         elif isinstance(prompt, list):
-            if not prompt or all(isinstance(item, dict) and not item for item in prompt):
+            if not prompt or all(
+                isinstance(
+                    item,
+                    dict) and not item for item in prompt):
                 raise WhatFuckError("Prompt cannot be empty")
         else:
             raise WhatFuckError("Prompt type is invalid")

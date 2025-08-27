@@ -19,12 +19,8 @@
 
 # BASED API: https://api.siputzx.my.id
 
-import logging
 
-from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from ..enums import ResponseType
-from ..helper import AutoRetry
 
 
 class SiputzxClient:

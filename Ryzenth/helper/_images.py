@@ -57,6 +57,7 @@ class ImagesAsync:
         content = await self.generate(params)
         return await ResponseFileImage(content).to_save(file_path)
 
+
 class ImagesSync:
     def __init__(self, parent):
         self.parent = parent
@@ -97,7 +98,11 @@ class ResponseFileImage:
         logging.info(f"File saved: {file_path}")
         return file_path
 
-    async def to_save(self, file_path: str = None, auto_delete: bool = False, delay: int = 5):
+    async def to_save(
+            self,
+            file_path: str = None,
+            auto_delete: bool = False,
+            delay: int = 5):
         if file_path is None:
             file_path = f"{uuid.uuid4().hex}.jpg"
 

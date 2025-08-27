@@ -54,7 +54,9 @@ class HumanizeAsync:
             if pickle_json:
                 result = response.json()["results"]
                 return json.loads(result)
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
+
 
 class HumanizeSync:
     def __init__(self, parent):
@@ -81,7 +83,9 @@ class HumanizeSync:
             if pickle_json:
                 result = response.json()["results"]
                 return json.loads(result)
-            return self.parent.obj(response.json() or {}) if dot_access else response.json()
+            return self.parent.obj(
+                response.json() or {}) if dot_access else response.json()
         except self.parent.httpx.HTTPError as e:
-            self.parent.logger.error(f"[SYNC] Error fetching from humanize {e}")
+            self.parent.logger.error(
+                f"[SYNC] Error fetching from humanize {e}")
             raise WhatFuckError("[SYNC] Error fetching from humanize") from e

@@ -20,7 +20,7 @@
 
 import logging
 import os
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
@@ -34,27 +34,34 @@ class ChatsOpenAIAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
-        self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+        self.logger = logging.getLogger(
+            f"{__name__}.{self.__class__.__name__}")
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
-            api_key = getattr(self.parent, "_api_key", None) or os.environ.get("OPENAI_API_KEY")
+            api_key = getattr(
+                self.parent,
+                "_api_key",
+                None) or os.environ.get("OPENAI_API_KEY")
 
-            if not api_key or not isinstance(api_key, str) or not api_key.strip():
-                raise WhatFuckError("Missing or invalid API key for openAI client initialization.")
+            if not api_key or not isinstance(
+                    api_key, str) or not api_key.strip():
+                raise WhatFuckError(
+                    "Missing or invalid API key for openAI client initialization.")
             try:
                 self._client = RyzenthApiClient(
                     tools_name=["openai"],
                     api_key={"openai": [
-                      {
-                        "Authorization": f"Bearer {api_key}",
-                      }
+                        {
+                            "Authorization": f"Bearer {api_key}",
+                        }
                     ]},
                     rate_limit=100,
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(f"Failed to initialize API client: {e}") from e
+                raise WhatFuckError(
+                    f"Failed to initialize API client: {e}") from e
         return self._client
 
     @Benchmark.performance(level=logging.DEBUG)
@@ -87,10 +94,12 @@ class ChatsOpenAIAsync:
             )
 
             if not response:
-                raise EmptyResponseError("Empty response from chat completion API")
+                raise EmptyResponseError(
+                    "Empty response from chat completion API")
 
             if instructions is not None:
-                self.logger.warning("Default 'instructions' this warning just ignore")
+                self.logger.warning(
+                    "Default 'instructions' this warning just ignore")
 
             if reasoning is not None:
                 self.logger.warning(

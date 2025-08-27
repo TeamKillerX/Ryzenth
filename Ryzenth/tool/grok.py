@@ -24,7 +24,6 @@ import typing as t
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from ..enums import ResponseType
 from ..helper import AutoRetry
 
 
@@ -41,7 +40,7 @@ class GrokClient:
             **kwargs
         )
 
-    #TODO: HERE ADDED
+    # TODO: HERE ADDED
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
     async def chat_completions(
