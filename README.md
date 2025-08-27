@@ -273,7 +273,7 @@ rt = RyzenthTools()
 
 results = await rt.aio.chat.ask("Hello world")
 
-print(await results.to_json_dumps()
+print(await results.to_json_dumps())
 ```
 
 ### 🤖 AI Features (No API Key Required)
