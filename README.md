@@ -46,6 +46,26 @@ pip3 install ryzenth[fast]
 pip3 install git+https://github.com/TeamKillerX/Ryzenth.git
 ```
 
+## Platform full support
+- [x] Claude
+- [x] OpenAI
+- [x] Gemini-Openai
+- [x] Gemini
+- [x] Cohere
+- [x] Grok
+- [x] Deepseek
+- [x] Cloudflare
+- [x] Qwen
+- [x] Zai
+- [ ] Hugging Face
+- [x] Kimi AI
+- [x] GPT oss
+- [x] Ryzenth (Free)
+- [x] Image Generate
+- [x] All in one downloader
+
+---
+
 ## 🏆 Credits Developer
 - **[xtdevs](https://t.me/xtdevs)** - Lead Developer & Creator
 - **[X-API-JS](https://x-api-js.onrender.com/docs)** - Ryzenth DLR JavaScript Solo Dev
