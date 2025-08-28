@@ -170,7 +170,7 @@ class ImagesQwenAsync:
                 response = await client.post(
                     tool="alibaba",
                     path="/api/v1/services/aigc/text2image/image-synthesis",
-                    timeout=30,
+                    timeout=timeout,
                     json={
                         "model": "wan2.2-t2i-flash",
                         "input": {

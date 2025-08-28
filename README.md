@@ -25,7 +25,7 @@ Built with `httpx` and `aiohttp` integration, comprehensive logging features (in
 
 ## ✨ Features
 
-- **Dual Mode Support**: Works with both ~`sync`~ and `async` clients
+- **Dual Mode Support**: Works with both `sync` and `async` clients
 - **Smart API Key Management**: Built-in API key handling and rotation
 - **AI-Ready**: Seamless integration with modern AI services (image generation, text processing, etc.)
 - **High Performance**: Built on `httpx` for optimal speed and reliability
@@ -62,6 +62,7 @@ pip3 install git+https://github.com/TeamKillerX/Ryzenth.git
 - [x] GPT oss
 - [x] Ryzenth (Free)
 - [x] Image Generate
+- [x] Flux AI
 - [x] All in one downloader
 
 ---

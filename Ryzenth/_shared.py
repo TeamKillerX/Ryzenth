@@ -21,7 +21,8 @@ TOOL_DOMAIN_MAP = {
     "alibaba": "https://dashscope-intl.aliyuncs.com",
     "gemini": "https://generativelanguage.googleapis.com/v1beta",
     "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai",
-    "zai": "https://api.z.ai"
+    "zai": "https://api.z.ai",
+    "flux": "https://api.bfl.ai"
 }
 
 ### -------------AI-----------------###
