@@ -196,7 +196,8 @@ class ImagesOrgAsync:
                     use_type=ResponseType.IMAGE
                 )
                 if not response_content:
-                    raise WhatFuckError("Empty response from image generation API")
+                    raise WhatFuckError(
+                        "Empty response from image generation API")
                 return GeneratedImageOrVideo(
                     client=client,
                     content=response_content,
