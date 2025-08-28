@@ -23,6 +23,10 @@ class RyzenthMessage:
     def user(content: str):
         return {"role": "user", "content": content}
 
+    @staticmethod
+    def assistant(content: str):
+        return {"role": "assistant", "content": content}
+
 
 __all__ = [
     "ChatOrgAsync",
