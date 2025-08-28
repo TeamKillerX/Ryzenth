@@ -34,7 +34,7 @@ class ChatOrgAsync:
         self.parent = parent
         self._client = None
         self.msg = RyzenthMessage
-        self.create_upload_to = Helpers
+        self.file = Helpers
         self.logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}")
 
