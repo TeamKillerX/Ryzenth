@@ -1,5 +1,6 @@
 permissions:
   contents: write
+
 name: PyLint
 
 on: [push, pull_request]
@@ -16,21 +17,20 @@ jobs:
           python-version: "3.10"
 
       - name: Install Python lint libraries
-        run: |
-          pip install autopep8 autoflake .
-      - name: Check for showstoppers
-        run: |
-          autopep8 --verbose --in-place --recursive --aggressive --aggressive . *.py
-      - name: Remove unused imports and variables
-        run: |
-          autoflake --in-place --recursive --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports .
+        run: pip install autopep8 autoflake .
 
-      # commit changes
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Auto format with autopep8
+        run: autopep8 --verbose --in-place --recursive --aggressive --aggressive . *.py
+
+      - name: Remove unused imports and variables
+        run: autoflake --in-place --recursive --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports .
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: 'pylint: auto fixes'
-          commit_options: '--no-verify --signoff'
+          commit_message: "pylint: auto fixes"
+          commit_options: "--no-verify --signoff"
           repository: .
           commit_user_name: xtsea
           commit_user_email: killerx@randydev.my.id
-          commit_author: xtsea <killerx@randydev.my.id>
+          commit_author: "xtsea <killerx@randydev.my.id>"
