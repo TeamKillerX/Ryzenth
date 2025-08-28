@@ -30,6 +30,7 @@ from ..enums import ResponseType
 from ..helper import AutoRetry
 from ._models import RyzenthMessage
 
+
 class ChatsQwenAsync:
     def __init__(self, parent):
         self.parent = parent
