@@ -8,13 +8,8 @@ class RyzenthMessage:
         return {"role": "user", "content": content}
 
     def user_and_image(content: str, base64Image):
-        return {
-            "role": "user",
-            "content": [
-                {"type": "input_text", "text": content},
-                {"type": "input_image", "image_url": f"data:image/jpeg;base64,{base64Image}"}
-            ]
-        }
+        return {"role": "user", "content": [{"type": "input_text", "text": content}, {
+            "type": "input_image", "image_url": f"data:image/jpeg;base64,{base64Image}"}]}
 
     @staticmethod
     def assistant(content: str):
