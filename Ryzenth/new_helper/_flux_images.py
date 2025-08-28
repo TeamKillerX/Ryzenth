@@ -73,8 +73,10 @@ class ImagesFluxAsync:
         *,
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
-        if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+        if not isinstance(prompt, str):
+            raise WhatFuckError("Prompt must be a string")
+        if not prompt.strip():
+            raise WhatFuckError("Prompt cannot be empty or whitespace only")
 
         try:
             async with self._get_client() as client:
