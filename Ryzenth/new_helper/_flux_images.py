@@ -19,12 +19,12 @@
 
 import logging
 import os
-from typing import Optional, Union
+from typing import Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyResponseError, InvalidFunctionCallError, WhatFuckError
-from .._export_class import GeneratedImageOrVideo, ResponseResult
+from .._errors import WhatFuckError
+from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
 from ..helper import AutoRetry
 
