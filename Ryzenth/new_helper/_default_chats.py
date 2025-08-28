@@ -25,7 +25,7 @@ from .._client import RyzenthApiClient
 from .._errors import InvalidMessageError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
-from ..helper import AutoRetry
+from ..helper import AutoRetry, Helpers
 from ._models import RyzenthMessage
 
 
@@ -34,6 +34,7 @@ class ChatOrgAsync:
         self.parent = parent
         self._client = None
         self.msg = RyzenthMessage
+        self.create_upload_to = Helpers
         self.logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}")
 
