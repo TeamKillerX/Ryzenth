@@ -22,10 +22,10 @@ class RyzenthMessage:
             "content": [
                 {"type": "input_text", "text": content},
                 {"type": "input_image",
-     "image_url": f"data:image/jpeg;base64,{base64Image}"}
+                 "image_url": f"data:image/jpeg;base64,{base64Image}"}
             ]
         }
 
-    @ staticmethod
+    @staticmethod
     def assistant(content: str):
         return {"role": "assistant", "content": content}
