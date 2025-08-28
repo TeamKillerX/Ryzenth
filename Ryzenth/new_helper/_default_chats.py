@@ -26,7 +26,7 @@ from .._errors import InvalidMessageError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
-from .new_helper import RyzenthMessage
+from ._models import RyzenthMessage
 
 
 class ChatOrgAsync:

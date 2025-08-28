@@ -13,21 +13,6 @@ from ._qwen_images import ImagesQwenAsync
 from ._qwen_videos import VideosQwenAsync
 from ._zai_chats import ChatsZaiAsync
 
-
-class RyzenthMessage:
-    @staticmethod
-    def core(content: str):
-        return {"role": "system", "content": content}
-
-    @staticmethod
-    def user(content: str):
-        return {"role": "user", "content": content}
-
-    @staticmethod
-    def assistant(content: str):
-        return {"role": "assistant", "content": content}
-
-
 __all__ = [
     "ChatOrgAsync",
     "ChatsQwenAsync",
@@ -42,7 +27,6 @@ __all__ = [
     "ImagesOrgAsync",
     "ImagesOpenAIAsync",
     "VideosQwenAsync",
-    "RyzenthMessage",
 ]
 
 __author__ = "Randy W @xtdevs, @xtsea"
