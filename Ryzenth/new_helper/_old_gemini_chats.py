@@ -87,7 +87,6 @@ class OldChatsGeminiAsync:
             raise EmptyMessageError(
                 f"messages type is invalid: received type '{type(messages).__name__}'")
 
-        client = self._get_client()
         try:
             if use_multi_chat:
                 json = {"contents": messages}
@@ -99,19 +98,18 @@ class OldChatsGeminiAsync:
                         }
                     ]
                 }
-            response = await client.post(
-                tool="gemini",
-                path=f"/models/{model}:generateContent",
-                timeout=timeout,
-                json=json,
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from chat completion API")
-
-            return ResponseResult(client=client, response=response)
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="gemini",
+                    path=f"/models/{model}:generateContent",
+                    timeout=timeout,
+                    json=json,
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from chat completion API")
+                return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Gemini chats failed: {e}")
             raise WhatFuckError(f"Gemini chats failed: {e}") from e
