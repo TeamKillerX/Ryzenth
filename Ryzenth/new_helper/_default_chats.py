@@ -105,11 +105,7 @@ class ChatOrgAsync:
             use_turbo_fast = kwargs.pop("use_turbo_fast", False)
             use_conversation = kwargs.pop("use_conversation", False)
             use_turn_openai = kwargs.pop("use_turn_openai", False)
-            if use_turbo_fast:
-                path = "/api/v1/openai-v2/oss"
-            else:
-                path = "/api/v1/openai-v2"
-
+            path = "/api/v1/openai-v2/oss" if use_turbo_fast else "/api/v1/openai-v2"
             async with self._get_client() as client:
                 if use_conversation:
                     response = await client.post(
