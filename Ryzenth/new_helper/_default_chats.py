@@ -87,8 +87,7 @@ class ChatOrgAsync:
         prompt: str | List[Dict],
         *,
         timeout: Union[int, float] = 100,
-        use_conversation: bool = False,
-        use_turbo_fast: bool = False
+        **kwargs
     ) -> ResponseResult:
         if isinstance(prompt, str):
             if not prompt.strip():
@@ -103,13 +102,13 @@ class ChatOrgAsync:
             raise WhatFuckError("Prompt type is invalid")
 
         try:
-            if use_turbo_fast:
+            if kwargs.pop("use_turbo_fast", False):
                 path = "/api/v1/openai-v2/oss"
             else:
                 path = "/api/v1/openai-v2"
 
             async with self._get_client() as client:
-                if use_conversation:
+                if kwargs.pop("use_conversation", False):
                     response = await client.post(
                         tool="ryzenth-v2",
                         path="/api/v1/openai-v2/conversation",
@@ -117,12 +116,24 @@ class ChatOrgAsync:
                         json={"messages": prompt},
                         use_type=ResponseType.JSON
                     )
+                elif kwargs.pop("use_turn_openai", False):
+                    response = await client.post(
+                        tool="ryzenth-v2",
+                        path="/api/v1/openai-latest/trn",
+                        timeout=timeout,
+                        json={
+                            "messages": prompt,
+                            "apiKey": kwargs.pop("auth_key", None),
+                            "accountId": kwargs.pop("auth_id", None)
+                        },
+                        use_type=ResponseType.JSON
+                    )
                 else:
                     response = await client.get(
                         tool="ryzenth-v2",
                         path=path,
                         timeout=timeout,
-                        params=None if use_conversation else client.get_kwargs(input=prompt),
+                        params=None if kwargs.pop("use_conversation", False) else client.get_kwargs(input=prompt),
                         use_type=ResponseType.JSON
                     )
                 return ResponseResult(client, response)
