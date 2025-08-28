@@ -102,13 +102,16 @@ class ChatOrgAsync:
             raise WhatFuckError("Prompt type is invalid")
 
         try:
-            if kwargs.pop("use_turbo_fast", False):
+            use_turbo_fast = kwargs.pop("use_turbo_fast", False)
+            use_conversation = kwargs.pop("use_conversation", False)
+            use_turn_openai = kwargs.pop("use_turn_openai", False)
+            if use_turbo_fast:
                 path = "/api/v1/openai-v2/oss"
             else:
                 path = "/api/v1/openai-v2"
 
             async with self._get_client() as client:
-                if kwargs.pop("use_conversation", False):
+                if use_conversation:
                     response = await client.post(
                         tool="ryzenth-v2",
                         path="/api/v1/openai-v2/conversation",
@@ -116,15 +119,19 @@ class ChatOrgAsync:
                         json={"messages": prompt},
                         use_type=ResponseType.JSON
                     )
-                elif kwargs.pop("use_turn_openai", False):
+                elif use_turn_openai:
+                    auth_key = kwargs.pop("auth_key", None)
+                    auth_id = kwargs.pop("auth_id", None)
+                    if not all([auth_key, auth_id]):
+                        raise WhatFuckError("All required auth")
                     response = await client.post(
                         tool="ryzenth-v2",
                         path="/api/v1/openai-latest/trn",
                         timeout=timeout,
                         json={
                             "messages": prompt,
-                            "apiKey": kwargs.pop("auth_key", None),
-                            "accountId": kwargs.pop("auth_id", None)
+                            "apiKey": auth_key,
+                            "accountId": auth_id
                         },
                         use_type=ResponseType.JSON
                     )
@@ -133,7 +140,7 @@ class ChatOrgAsync:
                         tool="ryzenth-v2",
                         path=path,
                         timeout=timeout,
-                        params=None if kwargs.pop("use_conversation", False) else client.get_kwargs(input=prompt),
+                        params=None if use_conversation or use_turn_openai else client.get_kwargs(input=prompt),
                         use_type=ResponseType.JSON
                     )
                 return ResponseResult(client, response)
