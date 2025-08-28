@@ -26,12 +26,14 @@ from .._errors import InvalidMessageError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
+from . import RyzenthMessage
 
 
 class ChatOrgAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
+        self.msg = RyzenthMessage
         self.logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}")
 
