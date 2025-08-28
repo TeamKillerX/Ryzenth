@@ -65,19 +65,19 @@ class ImagesOrgAsync:
         if not file_path:
             file_path = "default.jpg"
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="ryzenth-v2",
-                path="/api/v1/openai-v2/image-vision",
-                timeout=timeout,
-                json={
-                    "input": captions,
-                    "base64Image": Helpers.encode_image_base64(file_path)
-                },
-                use_type=ResponseType.JSON
-            )
-            return ResponseResult(client, response)
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="ryzenth-v2",
+                    path="/api/v1/openai-v2/image-vision",
+                    timeout=timeout,
+                    json={
+                        "input": captions,
+                        "base64Image": Helpers.encode_image_base64(file_path)
+                    },
+                    use_type=ResponseType.JSON
+                )
+                return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"Image vision failed: {e}")
             raise WhatFuckError(f"Image vision failed: {e}") from e
@@ -99,23 +99,22 @@ class ImagesOrgAsync:
         if not file_path:
             file_path = "default.jpg"
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="ryzenth-v2",
-                path="/api/v1/gemini-latest/imagen/edit",
-                timeout=timeout,
-                json={
-                    "input": prompt,
-                    "base64Image": Helpers.encode_image_base64(file_path)
-                },
-                use_type=ResponseType.JSON
-            )
-            if not response:
-                raise WhatFuckError(
-                    "Empty response from gemini edit image API")
-
-            return GeneratedImageOrVideo(client=client, content=response)
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="ryzenth-v2",
+                    path="/api/v1/gemini-latest/imagen/edit",
+                    timeout=timeout,
+                    json={
+                        "input": prompt,
+                        "base64Image": Helpers.encode_image_base64(file_path)
+                    },
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise WhatFuckError(
+                        "Empty response from gemini edit image API")
+                return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Gemini Image generation failed: {e}")
             raise WhatFuckError(f"Gemini Image generation failed: {e}") from e
@@ -133,24 +132,19 @@ class ImagesOrgAsync:
         if not prompt or not prompt.strip():
             raise WhatFuckError("Prompt cannot be empty")
 
-        client = self._get_client()
-
         try:
-            self.logger.debug(
-                f"Generating gemini image with prompt: {prompt[:50]}...")
-            response = await client.get(
-                tool="ryzenth-v2",
-                path="/api/v1/gemini-latest/imagen",
-                timeout=timeout,
-                params=client.get_kwargs(input=prompt.strip()),
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise WhatFuckError(
-                    "Empty response from gemini image generation API")
-
-            return GeneratedImageOrVideo(client=client, content=response)
+            async with self._get_client() as client:
+                response = await client.get(
+                    tool="ryzenth-v2",
+                    path="/api/v1/gemini-latest/imagen",
+                    timeout=timeout,
+                    params=client.get_kwargs(input=prompt.strip()),
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise WhatFuckError(
+                        "Empty response from gemini image generation API")
+                return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Gemini Image generation failed: {e}")
             raise WhatFuckError(f"Gemini Image generation failed: {e}") from e
@@ -192,28 +186,23 @@ class ImagesOrgAsync:
         if validate_path:
             file_path = self._validate_file_path(file_path, create_dirs)
 
-        client = self._get_client()
-
         try:
-            self.logger.debug(
-                f"Generating image with prompt: {prompt[:50]}...")
-            response_content = await client.get(
-                tool="ryzenth-v2",
-                path="/api/tools/generate-image",
-                timeout=timeout,
-                params=client.get_kwargs(prompt=prompt.strip()),
-                use_type=ResponseType.IMAGE
-            )
-
-            if not response_content:
-                raise WhatFuckError("Empty response from image generation API")
-
-            return GeneratedImageOrVideo(
-                client=client,
-                content=response_content,
-                file_path=file_path,
-                logger=self.logger
-            )
+            async with self._get_client() as client:
+                response_content = await client.get(
+                    tool="ryzenth-v2",
+                    path="/api/tools/generate-image",
+                    timeout=timeout,
+                    params=client.get_kwargs(prompt=prompt.strip()),
+                    use_type=ResponseType.IMAGE
+                )
+                if not response_content:
+                    raise WhatFuckError("Empty response from image generation API")
+                return GeneratedImageOrVideo(
+                    client=client,
+                    content=response_content,
+                    file_path=file_path,
+                    logger=self.logger
+                )
         except Exception as e:
             self.logger.error(f"Image generation failed: {e}")
             raise WhatFuckError(f"Image generation failed: {e}") from e
