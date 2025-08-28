@@ -84,32 +84,30 @@ class VideosQwenAsync:
             raise WhatFuckError(
                 f"Seed must be an integer or None, got {type(seed).__name__}")
 
-        client = self._get_client()
         try:
-            response = await client.post(
-                tool="alibaba",
-                path="/api/v1/services/aigc/video-generation/video-synthesis",
-                timeout=timeout,
-                json={
-                    "model": "wan2.2-t2v-plus",
-                    "input": {
-                        "prompt": prompt,
-                        **({"negative_prompt": negative_prompt} if negative_prompt is not None else {})
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="alibaba",
+                    path="/api/v1/services/aigc/video-generation/video-synthesis",
+                    timeout=timeout,
+                    json={
+                        "model": "wan2.2-t2v-plus",
+                        "input": {
+                            "prompt": prompt,
+                            **({"negative_prompt": negative_prompt} if negative_prompt is not None else {})
+                        },
+                        "parameters": {
+                            "size": size,
+                            "seed": seed,
+                            "prompt_extend": prompt_extend
+                        }
                     },
-                    "parameters": {
-                        "size": size,
-                        "seed": seed,
-                        "prompt_extend": prompt_extend
-                    }
-                },
-                use_type=ResponseType.JSON
-            )
-
-            if not response:
-                raise EmptyResponseError(
-                    "Empty response from video generation API")
-
-            return GeneratedImageOrVideo(client=client, content=response)
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from video generation API")
+                return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Qwen video generation failed: {e}")
             raise WhatFuckError(f"Qwen video generation failed: {e}") from e
