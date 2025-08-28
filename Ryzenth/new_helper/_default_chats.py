@@ -119,7 +119,8 @@ class ChatOrgAsync:
                     auth_key = kwargs.pop("auth_key", None)
                     auth_id = kwargs.pop("auth_id", None)
                     if not all([auth_key, auth_id]):
-                        raise WhatFuckError("All required auth")
+                        raise WhatFuckError(
+                            "All required auth, missing 'auth_key' and 'auth_id'")
                     response = await client.post(
                         tool="ryzenth-v2",
                         path="/api/v1/openai-latest/trn",
