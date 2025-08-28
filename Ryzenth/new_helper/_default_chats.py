@@ -20,13 +20,13 @@
 import logging
 from typing import Dict, List, Union
 
-from . import RyzenthMessage
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import InvalidMessageError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry
+from . import RyzenthMessage
 
 
 class ChatOrgAsync:
