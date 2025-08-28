@@ -13,17 +13,19 @@ class RyzenthMessage:
             "role": "user",
             "content": [
                 {"type": "text", "text": content},
-                {"type": "input_image", "image_url": {"url": f"data:image/jpeg;base64,{base64Image}"}}
+                {"type": "input_image", "image_url": {
+                    "url": f"data:image/jpeg;base64,{base64Image}"}}
             ]
         }
         } if use_legacy_format else {
             "role": "user",
             "content": [
                 {"type": "input_text", "text": content},
-                {"type": "input_image", "image_url": f"data:image/jpeg;base64,{base64Image}"}
+                {"type": "input_image",
+     "image_url": f"data:image/jpeg;base64,{base64Image}"}
             ]
         }
 
-    @staticmethod
+    @ staticmethod
     def assistant(content: str):
         return {"role": "assistant", "content": content}
