@@ -199,7 +199,7 @@ from Ryzenth import RyzenthTools
 rt = RyzenthTools()
 
 results = await rt.aio.chat.ask([
-    {"role": "system", "content": "You are helpful assistant"},
+    {"role": "system", "content": "You are a helpful assistant"},
     {"role": "user", "content": "oh good job"}
 ], use_conversation=True)
 
