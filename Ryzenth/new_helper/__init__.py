@@ -13,6 +13,7 @@ from ._qwen_images import ImagesQwenAsync
 from ._qwen_videos import VideosQwenAsync
 from ._zai_chats import ChatsZaiAsync
 
+
 class RyzenthMessage:
     @staticmethod
     def core(content: str):
@@ -21,6 +22,7 @@ class RyzenthMessage:
     @staticmethod
     def user(content: str):
         return {"role": "user", "content": content}
+
 
 __all__ = [
     "ChatOrgAsync",
