@@ -57,10 +57,10 @@ from .new_helper import (
     ChatsOpenAIAsync,
     ChatsQwenAsync,
     ChatsZaiAsync,
+    ImagesFluxAsync,
     ImagesOpenAIAsync,
     ImagesOrgAsync,
     ImagesQwenAsync,
-    ImagesFluxAsync,
     OldChatsGeminiAsync,
     VideosQwenAsync,
 )
