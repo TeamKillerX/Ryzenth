@@ -26,6 +26,7 @@ class RyzenthMessage:
             ]
         }
 
+
     @ staticmethod
     def assistant(content: str):
         return {"role": "assistant", "content": content}
