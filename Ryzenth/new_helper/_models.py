@@ -14,7 +14,7 @@ class RyzenthMessage:
                 "role": "user",
                 "content": [
                     {"type": "text", "text": content},
-                    {"type": "input_image", "image_url": {
+                    {"type": "image_url", "image_url": {
                         "url": f"data:image/jpeg;base64,{base64Image}"}}
                 ]
             }
