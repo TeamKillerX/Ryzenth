@@ -31,13 +31,21 @@ from ._thinking import WhatAsync, WhatSync
 
 class Helpers:
     @classmethod
-    def encode_image_base64(image_path):
+    def encode_image_base64(cls, image_path):
         try:
             with open(image_path, "rb") as image_file:
                 return base64.b64encode(image_file.read()).decode('utf-8')
         except FileNotFoundError:
             return None
 
+class HelpersUseStatic:
+    @staticmethod
+    def encode_image_base64(image_path):
+        try:
+            with open(image_path, "rb") as image_file:
+                return base64.b64encode(image_file.read()).decode('utf-8')
+        except FileNotFoundError:
+            return None
 
 def to_buffer(
         response=None,
@@ -79,5 +87,6 @@ __all__ = [
     "AutoRetry",
     "to_buffer",
     "Helpers",
+    "HelpersUseStatic",
     "ResponseFileImage"
 ]
