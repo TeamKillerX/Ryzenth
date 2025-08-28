@@ -8,22 +8,24 @@ class RyzenthMessage:
         return {"role": "user", "content": content}
 
     @staticmethod
-    def user_and_image(content: str, base64Image, disabled_openai=False):
-        if disabled_openai:
-            jn = {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": content},
-                    {"type": "image_url",
-                     "image_url": {"url": f"data:image/jpeg;base64,{base64Image}"}
-                     }
-                ]
-            }
-        else:
-            jn = {"role": "user", "content": [{"type": "input_text", "text": content}, {
-                "type": "input_image", "image_url": f"data:image/jpeg;base64,{base64Image}"}]}
-        return jn
+    def user_and_image(content: str, base64Image, use_legacy_format=False):
+        return {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": content},
+                {"type": "input_image", "image_url": {
+                    "url": f"data:image/jpeg;base64,{base64Image}"}}
+            ]
+        }
+        } if use_legacy_format else {
+            "role": "user",
+            "content": [
+                {"type": "input_text", "text": content},
+                {"type": "input_image",
+     "image_url": f"data:image/jpeg;base64,{base64Image}"}
+            ]
+        }
 
-    @staticmethod
+    @ staticmethod
     def assistant(content: str):
         return {"role": "assistant", "content": content}
