@@ -20,6 +20,7 @@
 import logging
 from typing import Dict, List, Union
 
+from . import RyzenthMessage
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import InvalidMessageError, WhatFuckError
@@ -32,6 +33,7 @@ class ChatOrgAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
+        self.msg = RyzenthMessage
         self.logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}")
 
