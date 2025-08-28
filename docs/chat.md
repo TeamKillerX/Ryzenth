@@ -436,6 +436,38 @@ response = await g.chat_completions(
 print(response)
 ```
 
+## 🔑 API Keys & Documentation
+
+### 🤖 AI Platform Documentation
+- **OpenAI**: [Platform Documentation](https://platform.openai.com/docs)
+- **Google Gemini**: [AI Development Guide](https://ai.google.dev)
+- **Cohere**: [API Documentation](https://docs.cohere.com/)
+- **Alibaba Qwen**: [Model Studio Guide](https://www.alibabacloud.com/help/en/model-studio/use-qwen-by-calling-api)
+- **Anthropic Claude**: [API Reference](https://docs.anthropic.com/)
+- **Grok AI**: [X.AI Documentation](https://docs.x.ai/docs)
+
+### 🔐 Get Your API Keys
+| Platform | Get API Key | Official Website |
+|----------|-------------|------------------|
+| **Ryzenth** | [Get Key](https://ryzenths.dpdns.org) | Official Ryzenth Portal |
+| **OpenAI** | [Get Key](https://platform.openai.com/api-keys) | OpenAI Platform |
+| **Cohere** | [Get Key](https://dashboard.cohere.com/api-keys) | Cohere Dashboard |
+| **Alibaba** | [Get Key](https://bailian.console.alibabacloud.com/?tab=playground#/api-key) | Alibaba Console |
+| **Claude** | [Get Key](https://console.anthropic.com/settings/keys) | Anthropic Console |
+| **Grok** | [Get Key](https://console.x.ai/team/default/api-keys) | X.AI Console |
+
+---
+
+### 🌐 API Provider Partners (NB Friends)
+- **[PaxSenix](https://api.paxsenix.biz.id)** - PaxSenix
+- **[Itzpire](https://itzpire.com)** - Itzpire
+- **[Ytdlpyton](https://ytdlpyton.nvlgroup.my.id/)** - Unesa
+- **[Exonity](https://exonity.tech)** - Exonity
+- **[Yogik](https://api.yogik.id)** - Yogik (Legacy)
+- **[Siputzx](https://api.siputzx.my.id)** - Siputzx
+- **[FGSI](https://fgsi.koyeb.app)** - FGSI
+
+
 ## 📄 License
 
 **MIT License © 2025 Ryzenth Developers from TeamKillerX**
