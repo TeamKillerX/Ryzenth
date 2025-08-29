@@ -8,14 +8,25 @@ class RyzenthMessage:
         return {"role": "user", "content": content}
 
     @staticmethod
-    def user_and_image(content: str, base64Image, use_legacy_format=False):
+    def user_and_audio(content: str, format: str, data=None, use_legacy_format=False):
+        if use_legacy_format:
+            return {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": content},
+                    {"type": "input_audio", "input_audio": {
+                        "data": data, "format": format}}}
+                ]
+            }
+    @staticmethod
+    def user_and_image(content: str, fn=None, use_legacy_format=False):
         if use_legacy_format:
             return {
                 "role": "user",
                 "content": [
                     {"type": "text", "text": content},
                     {"type": "image_url", "image_url": {
-                        "url": f"data:image/jpeg;base64,{base64Image}"}}
+                        "url": fn}}} # url or base64 "data:image/jpeg;base64,"
                 ]
             }
         return {
@@ -23,7 +34,7 @@ class RyzenthMessage:
             "content": [
                 {"type": "input_text", "text": content},
                 {"type": "input_image",
-                 "image_url": f"data:image/jpeg;base64,{base64Image}"}
+                 "image_url": fn} # url or base64 "data:image/jpeg;base64,"
             ]
         }
 
