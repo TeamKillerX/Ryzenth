@@ -27,11 +27,12 @@ class RyzenthMessage:
             "role": "user",
             "content": [
                 {"type": "input_text", "text": content},
-                {"type": "input_audio", "input_audio": fn}  # url or base64 "data:image/jpeg;base64,"
+                # url or base64 "data:image/jpeg;base64,"
+                {"type": "input_audio", "input_audio": fn}
             ]
         }
 
-    @staticmethod
+    @ staticmethod
     def user_and_image(content: str, fn=None, use_legacy_format=False):
         if use_legacy_format:
             return {
