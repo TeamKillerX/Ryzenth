@@ -22,7 +22,17 @@ from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import InvalidMessageError, WhatFuckError
+from .._errors import (
+    AuthenticationError,
+    EmptyMessageError,
+    InitializeAPIError,
+    InternalServerError,
+    InternalServerKimiError,
+    InternalServerMetaLlamaError,
+    InternalServerUltimateError,
+    InvalidMessageError,
+    WhatFuckError,
+)
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, HelpersUseStatic
@@ -48,7 +58,7 @@ class ChatOrgAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -75,7 +85,7 @@ class ChatOrgAsync:
                 return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"chat meta llama ask failed: {e}")
-            raise WhatFuckError(f"chat meta llama ask failed: {e}") from e
+            raise InternalServerMetaLlamaError(f"chat meta llama ask failed: {e}") from e
         finally:
             pass
 
@@ -104,7 +114,7 @@ class ChatOrgAsync:
                 return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"chat kimi ask failed: {e}")
-            raise WhatFuckError(f"chat kimi ask failed: {e}") from e
+            raise InternalServerKimiError(f"chat kimi ask failed: {e}") from e
         finally:
             pass
 
@@ -119,15 +129,15 @@ class ChatOrgAsync:
     ) -> ResponseResult:
         if isinstance(prompt, str):
             if not prompt.strip():
-                raise WhatFuckError("Prompt cannot be empty")
+                raise EmptyMessageError("Prompt cannot be empty")
         elif isinstance(prompt, list):
             if not prompt or all(
                 isinstance(
                     item,
                     dict) and not item for item in prompt):
-                raise WhatFuckError("Prompt cannot be empty")
+                raise EmptyMessageError("Prompt cannot be empty")
         else:
-            raise WhatFuckError("Prompt type is invalid")
+            raise InvalidMessageError("Prompt type is invalid")
 
         try:
             use_turbo_fast = kwargs.pop("use_turbo_fast", False)
@@ -147,7 +157,7 @@ class ChatOrgAsync:
                     auth_key = kwargs.pop("auth_key", None)
                     auth_id = kwargs.pop("auth_id", None)
                     if not all([auth_key, auth_id]):
-                        raise WhatFuckError(
+                        raise AuthenticationError(
                             "All required auth, missing 'auth_key' and 'auth_id'")
                     response = await client.post(
                         tool="ryzenth-v2",
@@ -171,7 +181,7 @@ class ChatOrgAsync:
                 return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"chat ask failed: {e}")
-            raise WhatFuckError(f"chat ask failed: {e}") from e
+            raise InternalServerError(f"chat ask failed: {e}") from e
         finally:
             pass
 
@@ -185,9 +195,9 @@ class ChatOrgAsync:
         model: str = "grok"
     ) -> ResponseResult:
         if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+            raise EmptyMessageError("Prompt cannot be empty")
         if not model or not model.strip():
-            raise WhatFuckError("model cannot be empty")
+            raise EmptyMessageError("model cannot be empty")
 
         try:
             async with self._get_client() as client:
@@ -201,7 +211,7 @@ class ChatOrgAsync:
                 return ResponseResult(client, response, is_ultimate=True)
         except Exception as e:
             self.logger.error(f"chat ultimate ask failed: {e}")
-            raise WhatFuckError(f"chat ultimate ask failed: {e}") from e
+            raise InternalServerUltimateError(f"chat ultimate ask failed: {e}") from e
         finally:
             pass
 

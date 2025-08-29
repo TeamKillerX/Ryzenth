@@ -24,7 +24,13 @@ from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyResponseError, WhatFuckError
+from .._errors import (
+    AuthenticationError,
+    EmptyMessageError,
+    EmptyResponseError,
+    InitializeAPIError,
+    WhatFuckError,
+)
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, HelpersUseStatic
@@ -49,7 +55,7 @@ class ChatsCohereAsync:
 
             if not api_key or not isinstance(
                     api_key, str) or not api_key.strip():
-                raise WhatFuckError(
+                raise AuthenticationError(
                     "Missing or invalid API key for Cohere client initialization.")
             try:
                 self._client = RyzenthApiClient(
@@ -65,7 +71,7 @@ class ChatsCohereAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -80,9 +86,9 @@ class ChatsCohereAsync:
         connectors: List[Dict] = None,
     ) -> ResponseResult:
         if not isinstance(prompt, str):
-            raise WhatFuckError("Prompt must be a string")
+            raise EmptyMessageError("Prompt must be a string")
         if not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+            raise EmptyMessageError("Prompt cannot be empty")
 
         try:
             async with self._get_client() as client:
@@ -103,7 +109,7 @@ class ChatsCohereAsync:
                 return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Cohere chats failed: {e}")
-            raise WhatFuckError(f"Cohere chats failed: {e}") from e
+            raise InternalServerCohereError(f"Cohere chats failed: {e}") from e
         finally:
             pass
 
