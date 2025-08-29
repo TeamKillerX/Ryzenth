@@ -23,15 +23,15 @@ from typing import Dict, List, Union
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import (
-    InvalidMessageError,
+    AuthenticationError,
     EmptyMessageError,
-    WhatFuckError,
     InitializeAPIError,
-    InternalServerMetaLlamaError,
-    InternalServerKimiError,
-    InternalServerUltimateError,
     InternalServerError,
-    AuthenticationError
+    InternalServerKimiError,
+    InternalServerMetaLlamaError,
+    InternalServerUltimateError,
+    InvalidMessageError,
+    WhatFuckError,
 )
 from .._export_class import ResponseResult
 from ..enums import ResponseType

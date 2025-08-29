@@ -19,6 +19,7 @@
 
 import json
 
+
 class WhatFuckError(Exception):
     pass
 
