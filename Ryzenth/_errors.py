@@ -26,7 +26,13 @@ class WhatFuckError(Exception):
 class EmptyResponseError(Exception):
     pass
 
-class EnvironmentError(Exception):
+class MissingEnvironmentVariablesError(Exception):
+    pass
+
+class EnvironmentParseError(Exception):
+    pass
+
+class InvalidTypeError(TypeError):
     pass
 
 class EmptyToolsError(Exception):
@@ -234,7 +240,8 @@ __all__ = [
     "EmptyMessageError",
     "EmptyModelError",
     "EmptyToolsError",
-    "EnvironmentError",
+    "MissingEnvironmentVariablesError",
+    "EnvironmentParseError",
     "ForbiddenError",
     "InternalServerError",
     "InternalServerMetaLlamaError",
@@ -244,6 +251,7 @@ __all__ = [
     "InternalServerGeminiError",
     "InternalServerGrokError",
     "InitializeAPIError",
+    "InvalidTypeError",
     "AuthenticationError",
     "RateLimitError",
     "ToolNotFoundError",
