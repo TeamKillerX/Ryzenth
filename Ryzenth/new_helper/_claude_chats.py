@@ -31,6 +31,7 @@ from .._errors import (
     InitializeAPIError,
     InvalidMessageError,
     WhatFuckError,
+    InvalidTypeError,
 )
 from .._export_class import ResponseResult
 from ..enums import ResponseType
@@ -93,7 +94,7 @@ class ChatsClaudeAsync:
                     dict) and not item for item in messages):
                 raise EmptyMessageError("messages cannot be empty")
         else:
-            raise InvalidMessageError(
+            raise InvalidTypeError(
                 f"messages type is invalid: received type '{type(messages).__name__}'")
 
         try:
