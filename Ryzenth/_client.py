@@ -35,15 +35,14 @@ from .__version__ import __version__, get_user_agent
 from ._benchmark import Benchmark
 from ._errors import (
     AsyncStatusError,
-    SyncStatusError,
-    ToolNotFoundError,
-    WhatFuckError,
+    AuthenticationError,
     EmptyMessageError,
     EmptyToolsError,
     EnvironmentError,
     InvalidMessageError,
-    EmptyToolsError,
-    AuthenticationError,
+    SyncStatusError,
+    ToolNotFoundError,
+    WhatFuckError,
 )
 from ._shared import TOOL_DOMAIN_MAP
 from .enums import ResponseType

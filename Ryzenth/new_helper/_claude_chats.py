@@ -25,12 +25,12 @@ from typing import Dict, List, Union
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import (
+    AuthenticationError,
     EmptyMessageError,
     EmptyResponseError,
-    WhatFuckError,
-    InvalidMessageError,
     InitializeAPIError,
-    AuthenticationError,
+    InvalidMessageError,
+    WhatFuckError,
 )
 from .._export_class import ResponseResult
 from ..enums import ResponseType
