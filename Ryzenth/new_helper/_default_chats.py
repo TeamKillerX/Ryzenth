@@ -25,6 +25,7 @@ from .._client import RyzenthApiClient
 from .._errors import (
     AuthenticationError,
     EmptyMessageError,
+    EmptyModelError,
     InitializeAPIError,
     InternalServerError,
     InternalServerKimiError,
@@ -32,7 +33,6 @@ from .._errors import (
     InternalServerUltimateError,
     InvalidMessageError,
     WhatFuckError,
-    EmptyModelError,
 )
 from .._export_class import ResponseResult
 from ..enums import ResponseType
