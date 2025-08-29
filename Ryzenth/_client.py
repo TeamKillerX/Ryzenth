@@ -38,6 +38,12 @@ from ._errors import (
     SyncStatusError,
     ToolNotFoundError,
     WhatFuckError,
+    EmptyMessageError,
+    EmptyToolsError,
+    EnvironmentError,
+    InvalidMessageError,
+    EmptyToolsError,
+    AuthenticationError,
 )
 from ._shared import TOOL_DOMAIN_MAP
 from .enums import ResponseType
@@ -58,10 +64,10 @@ class RyzenthApiClient:
         logger: t.Optional[LoggerService] = None
     ) -> None:
         if not isinstance(api_key, dict) or not api_key:
-            raise WhatFuckError(
+            raise AuthenticationError(
                 "API Key must be a non-empty dict of tool_name → list of headers")
         if not tools_name:
-            raise WhatFuckError(
+            raise EmptyToolsError(
                 "A non-empty list of tool names must be provided for 'tools_name'.")
 
         self._api_keys = api_key
@@ -227,7 +233,7 @@ class RyzenthApiClient:
         use_httpx = getenv("RYZENTH_USE_HTTPX", "false")
 
         if not tools_raw or not api_key_raw:
-            raise WhatFuckError(
+            raise EnvironmentError(
                 "Environment variables RYZENTH_TOOLS and RYZENTH_API_KEY_JSON are required.")
 
         try:
@@ -235,7 +241,7 @@ class RyzenthApiClient:
             api_keys = json.loads(api_key_raw)
             rate_limit = int(rate_limit_raw)
         except (ValueError, json.JSONDecodeError) as e:
-            raise WhatFuckError(f"Invalid environment variable format: {e}")
+            raise InvalidMessageError(f"Invalid environment variable format: {e}")
 
         use_default_headers = use_headers.lower() == "true"
         httpx_flag = use_httpx.lower() == "true"
