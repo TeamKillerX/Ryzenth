@@ -14,6 +14,8 @@ class RyzenthMessage:
         audio_data=None,
         use_legacy_format=False
     ):
+        if audio_data is None:
+            return None
         if use_legacy_format:
             return {
                 "role": "user",
@@ -28,7 +30,7 @@ class RyzenthMessage:
             "content": [
                 {"type": "input_text", "text": content},
                 # base64 "data:image/jpeg;base64,"
-                {"type": "input_audio", "input_audio": fn, "format": format}
+                {"type": "input_audio", "input_audio": audio_data, "format": format}
             ]
         }
 
