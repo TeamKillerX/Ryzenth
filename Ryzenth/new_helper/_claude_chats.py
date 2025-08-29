@@ -30,8 +30,8 @@ from .._errors import (
     EmptyResponseError,
     InitializeAPIError,
     InvalidMessageError,
-    WhatFuckError,
     InvalidTypeError,
+    WhatFuckError,
 )
 from .._export_class import ResponseResult
 from ..enums import ResponseType
