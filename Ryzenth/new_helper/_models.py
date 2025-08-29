@@ -30,7 +30,8 @@ class RyzenthMessage:
             "content": [
                 {"type": "input_text", "text": content},
                 # base64 "data:image/jpeg;base64,"
-                {"type": "input_audio", "input_audio": audio_data, "format": format}
+                {"type": "input_audio", "input_audio": {
+                    "data": audio_data, "format": format}}
             ]
         }
 
