@@ -26,6 +26,12 @@ class WhatFuckError(Exception):
 class EmptyResponseError(Exception):
     pass
 
+class EnvironmentError(Exception):
+    pass
+
+class EmptyToolsError(Exception):
+    pass
+
 class EmptyMessageError(Exception):
     pass
 
@@ -227,6 +233,8 @@ __all__ = [
     "EmptyResponseError",
     "EmptyMessageError",
     "EmptyModelError",
+    "EmptyToolsError",
+    "EnvironmentError",
     "ForbiddenError",
     "InternalServerError",
     "InternalServerMetaLlamaError",
