@@ -6,7 +6,6 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 [![Ryzenth - Version](https://img.shields.io/pypi/v/Ryzenth?style=round)](https://pypi.org/project/Ryzenth)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/Ryzenth/dev.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/Ryzenth/dev)
-[![Pylint](https://github.com/TeamKillerX/Ryzenth/actions/workflows/pylint.yml/badge.svg?branch=dev)](https://github.com/TeamKillerX/Ryzenth/actions/workflows/pylint.yml)
 
 
 <div align="center">
