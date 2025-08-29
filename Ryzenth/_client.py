@@ -38,7 +38,8 @@ from ._errors import (
     AuthenticationError,
     EmptyMessageError,
     EmptyToolsError,
-    EnvironmentError,
+    EnvironmentParseError,
+    MissingEnvironmentVariablesError,
     InvalidMessageError,
     SyncStatusError,
     ToolNotFoundError,
@@ -232,7 +233,7 @@ class RyzenthApiClient:
         use_httpx = getenv("RYZENTH_USE_HTTPX", "false")
 
         if not tools_raw or not api_key_raw:
-            raise EnvironmentError(
+            raise MissingEnvironmentVariablesError(
                 "Environment variables RYZENTH_TOOLS and RYZENTH_API_KEY_JSON are required.")
 
         try:
@@ -240,7 +241,7 @@ class RyzenthApiClient:
             api_keys = json.loads(api_key_raw)
             rate_limit = int(rate_limit_raw)
         except (ValueError, json.JSONDecodeError) as e:
-            raise InvalidMessageError(f"Invalid environment variable format: {e}")
+            raise EnvironmentParseError(f"Invalid environment variable format: {e}") from e
 
         use_default_headers = use_headers.lower() == "true"
         httpx_flag = use_httpx.lower() == "true"
