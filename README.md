@@ -52,7 +52,7 @@ from Ryzenth import RyzenthTools
 rt = RyzenthTools()
 chat = rt.aio.chat
 
-results = await chat.ask_kimi(
+results = await chat.kimi_ask(
     [chat.msg.user("hello World")],
     use_instruct=True
 )
@@ -123,9 +123,7 @@ Your support helps us continue building and maintaining this project!
 - **Bank Transfer (DANA)**: Send to Bank Jago `100201327349`
 - **Cryptocurrency**: Contact us for wallet addresses
 - **GitHub Sponsors**: [Sponsor on GitHub](https://github.com/sponsors/TeamKillerX)
-
-Every contribution, no matter the size, makes a difference! 🚀
-
+- You can ask to **contact support** [@zxyeor](https://t.me/zxyeor) via telegram
 ---
 
 ## 📄 License
