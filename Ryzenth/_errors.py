@@ -19,78 +19,71 @@
 
 import json
 
-
 class WhatFuckError(Exception):
     pass
-
 
 class EmptyResponseError(Exception):
     pass
 
-
 class EmptyMessageError(Exception):
     pass
-
 
 class InvalidMessageError(Exception):
     pass
 
-
 class InvalidFunctionCallError(Exception):
     pass
-
 
 class ParamsRequiredError(ValueError):
     pass
 
-
 class ForbiddenError(Exception):
-    """Custom exception for 403 Forbidden"""
-
+    pass
 
 class ToolNotFoundError(Exception):
-    """Raised when a base URL for a requested tool cannot be found."""
-
+    pass
 
 class RateLimitError(Exception):
     pass
 
-
 class BadRequestError(Exception):
     pass
-
 
 class AuthenticationError(Exception):
     pass
 
-
 class InternalServerError(Exception):
-    """Custom exception for 500 Error"""
-
+    pass
 
 class RequiredError(ValueError):
     pass
 
-
 class InvalidModelError(ValueError):
     pass
-
 
 class UnauthorizedAccessError(ValueError):
     pass
 
-
 class InvalidVersionError(ValueError):
     pass
-
 
 class InvalidJSONDecodeError(json.decoder.JSONDecodeError):
     pass
 
-
 class InvalidEmptyError(ValueError):
     pass
 
+class InternalServerMetaLlamaError(Exception):
+    pass
+
+class InternalServerKimiError(Exception):
+    pass
+
+class InternalServerUltimateError(Exception):
+    pass
+
+class InitializeAPIError(Exception):
+    pass
 
 async def AsyncStatusError(resp, status_httpx=False):
     if status_httpx:
@@ -213,13 +206,16 @@ def SyncStatusError(resp, status_httpx=False):
             "Status 503: Slow Down or The engine is currently overloaded, please try again later"
         )
 
-
 __all__ = [
     "WhatFuckError",
     "EmptyResponseError",
     "EmptyMessageError",
     "ForbiddenError",
     "InternalServerError",
+    "InternalServerMetaLlamaError",
+    "InternalServerKimiError",
+    "InternalServerUltimateError",
+    "InitializeAPIError",
     "AuthenticationError",
     "RateLimitError",
     "ToolNotFoundError",
