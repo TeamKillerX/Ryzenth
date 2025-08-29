@@ -54,7 +54,34 @@ class ChatOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask_kimi(
+    async def meta_llama_ask(
+        self,
+        messages: List[Dict],
+        *,
+        timeout: Union[int, float] = 100
+    ) -> ResponseResult:
+        if not isinstance(messages, list) or not messages:
+            raise InvalidMessageError("Messages must be a non-empty list")
+
+        try:
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="ryzenth-v2",
+                    path="/api/v1/meta-llama/instruct",
+                    timeout=timeout,
+                    json={"messages": messages},
+                    use_type=ResponseType.JSON
+                )
+                return ResponseResult(client, response)
+        except Exception as e:
+            self.logger.error(f"chat meta llama ask failed: {e}")
+            raise WhatFuckError(f"chat meta llama ask failed: {e}") from e
+        finally:
+            pass
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def kimi_ask(
         self,
         messages: List[Dict],
         *,
@@ -76,8 +103,8 @@ class ChatOrgAsync:
                 )
                 return ResponseResult(client, response)
         except Exception as e:
-            self.logger.error(f"chat ask failed: {e}")
-            raise WhatFuckError(f"chat ask failed: {e}") from e
+            self.logger.error(f"chat kimi ask failed: {e}")
+            raise WhatFuckError(f"chat kimi ask failed: {e}") from e
         finally:
             pass
 
@@ -150,7 +177,7 @@ class ChatOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def ask_ultimate(
+    async def ultimate_ask(
         self,
         prompt: str,
         *,
@@ -173,8 +200,8 @@ class ChatOrgAsync:
                 )
                 return ResponseResult(client, response, is_ultimate=True)
         except Exception as e:
-            self.logger.error(f"chat ask failed: {e}")
-            raise WhatFuckError(f"chat ask failed: {e}") from e
+            self.logger.error(f"chat ultimate ask failed: {e}")
+            raise WhatFuckError(f"chat ultimate ask failed: {e}") from e
         finally:
             pass
 
