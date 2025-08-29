@@ -9,10 +9,11 @@ class RyzenthMessage:
 
     @staticmethod
     def user_and_audio(
-    content: str,
-    format: str,
-    data=None,
-     use_legacy_format=False):
+        content: str,
+        format: str = "wav",
+        data=None,
+        use_legacy_format=False
+    ):
         if use_legacy_format:
             return {
                 "role": "user",
@@ -22,7 +23,15 @@ class RyzenthMessage:
                         "data": data, "format": format}}}
                 ]
             }
-    @ staticmethod
+        return {
+            "role": "user",
+            "content": [
+                {"type": "input_text", "text": content},
+                {"type": "input_audio", "input_audio": fn}  # url or base64 "data:image/jpeg;base64,"
+            ]
+        }
+
+    @staticmethod
     def user_and_image(content: str, fn=None, use_legacy_format=False):
         if use_legacy_format:
             return {
@@ -42,6 +51,6 @@ class RyzenthMessage:
             ]
         }
 
-    @ staticmethod
+    @staticmethod
     def assistant(content: str):
         return {"role": "assistant", "content": content}
