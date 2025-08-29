@@ -98,6 +98,7 @@ print(await results.to_dict())
 - [ ] Hugging Face
 - [x] Kimi AI
 - [x] GPT oss
+- [x] Meta Llama
 - [x] Ryzenth (Free)
 - [x] Image Generate
 - [x] Flux AI
