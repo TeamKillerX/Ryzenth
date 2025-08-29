@@ -46,6 +46,45 @@ pip3 install ryzenth[fast]
 pip3 install git+https://github.com/TeamKillerX/Ryzenth.git
 ```
 
+## Quick Start
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools()
+chat = rt.aio.chat
+
+results = await chat.ask_kimi(
+    [chat.msg.user("hello World")],
+    use_instruct=True
+)
+
+obj = await results.to_obj()
+print(obj.data.choices[0].message.content)
+```
+## Usage
+### Text & Images in one conversation
+```py
+from Ryzenth import RyzenthTools
+
+rt = RyzenthTools()
+
+chat = rt.aio.chat
+
+results = await chat.ask(
+    [
+        chat.msg.core("You are a helpful assistant"),
+        chat.msg.user_and_image(
+            "What's in this picture?",
+            chat.file.encode_image_base64("examples/path/create.jpg"),
+            use_legacy_format=True
+        )
+    ],
+    use_conversation=True
+)
+
+print(await results.to_dict())
+```
+
 ## Platform full support
 - [x] Claude
 - [x] OpenAI

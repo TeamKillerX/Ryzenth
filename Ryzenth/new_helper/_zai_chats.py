@@ -27,7 +27,7 @@ from .._client import RyzenthApiClient
 from .._errors import EmptyResponseError, InvalidMessageError, WhatFuckError
 from .._export_class import ResponseResult
 from ..enums import ResponseType
-from ..helper import AutoRetry
+from ..helper import AutoRetry, HelpersUseStatic
 from ._models import RyzenthMessage
 
 
@@ -36,6 +36,7 @@ class ChatsZaiAsync:
         self.parent = parent
         self._client = None
         self.msg = RyzenthMessage
+        self.file = HelpersUseStatic
         self.logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}")
 
