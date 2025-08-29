@@ -29,6 +29,9 @@ class EmptyResponseError(Exception):
 class EmptyMessageError(Exception):
     pass
 
+class EmptyModelError(Exception):
+    pass
+
 class InvalidMessageError(Exception):
     pass
 
@@ -214,6 +217,7 @@ __all__ = [
     "WhatFuckError",
     "EmptyResponseError",
     "EmptyMessageError",
+    "EmptyModelError",
     "ForbiddenError",
     "InternalServerError",
     "InternalServerMetaLlamaError",
