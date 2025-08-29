@@ -33,6 +33,7 @@ from .._errors import (
     InternalServerUltimateError,
     InvalidMessageError,
     WhatFuckError,
+    InvalidTypeError,
 )
 from .._export_class import ResponseResult
 from ..enums import ResponseType
@@ -138,7 +139,7 @@ class ChatOrgAsync:
                     dict) and not item for item in prompt):
                 raise EmptyMessageError("Prompt cannot be empty")
         else:
-            raise InvalidMessageError("Prompt type is invalid")
+            raise InvalidTypeError("Prompt type is invalid")
 
         try:
             use_turbo_fast = kwargs.pop("use_turbo_fast", False)
