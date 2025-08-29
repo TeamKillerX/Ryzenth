@@ -82,6 +82,9 @@ class InternalServerKimiError(Exception):
 class InternalServerUltimateError(Exception):
     pass
 
+class InternalServerCohereError(Exception):
+    pass
+
 class InitializeAPIError(Exception):
     pass
 
