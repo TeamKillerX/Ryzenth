@@ -11,16 +11,18 @@ class RyzenthMessage:
     def user_and_audio(
         content: str,
         format: str = "wav",
-        data=None,
+        audio_data=None,
         use_legacy_format=False
     ):
+        if audio_data is None:
+            return None
         if use_legacy_format:
             return {
                 "role": "user",
                 "content": [
                     {"type": "text", "text": content},
                     {"type": "input_audio", "input_audio": {
-                        "data": data, "format": format}}}
+                        "data": audio_data, "format": format}}}
                 ]
             }
         return {
@@ -28,12 +30,14 @@ class RyzenthMessage:
             "content": [
                 {"type": "input_text", "text": content},
                 # base64 "data:image/jpeg;base64,"
-                {"type": "input_audio", "input_audio": fn}
+                {"type": "input_audio", "input_audio": audio_data, "format": format}
             ]
         }
 
     @staticmethod
     def user_and_image(content: str, fn=None, use_legacy_format=False):
+        if fn is None:
+            return None
         if use_legacy_format:
             return {
                 "role": "user",
