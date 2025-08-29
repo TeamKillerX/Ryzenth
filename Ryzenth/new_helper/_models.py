@@ -21,8 +21,7 @@ class RyzenthMessage:
                 "role": "user",
                 "content": [
                     {"type": "text", "text": content},
-                    {"type": "input_audio", "input_audio": {
-                        "data": audio_data, "format": format}}}
+                    {"type": "input_audio", "input_audio": {"data": audio_data, "format": format}}
                 ]
             }
         return {
@@ -30,8 +29,7 @@ class RyzenthMessage:
             "content": [
                 {"type": "input_text", "text": content},
                 # base64 "data:image/jpeg;base64,"
-                {"type": "input_audio", "input_audio": {
-                    "data": audio_data, "format": format}}
+                {"type": "input_audio", "input_audio": {"data": audio_data, "format": format}}
             ]
         }
 
@@ -44,16 +42,14 @@ class RyzenthMessage:
                 "role": "user",
                 "content": [
                     {"type": "text", "text": content},
-                    {"type": "image_url", "image_url": {
-                        "url": fn}}}  # url or base64 "data:image/jpeg;base64,"
+                    {"type": "image_url", "image_url": {"url": fn}}  # url or base64 "data:image/jpeg;base64,"
                 ]
             }
         return {
             "role": "user",
             "content": [
                 {"type": "input_text", "text": content},
-                {"type": "input_image",
-                 "image_url": fn}  # url or base64 "data:image/jpeg;base64,"
+                {"type": "input_image", "image_url": fn}  # url or base64 "data:image/jpeg;base64,"
             ]
         }
 
