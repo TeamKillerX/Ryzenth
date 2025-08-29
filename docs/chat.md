@@ -100,6 +100,7 @@ rt = RyzenthTools()
 .aio.claude_chat
 .aio.gemini_chat
 .aio.old_gemini_chat
+.aio.flux_images
 .aio.openai_images
 .aio.openai_responses
 .aio.qwen_chat
@@ -212,7 +213,7 @@ from Ryzenth import RyzenthTools
 
 rt = RyzenthTools()
 
-results = await rt.aio.chat.ask_kimi([
+results = await rt.aio.chat.kimi_ask([
     {"role": "system", "content": "...."},
     {"role": "user", "content": "hello world!"}
 ], use_instruct=True)
@@ -240,7 +241,7 @@ from Ryzenth import RyzenthTools
 rt = RyzenthTools()
 
 # 💬 Chat Ultimate - Multiple AI Models
-response_grok = await rt.aio.chat.ask_ultimate(
+response_grok = await rt.aio.chat.ultimate_ask(
     "What is Durov's role in Telegram?",
     model="grok"
 )
