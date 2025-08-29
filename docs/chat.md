@@ -241,7 +241,7 @@ from Ryzenth import RyzenthTools
 rt = RyzenthTools()
 
 # 💬 Chat Ultimate - Multiple AI Models
-response_grok = await rt.aio.chat. ultimate_ask(
+response_grok = await rt.aio.chat.ultimate_ask(
     "What is Durov's role in Telegram?",
     model="grok"
 )
