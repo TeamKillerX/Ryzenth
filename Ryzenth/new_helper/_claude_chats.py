@@ -24,7 +24,14 @@ from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyMessageError, EmptyResponseError, WhatFuckError
+from .._errors import (
+    AuthenticationError,
+    EmptyMessageError,
+    EmptyResponseError,
+    InitializeAPIError,
+    InvalidMessageError,
+    WhatFuckError,
+)
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, HelpersUseStatic
@@ -49,7 +56,7 @@ class ChatsClaudeAsync:
 
             if not api_key or not isinstance(
                     api_key, str) or not api_key.strip():
-                raise WhatFuckError(
+                raise AuthenticationError(
                     "Missing or invalid API key for Claude client initialization.")
             try:
                 self._client = RyzenthApiClient(
@@ -65,7 +72,7 @@ class ChatsClaudeAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -86,7 +93,7 @@ class ChatsClaudeAsync:
                     dict) and not item for item in messages):
                 raise EmptyMessageError("messages cannot be empty")
         else:
-            raise EmptyMessageError(
+            raise InvalidMessageError(
                 f"messages type is invalid: received type '{type(messages).__name__}'")
 
         try:
@@ -108,7 +115,7 @@ class ChatsClaudeAsync:
                 return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Claude chats failed: {e}")
-            raise WhatFuckError(f"Claude chats failed: {e}") from e
+            raise InternalServerClaudeError(f"Claude chats failed: {e}") from e
         finally:
             pass
 

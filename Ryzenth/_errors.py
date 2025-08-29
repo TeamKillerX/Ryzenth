@@ -26,6 +26,12 @@ class WhatFuckError(Exception):
 class EmptyResponseError(Exception):
     pass
 
+class EnvironmentError(Exception):
+    pass
+
+class EmptyToolsError(Exception):
+    pass
+
 class EmptyMessageError(Exception):
     pass
 
@@ -87,6 +93,15 @@ class InternalServerUltimateError(Exception):
     pass
 
 class InternalServerCohereError(Exception):
+    pass
+
+class InternalServerClaudeError(Exception):
+    pass
+
+class InternalServerGeminiError(Exception):
+    pass
+
+class InternalServerGrokError(Exception):
     pass
 
 class InitializeAPIError(Exception):
@@ -218,11 +233,16 @@ __all__ = [
     "EmptyResponseError",
     "EmptyMessageError",
     "EmptyModelError",
+    "EmptyToolsError",
+    "EnvironmentError",
     "ForbiddenError",
     "InternalServerError",
     "InternalServerMetaLlamaError",
     "InternalServerKimiError",
     "InternalServerUltimateError",
+    "InternalServerClaudeError",
+    "InternalServerGeminiError",
+    "InternalServerGrokError",
     "InitializeAPIError",
     "AuthenticationError",
     "RateLimitError",
