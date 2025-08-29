@@ -86,7 +86,7 @@ class ChatsCohereAsync:
         connectors: List[Dict] = None,
     ) -> ResponseResult:
         if not isinstance(prompt, str):
-            raise EmptyMessageError("Prompt must be a string")
+            raise InvalidMessageError("Prompt must be a string")
         if not prompt.strip():
             raise EmptyMessageError("Prompt cannot be empty")
 

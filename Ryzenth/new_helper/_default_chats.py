@@ -25,6 +25,7 @@ from .._client import RyzenthApiClient
 from .._errors import (
     AuthenticationError,
     EmptyMessageError,
+    EmptyModelError,
     InitializeAPIError,
     InternalServerError,
     InternalServerKimiError,
@@ -197,7 +198,7 @@ class ChatOrgAsync:
         if not prompt or not prompt.strip():
             raise EmptyMessageError("Prompt cannot be empty")
         if not model or not model.strip():
-            raise EmptyMessageError("model cannot be empty")
+            raise EmptyModelError("model cannot be empty")
 
         try:
             async with self._get_client() as client:
