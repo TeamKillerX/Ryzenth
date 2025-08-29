@@ -89,6 +89,15 @@ class InternalServerUltimateError(Exception):
 class InternalServerCohereError(Exception):
     pass
 
+class InternalServerClaudeError(Exception):
+    pass
+
+class InternalServerGeminiError(Exception):
+    pass
+
+class InternalServerGrokError(Exception):
+    pass
+
 class InitializeAPIError(Exception):
     pass
 
@@ -223,6 +232,9 @@ __all__ = [
     "InternalServerMetaLlamaError",
     "InternalServerKimiError",
     "InternalServerUltimateError",
+    "InternalServerClaudeError",
+    "InternalServerGeminiError",
+    "InternalServerGrokError",
     "InitializeAPIError",
     "AuthenticationError",
     "RateLimitError",
