@@ -24,11 +24,11 @@ from typing import List, Union
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import (
-    WhatFuckError,
-    InitializeAPIError,
     EmptyMessageError,
-    InternalServerError,
     EmptyResponseError,
+    InitializeAPIError,
+    InternalServerError,
+    WhatFuckError,
 )
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
