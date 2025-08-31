@@ -24,7 +24,14 @@ from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyResponseError, InvalidMessageError, WhatFuckError
+from .._errors import (
+    AuthenticationError,
+    EmptyResponseError,
+    InitializeAPIError,
+    InternalServerDeepseekError,
+    InvalidMessageError,
+    WhatFuckError,
+)
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, HelpersUseStatic
@@ -49,7 +56,7 @@ class ChatsDeepseekAsync:
 
             if not api_key or not isinstance(
                     api_key, str) or not api_key.strip():
-                raise WhatFuckError(
+                raise AuthenticationError(
                     "Missing or invalid API key for Deepseek client initialization.")
             try:
                 self._client = RyzenthApiClient(
@@ -64,7 +71,7 @@ class ChatsDeepseekAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -100,7 +107,7 @@ class ChatsDeepseekAsync:
                 return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Deepseek chats failed: {e}")
-            raise WhatFuckError(f"Deepseek chats failed: {e}") from e
+            raise InternalServerDeepseekError(f"Deepseek chats failed: {e}") from e
         finally:
             pass
 
