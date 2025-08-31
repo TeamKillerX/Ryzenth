@@ -156,20 +156,11 @@ class ChatOrgAsync:
                         use_type=ResponseType.JSON
                     )
                 elif use_turn_openai:
-                    auth_key = kwargs.pop("auth_key", None)
-                    auth_id = kwargs.pop("auth_id", None)
-                    if not all([auth_key, auth_id]):
-                        raise AuthenticationError(
-                            "All required auth, missing 'auth_key' and 'auth_id'")
                     response = await client.post(
                         tool="ryzenth-v2",
                         path="/api/v1/openai-latest/trn",
                         timeout=timeout,
-                        json={
-                            "messages": prompt,
-                            "apiKey": auth_key,
-                            "accountId": auth_id
-                        },
+                        json={"messages": prompt},
                         use_type=ResponseType.JSON
                     )
                 else:
