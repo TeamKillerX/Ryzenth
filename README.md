@@ -106,9 +106,18 @@ print(await results.to_dict())
 
 ---
 
+## Troubleshoot
+
+Sometimes errors occur, but we are here to help This guide covers some of the most common issues we’ve seen and how you can resolve them. However, this guide isn’t meant to be a comprehensive collection of every Ryzenth issue. For more help with troubleshooting your issue, try:
+
+- [Terms of service](https://ryzenths.dpdns.org/terms-policy)
+- [Ryzenth Support](https://ryzenths.dpdns.org/contact)
+- [Issues Github](https://github.com/TeamKillerX/Ryzenth/issues)
+
+- `support@ryzenths.dpdns.org` - [`here`](https://github.com/TeamKillerX/Ryzenth/dev/README.md#contact-support)
+
 ## 🏆 Credits Developer
 - **[xtdevs](https://t.me/xtdevs)** - Lead Developer & Creator
-- **[X-API-JS](https://x-api-js.onrender.com/docs)** - Ryzenth DLR JavaScript Solo Dev
 - **[Ryzenth V2](https://ryzenths.dpdns.org)** - Ryzenth TypeScript Solo Dev
 - **TeamKillerX** - Solo Dev
 - **AkenoX Project** - Original inspiration and foundation
@@ -124,6 +133,8 @@ Your support helps us continue building and maintaining this project!
 - **Bank Transfer (DANA)**: Send to Bank Jago `100201327349`
 - **Cryptocurrency**: Contact us for wallet addresses
 - **GitHub Sponsors**: [Sponsor on GitHub](https://github.com/sponsors/TeamKillerX)
+
+## Contact support
 - You can ask to **contact support** [@zxyeor](https://t.me/zxyeor) via telegram
 ---
 
