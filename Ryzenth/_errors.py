@@ -119,6 +119,9 @@ class InternalServerOpenaiError(Exception):
 class InternalServerQwenError(Exception):
     pass
 
+class InternalServerZaiError(Exception):
+    pass
+
 class InitializeAPIError(Exception):
     pass
 
@@ -262,6 +265,7 @@ __all__ = [
     "InternalServerDeepseekError",
     "InternalServerQwenError",
     "InternalServerOpenaiError",
+    "InternalServerZaiError",
     "InitializeAPIError",
     "InvalidTypeError",
     "AuthenticationError",
