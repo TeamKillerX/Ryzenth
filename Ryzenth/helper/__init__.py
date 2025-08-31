@@ -38,7 +38,6 @@ class Helpers:
         except FileNotFoundError:
             return None
 
-
 class HelpersUseStatic:
     @staticmethod
     def encode_image_base64(image_path):
@@ -48,11 +47,33 @@ class HelpersUseStatic:
         except FileNotFoundError:
             return None
 
-
-def to_buffer(
+    @staticmethod
+    def to_buffer(
         response=None,
         filename="default.jpg",
-        return_image_base64=False):
+        return_image_base64=False
+    ):
+        allowed_extensions = (".jpg", ".jpeg", ".png", ".gif")
+        if not filename.lower().endswith(allowed_extensions):
+            return None
+        with open(filename, "wb") as f:
+            if return_image_base64:
+                if not response:
+                    return None
+                try:
+                    decoded_data = base64.b64decode(response)
+                except Exception:
+                    return None
+                f.write(decoded_data)
+            else:
+                f.write(response)
+        return filename
+
+def to_buffer(
+    response=None,
+    filename="default.jpg",
+    return_image_base64=False
+):
     allowed_extensions = (".jpg", ".jpeg", ".png", ".gif")
     if not filename.lower().endswith(allowed_extensions):
         return None
