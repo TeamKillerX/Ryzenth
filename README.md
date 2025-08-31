@@ -112,9 +112,9 @@ Sometimes errors occur, but we are here to help This guide covers some of the mo
 
 - [Terms of service](https://ryzenths.dpdns.org/terms-policy)
 - [Ryzenth Support](https://ryzenths.dpdns.org/contact)
-- [Issues Github](https://github.com/TeamKillerX/Ryzenth/issues)
+- [Github Issues](https://github.com/TeamKillerX/Ryzenth/issues)
 
-- `support@ryzenths.dpdns.org` - [`here`](https://github.com/TeamKillerX/Ryzenth/dev/README.md#contact-support)
+- `support@ryzenths.dpdns.org` - [`here`](https://github.com/TeamKillerX/Ryzenth?tab=readme-ov-file#contact-support)
 
 ## 🏆 Credits Developer
 - **[xtdevs](https://t.me/xtdevs)** - Lead Developer & Creator
