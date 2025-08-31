@@ -113,6 +113,12 @@ class InternalServerGrokError(Exception):
 class InternalServerDeepseekError(Exception):
     pass
 
+class InternalServerOpenaiError(Exception):
+    pass
+
+class InternalServerQwenError(Exception):
+    pass
+
 class InitializeAPIError(Exception):
     pass
 
@@ -254,6 +260,8 @@ __all__ = [
     "InternalServerGeminiError",
     "InternalServerGrokError",
     "InternalServerDeepseekError",
+    "InternalServerQwenError",
+    "InternalServerOpenaiError",
     "InitializeAPIError",
     "InvalidTypeError",
     "AuthenticationError",
