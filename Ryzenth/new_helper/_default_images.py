@@ -23,16 +23,23 @@ from typing import List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError
+from .._errors import (
+    EmptyMessageError,
+    EmptyResponseError,
+    InitializeAPIError,
+    InternalServerError,
+    WhatFuckError,
+)
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
-from ..helper import AutoRetry, Helpers
+from ..helper import AutoRetry, Helpers, HelpersUseStatic
 
 
 class ImagesOrgAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
+        self.request = HelpersUseStatic
         self.logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}")
 
@@ -46,7 +53,7 @@ class ImagesOrgAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -60,7 +67,7 @@ class ImagesOrgAsync:
         timeout: Union[int, float] = 100
     ) -> ResponseResult:
         if not captions or not captions.strip():
-            raise WhatFuckError("Captions cannot be empty")
+            raise EmptyMessageError("Captions cannot be empty")
 
         if not file_path:
             file_path = "default.jpg"
@@ -80,7 +87,7 @@ class ImagesOrgAsync:
                 return ResponseResult(client, response)
         except Exception as e:
             self.logger.error(f"Image vision failed: {e}")
-            raise WhatFuckError(f"Image vision failed: {e}") from e
+            raise InternalServerError(f"Image vision failed: {e}") from e
         finally:
             pass
 
@@ -94,7 +101,7 @@ class ImagesOrgAsync:
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+            raise EmptyMessageError("Prompt cannot be empty")
 
         if not file_path:
             file_path = "default.jpg"
@@ -112,12 +119,42 @@ class ImagesOrgAsync:
                     use_type=ResponseType.JSON
                 )
                 if not response:
-                    raise WhatFuckError(
+                    raise EmptyResponseError(
                         "Empty response from gemini edit image API")
                 return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Gemini Image generation failed: {e}")
-            raise WhatFuckError(f"Gemini Image generation failed: {e}") from e
+            raise InternalServerError(f"Gemini Image generation failed: {e}") from e
+        finally:
+            pass
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def create_openai_and_captions(
+        self,
+        prompt: str,
+        *,
+        timeout: Union[int, float] = 100
+    ) -> GeneratedImageOrVideo:
+        if not prompt or not prompt.strip():
+            raise EmptyMessageError("Prompt cannot be empty")
+
+        try:
+            async with self._get_client() as client:
+                response = await client.get(
+                    tool="ryzenth-v2",
+                    path="/api/v1/openai-imagen/turn-text",
+                    timeout=timeout,
+                    params=client.get_kwargs(input=prompt.strip()),
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from gemini image generation API")
+                return GeneratedImageOrVideo(client=client, content=response)
+        except Exception as e:
+            self.logger.error(f"OpenAI Image generation failed: {e}")
+            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
         finally:
             pass
 
@@ -130,7 +167,7 @@ class ImagesOrgAsync:
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+            raise EmptyMessageError("Prompt cannot be empty")
 
         try:
             async with self._get_client() as client:
@@ -142,12 +179,12 @@ class ImagesOrgAsync:
                     use_type=ResponseType.JSON
                 )
                 if not response:
-                    raise WhatFuckError(
+                    raise EmptyResponseError(
                         "Empty response from gemini image generation API")
                 return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Gemini Image generation failed: {e}")
-            raise WhatFuckError(f"Gemini Image generation failed: {e}") from e
+            raise InternalServerError(f"Gemini Image generation failed: {e}") from e
         finally:
             pass
 
@@ -178,7 +215,7 @@ class ImagesOrgAsync:
             WhatFuckError: If prompt is empty or generation fails
         """
         if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+            raise EmptyMessageError("Prompt cannot be empty")
 
         if not file_path:
             file_path = "default.jpg"
@@ -196,7 +233,7 @@ class ImagesOrgAsync:
                     use_type=ResponseType.IMAGE
                 )
                 if not response_content:
-                    raise WhatFuckError(
+                    raise EmptyResponseError(
                         "Empty response from image generation API")
                 return GeneratedImageOrVideo(
                     client=client,
@@ -206,7 +243,7 @@ class ImagesOrgAsync:
                 )
         except Exception as e:
             self.logger.error(f"Image generation failed: {e}")
-            raise WhatFuckError(f"Image generation failed: {e}") from e
+            raise InternalServerError(f"Image generation failed: {e}") from e
         finally:
             pass
 
@@ -276,10 +313,10 @@ class ImagesOrgAsync:
         import asyncio
 
         if not prompts:
-            raise WhatFuckError("Prompts list cannot be empty")
+            raise EmptyMessageError("Prompts list cannot be empty")
 
         if not all(isinstance(p, str) and p.strip() for p in prompts):
-            raise WhatFuckError("All prompts must be non-empty strings")
+            raise EmptyMessageError("All prompts must be non-empty strings")
 
         file_paths = []
         for i, prompt in enumerate(prompts):
@@ -314,7 +351,7 @@ class ImagesOrgAsync:
                     f"Failed to generate {failed_count} out of {len(prompts)} images")
             return successful_paths
         except Exception as e:
-            raise WhatFuckError(f"Batch image generation failed: {e}") from e
+            raise InternalServerError(f"Batch image generation failed: {e}") from e
 
     async def close(self):
         if self._client:
