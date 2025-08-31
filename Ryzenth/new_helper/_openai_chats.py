@@ -24,7 +24,15 @@ from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyResponseError, WhatFuckError
+from .._errors import (
+    EmptyResponseError,
+    WhatFuckError,
+    InitializeAPIError,
+    EmptyMessageError,
+    BadRequestError,
+    AuthenticationError,
+    InternalServerOpenaiError,
+)
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, HelpersUseStatic
@@ -49,7 +57,7 @@ class ChatsOpenAIAsync:
 
             if not api_key or not isinstance(
                     api_key, str) or not api_key.strip():
-                raise WhatFuckError(
+                raise AuthenticationError(
                     "Missing or invalid API key for openAI client initialization.")
             try:
                 self._client = RyzenthApiClient(
@@ -63,7 +71,7 @@ class ChatsOpenAIAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -79,7 +87,7 @@ class ChatsOpenAIAsync:
         instructions: str = None,
     ) -> ResponseResult:
         if not prompt:
-            raise WhatFuckError("Prompt is Required")
+            raise BadRequestError("Prompt is Required")
 
         try:
             async with self._get_client() as client:
@@ -101,7 +109,7 @@ class ChatsOpenAIAsync:
                 return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"OpenAI chats failed: {e}")
-            raise WhatFuckError(f"OpenAI chats failed: {e}") from e
+            raise InternalServerOpenaiError(f"OpenAI chats failed: {e}") from e
         finally:
             pass
 
