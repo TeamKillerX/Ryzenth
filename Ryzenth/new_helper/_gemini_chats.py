@@ -24,7 +24,14 @@ from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyResponseError, InvalidMessageError, WhatFuckError
+from .._errors import (
+    EmptyResponseError,
+    InvalidMessageError,
+    WhatFuckError,
+    InitializeAPIError,
+    AuthenticationError,
+    InternalServerGeminiError,
+)
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, HelpersUseStatic
@@ -49,7 +56,7 @@ class ChatsGeminiAsync:
 
             if not api_key or not isinstance(
                     api_key, str) or not api_key.strip():
-                raise WhatFuckError(
+                raise AuthenticationError(
                     "Missing or invalid API key for Gemini client initialization.")
             try:
                 self._client = RyzenthApiClient(
@@ -63,7 +70,7 @@ class ChatsGeminiAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -106,7 +113,7 @@ class ChatsGeminiAsync:
                 return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Gemini chats failed: {e}")
-            raise WhatFuckError(f"Gemini chats failed: {e}") from e
+            raise InternalServerGeminiError(f"Gemini chats failed: {e}") from e
         finally:
             pass
 
