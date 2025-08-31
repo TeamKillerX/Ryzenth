@@ -30,7 +30,7 @@ from .._errors import (
     EmptyResponseError,
     InitializeAPIError,
     InternalServerGeminiError,
-    InvalidEmptyErrorz,
+    InvalidEmptyError,
     WhatFuckError,
 )
 from .._export_class import ResponseResult
