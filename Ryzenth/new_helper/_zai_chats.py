@@ -24,7 +24,14 @@ from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyResponseError, InvalidMessageError, WhatFuckError
+from .._errors import (
+    EmptyResponseError,
+    InvalidMessageError,
+    WhatFuckError,
+    AuthenticationError,
+    InitializeAPIError,
+    InternalServerZaiError,
+)
 from .._export_class import ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, HelpersUseStatic
@@ -49,7 +56,7 @@ class ChatsZaiAsync:
 
             if not api_key or not isinstance(
                     api_key, str) or not api_key.strip():
-                raise WhatFuckError(
+                raise AuthenticationError(
                     "Missing or invalid API key for Zai client initialization.")
             try:
                 self._client = RyzenthApiClient(
@@ -65,7 +72,7 @@ class ChatsZaiAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -105,7 +112,7 @@ class ChatsZaiAsync:
                 return ResponseResult(client=client, response=response)
         except Exception as e:
             self.logger.error(f"Zai chats failed: {e}")
-            raise WhatFuckError(f"Zai chats failed: {e}") from e
+            raise InternalServerZaiError(f"Zai chats failed: {e}") from e
         finally:
             pass
 
