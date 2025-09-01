@@ -1,5 +1,3 @@
-# Ryzenth Library
-
 <img src="public/IMG_20250902_023801_062.jpg">
 
 <p align="center">
