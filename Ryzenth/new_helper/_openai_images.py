@@ -23,7 +23,15 @@ from typing import Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import EmptyResponseError, WhatFuckError
+from .._errors import (
+    WhatFuckError,
+    InitializeAPIError,
+    AuthenticationError,
+    InvalidMessageError,
+    EmptyMessageError,
+    InternalServerOpenaiError,
+    EmptyResponseError,
+)
 from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
 from ..helper import AutoRetry
@@ -45,7 +53,7 @@ class ImagesOpenAIAsync:
 
             if not api_key or not isinstance(
                     api_key, str) or not api_key.strip():
-                raise WhatFuckError(
+                raise AuthenticationError(
                     "Missing or invalid API key for openAI client initialization.")
             try:
                 self._client = RyzenthApiClient(
@@ -60,7 +68,7 @@ class ImagesOpenAIAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -74,7 +82,7 @@ class ImagesOpenAIAsync:
         model: str = "gpt-image-1",
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty")
+            raise EmptyMessageError("Prompt cannot be empty")
 
         try:
             async with self._get_client() as client:
@@ -94,7 +102,7 @@ class ImagesOpenAIAsync:
                 return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Openai image generation failed: {e}")
-            raise WhatFuckError(f"Openai image generation failed: {e}") from e
+            raise InternalServerOpenaiError(f"Openai image generation failed: {e}") from e
         finally:
             pass
 
