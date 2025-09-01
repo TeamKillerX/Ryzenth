@@ -24,13 +24,13 @@ from typing import Union
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import (
-    WhatFuckError,
-    InitializeAPIError,
     AuthenticationError,
-    InvalidMessageError,
     EmptyMessageError,
-    InternalServerError,
     EmptyResponseError,
+    InitializeAPIError,
+    InternalServerError,
+    InvalidMessageError,
+    WhatFuckError,
 )
 from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
