@@ -145,7 +145,7 @@ class ImagesOrgAsync:
                     tool="ryzenth-v2",
                     path="/api/v1/openai-imagen",
                     timeout=timeout,
-                    json={"input": prompt},
+                    json={"input": prompt.strip()},
                     use_type=ResponseType.JSON
                 )
                 if not response:
@@ -175,7 +175,7 @@ class ImagesOrgAsync:
                     tool="ryzenth-v2",
                     path="/api/v1/openai-imagen/turn-text",
                     timeout=timeout,
-                    json={"input": prompt},
+                    json={"input": prompt.strip()},
                     use_type=ResponseType.JSON
                 )
                 if not response:
