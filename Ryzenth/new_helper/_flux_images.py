@@ -23,16 +23,25 @@ from typing import Union
 
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
-from .._errors import WhatFuckError
+from .._errors import (
+    AuthenticationError,
+    EmptyMessageError,
+    EmptyResponseError,
+    InitializeAPIError,
+    InternalServerError,
+    InvalidMessageError,
+    WhatFuckError,
+)
 from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
-from ..helper import AutoRetry
+from ..helper import AutoRetry, HelpersUseStatic
 
 
 class ImagesFluxAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
+        self.request = HelpersUseStatic
         self.logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}")
 
@@ -45,7 +54,7 @@ class ImagesFluxAsync:
 
             if not api_key or not isinstance(
                     api_key, str) or not api_key.strip():
-                raise WhatFuckError(
+                raise AuthenticationError(
                     "Missing or invalid API key for Flux client initialization.")
             try:
                 self._client = RyzenthApiClient(
@@ -61,7 +70,7 @@ class ImagesFluxAsync:
                     use_default_headers=True
                 )
             except Exception as e:
-                raise WhatFuckError(
+                raise InitializeAPIError(
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
@@ -74,9 +83,9 @@ class ImagesFluxAsync:
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not isinstance(prompt, str):
-            raise WhatFuckError("Prompt must be a string")
+            raise InvalidMessageError("Prompt must be a string")
         if not prompt.strip():
-            raise WhatFuckError("Prompt cannot be empty or whitespace only")
+            raise EmptyMessageError("Prompt cannot be empty or whitespace only")
 
         try:
             async with self._get_client() as client:
@@ -88,12 +97,12 @@ class ImagesFluxAsync:
                     use_type=ResponseType.JSON
                 )
                 if not response:
-                    raise WhatFuckError(
+                    raise EmptyResponseError(
                         "Empty response from image generation API")
                 return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"Flux image generation failed: {e}")
-            raise WhatFuckError(f"Flux image generation failed: {e}") from e
+            raise InternalServerError(f"Flux image generation failed: {e}") from e
         finally:
             pass
 

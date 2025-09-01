@@ -130,6 +130,36 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
+    async def create_openai(
+        self,
+        prompt: str,
+        *,
+        timeout: Union[int, float] = 100
+    ) -> GeneratedImageOrVideo:
+        if not prompt or not prompt.strip():
+            raise EmptyMessageError("Prompt cannot be empty")
+
+        try:
+            async with self._get_client() as client:
+                response = await client.get(
+                    tool="ryzenth-v2",
+                    path="/api/v1/openai-imagen",
+                    timeout=timeout,
+                    params=client.get_kwargs(input=prompt.strip()),
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from OpenAI image generation API")
+                return GeneratedImageOrVideo(client=client, content=response)
+        except Exception as e:
+            self.logger.error(f"OpenAI Image generation failed: {e}")
+            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+        finally:
+            pass
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def create_openai_and_captions(
         self,
         prompt: str,
@@ -150,7 +180,7 @@ class ImagesOrgAsync:
                 )
                 if not response:
                     raise EmptyResponseError(
-                        "Empty response from gemini image generation API")
+                        "Empty response from OpenAI image generation API")
                 return GeneratedImageOrVideo(client=client, content=response)
         except Exception as e:
             self.logger.error(f"OpenAI Image generation failed: {e}")
