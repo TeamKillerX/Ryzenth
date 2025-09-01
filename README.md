@@ -1,5 +1,12 @@
 # Ryzenth Library
 
+<p align="center">
+  <a aria-label="Ryzenth logo" href="https://ryzenths.dpdns.org">
+    <img src="https://badgen.net/badge/icon/Made%20by%20Ryzenth?icon=terminal&label&color=black&labelColor=black">
+  </a>
+  <br/>
+</p>
+
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/TeamKillerX/Ryzenth)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green)](https://github.com/TeamKillerX/Ryzenth/graphs/commit-activity)
 [![License](https://img.shields.io/badge/License-MIT-pink)](https://github.com/TeamKillerX/Ryzenth/blob/dev/LICENSE)
