@@ -141,11 +141,11 @@ class ImagesOrgAsync:
 
         try:
             async with self._get_client() as client:
-                response = await client.get(
+                response = await client.post(
                     tool="ryzenth-v2",
                     path="/api/v1/openai-imagen",
                     timeout=timeout,
-                    params=client.get_kwargs(input=prompt.strip()),
+                    json={"input": prompt},
                     use_type=ResponseType.JSON
                 )
                 if not response:
@@ -171,11 +171,11 @@ class ImagesOrgAsync:
 
         try:
             async with self._get_client() as client:
-                response = await client.get(
+                response = await client.post(
                     tool="ryzenth-v2",
                     path="/api/v1/openai-imagen/turn-text",
                     timeout=timeout,
-                    params=client.get_kwargs(input=prompt.strip()),
+                    json={"input": prompt},
                     use_type=ResponseType.JSON
                 )
                 if not response:
