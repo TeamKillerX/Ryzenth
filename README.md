@@ -18,11 +18,11 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 [![Ryzenth - Version](https://img.shields.io/pypi/v/Ryzenth?style=round)](https://pypi.org/project/Ryzenth)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/Ryzenth/dev.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/Ryzenth/dev)
+[![github.workflows](https://github.com/TeamKillerX/Ryzenth/actions/workflows/async-tests.yml/badge.svg)](https://github.com/TeamKillerX/Ryzenth/workflows/)
 
 
 <div align="center">
     <a href="https://pepy.tech/project/Ryzenth"><img src="https://static.pepy.tech/badge/Ryzenth" alt="Downloads"></a>
-    <a href="https://github.com/TeamKillerX/Ryzenth/workflows/"><img src="https://github.com/TeamKillerX/Ryzenth/actions/workflows/async-tests.yml/badge.svg" alt="API Tests"/></a>
 </div>
 
 ---
@@ -122,7 +122,7 @@ Sometimes errors occur, but we are here to help This guide covers some of the mo
 
 - `support@ryzenths.dpdns.org` - [`here`](https://github.com/TeamKillerX/Ryzenth?tab=readme-ov-file#contact-support)
 
-## Credits Developer (Solo Dev)
+## Credits Developer
 - **[xtdevs](https://t.me/xtdevs)** - Lead Developer & Creator
 - **[Ryzenth V2](https://ryzenths.dpdns.org)** - Ryzenth TypeScript Author @xtsea
 - **TeamKillerX** - Author @xtsea
@@ -134,22 +134,10 @@ Sometimes errors occur, but we are here to help This guide covers some of the mo
 - You can ask to **contact support** [@zxyeor](https://t.me/zxyeor) via telegram
 ---
 
-## 📄 License
+## License
 
 **MIT License © 2025 Ryzenth Developers from TeamKillerX**
 
 This project is open source and available under the [MIT License](https://github.com/TeamKillerX/Ryzenth/blob/dev/LICENSE).
 
 ---
-
-<div align="center">
-
-### 🌟 Star us on GitHub if you find this project useful!
-
-[![GitHub stars](https://img.shields.io/github/stars/TeamKillerX/Ryzenth?style=social)](https://github.com/TeamKillerX/Ryzenth)
-[![GitHub forks](https://img.shields.io/github/forks/TeamKillerX/Ryzenth?style=social)](https://github.com/TeamKillerX/Ryzenth/fork)
-[![GitHub watchers](https://img.shields.io/github/watchers/TeamKillerX/Ryzenth?style=social)](https://github.com/TeamKillerX/Ryzenth)
-
-**Made with ❤️ by the Ryzenth Solo Dev**
-
-</div>
