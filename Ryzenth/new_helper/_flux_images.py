@@ -34,13 +34,14 @@ from .._errors import (
 )
 from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
-from ..helper import AutoRetry
+from ..helper import AutoRetry, HelpersUseStatic
 
 
 class ImagesFluxAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
+        self.request = HelpersUseStatic
         self.logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}")
 
