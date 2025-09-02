@@ -164,6 +164,7 @@ class ImagesOrgAsync:
         self,
         prompt: str,
         *,
+        enabled_format_url: bool = False,
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
@@ -175,7 +176,10 @@ class ImagesOrgAsync:
                     tool="ryzenth-v2",
                     path="/api/v1/openai-imagen/turn-text",
                     timeout=timeout,
-                    json={"input": prompt.strip()},
+                    json={
+                        "input": prompt.strip(),
+                        "enabled_format_url": enabled_format_url
+                    },
                     use_type=ResponseType.JSON
                 )
                 if not response:
