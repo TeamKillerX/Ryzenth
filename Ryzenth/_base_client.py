@@ -19,18 +19,18 @@
 
 import base64
 import logging
-import aiohttp
 from os import environ
 from typing import Union
 
+import aiohttp
 from box import Box
 
 from ._asynchisded import RyzenthOrg, RyzenthXAsync
 from ._errors import WhatFuckError
 from ._shared import UNKNOWN_TEST
-from .types import MakeFetch
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
+from .types import MakeFetch
 
 
 class RyzenthTools:
