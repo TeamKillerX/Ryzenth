@@ -57,7 +57,7 @@ class ChatsHuggingFaceAsync:
             if not api_key or not isinstance(
                     api_key, str) or not api_key.strip():
                 raise AuthenticationError(
-                    "Missing or invalid API key for Deepseek client initialization.")
+                    "Missing or invalid API key for Hugging Face client initialization.")
             try:
                 self._client = RyzenthApiClient(
                     tools_name=["hugging"],
