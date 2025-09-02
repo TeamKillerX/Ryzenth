@@ -1,0 +1,124 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Copyright 2019-2025 (c) Randy W @xtdevs, @xtsea
+#
+# from : https://github.com/TeamKillerX
+# Channel : @RendyProjects
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+import logging
+import os
+from typing import Dict, List, Union
+
+from .._benchmark import Benchmark
+from .._client import RyzenthApiClient
+from .._errors import (
+    AuthenticationError,
+    EmptyResponseError,
+    InitializeAPIError,
+    InternalServerChatsHuggingFaceError,
+    InvalidMessageError,
+    WhatFuckError,
+)
+from .._export_class import ResponseResult
+from ..enums import ResponseType
+from ..helper import AutoRetry, HelpersUseStatic
+from ._models import RyzenthMessage
+
+
+class ChatsHuggingFaceAsync:
+    def __init__(self, parent):
+        self.parent = parent
+        self._client = None
+        self.msg = RyzenthMessage
+        self.file = HelpersUseStatic
+        self.logger = logging.getLogger(
+            f"{__name__}.{self.__class__.__name__}")
+
+    def _get_client(self) -> RyzenthApiClient:
+        if self._client is None:
+            api_key = getattr(
+                self.parent,
+                "_api_key",
+                None) or os.environ.get("HUGGING_API_KEY")
+
+            if not api_key or not isinstance(
+                    api_key, str) or not api_key.strip():
+                raise AuthenticationError(
+                    "Missing or invalid API key for Hugging Face client initialization.")
+            try:
+                self._client = RyzenthApiClient(
+                    tools_name=["hugging"],
+                    api_key={"hugging": [
+                        {
+                            "Authorization": f"Bearer {api_key}",
+                            "Content-Type": "application/json"
+                        }
+                    ]},
+                    rate_limit=100,
+                    use_default_headers=True
+                )
+            except Exception as e:
+                raise InitializeAPIError(
+                    f"Failed to initialize API client: {e}") from e
+        return self._client
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def ask(
+        self,
+        messages: List[Dict],
+        *,
+        timeout: Union[int, float] = 100,
+        provider_server: str = "fireworks-ai",
+        model: str = "deepseek-ai/DeepSeek-V3.1",
+        stream: bool = False
+    ) -> ResponseResult:
+        if not isinstance(messages, list) or not messages:
+            raise InvalidMessageError("Messages must be a non-empty list")
+
+        try:
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="hugging",
+                    path="/v1/chat/completions",
+                    timeout=timeout,
+                    json={
+                        "model": f"{model}:{provider_server}",
+                        "messages": messages,
+                        "stream": stream
+                    },
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from chat completion API")
+                return ResponseResult(client=client, response=response)
+        except Exception as e:
+            self.logger.error(f"Hugging Face chats failed: {e}")
+            raise InternalServerChatsHuggingFaceError(f"Hugging Face failed: {e}") from e
+        finally:
+            pass
+
+    async def close(self):
+        if self._client:
+            await self._client.close()
+            self._client = None
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()

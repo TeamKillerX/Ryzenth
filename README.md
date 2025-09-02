@@ -99,7 +99,7 @@ print(await results.to_dict())
 - [x] Cloudflare
 - [x] Qwen
 - [x] Zai
-- [ ] Hugging Face
+- [x] Hugging Face
 - [x] Kimi AI
 - [x] GPT oss
 - [x] Meta Llama

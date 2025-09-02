@@ -122,6 +122,9 @@ class InternalServerQwenError(Exception):
 class InternalServerZaiError(Exception):
     pass
 
+class InternalServerChatsHuggingFaceError(Exception):
+    pass
+
 class InitializeAPIError(Exception):
     pass
 
@@ -266,6 +269,7 @@ __all__ = [
     "InternalServerQwenError",
     "InternalServerOpenaiError",
     "InternalServerZaiError",
+    "InternalServerChatsHuggingFaceError",
     "InitializeAPIError",
     "InvalidTypeError",
     "AuthenticationError",

@@ -22,6 +22,7 @@ import logging
 from os import environ
 from typing import Union
 
+import aiohttp
 from box import Box
 
 from ._asynchisded import RyzenthOrg, RyzenthXAsync
@@ -29,6 +30,7 @@ from ._errors import WhatFuckError
 from ._shared import UNKNOWN_TEST
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
+from .types import MakeFetch
 
 
 class RyzenthTools:
@@ -186,3 +188,34 @@ def create_tools_client() -> RyzenthTools:
 
 def convert_to_dot(obj) -> Box:
     return FromConvertDot(obj).to_dot()
+
+async def _process_response(response, evaluate=None, return_json=False, return_json_and_obj=False, return_content=False, head=False, object_flag=False):
+    if evaluate:
+        return await evaluate(response)
+    if return_json:
+        return await response.json()
+    if return_json_and_obj:
+        return Box(await response.json() or {})
+    if return_content:
+        return await response.read()
+    return response if head or object_flag else await response.text()
+
+async def fetch(fetch_params: MakeFetch, *args, **kwargs):
+    return await simple_fetch(fetch_params, *args, **kwargs)
+
+async def simple_fetch(fetch: MakeFetch, *args, **kwargs):
+    if aiohttp:
+        async with aiohttp.ClientSession(headers=fetch.headers) as session:
+            method = session.head if fetch.head else (session.post if fetch.post else session.get)
+            async with method(fetch.url, *args, **kwargs) as response:
+                return await _process_response(
+                    response,
+                    evaluate=fetch.evaluate,
+                    return_json=fetch.return_json,
+                    return_json_and_obj=fetch.return_json_and_obj,
+                    return_content=fetch.return_content,
+                    head=fetch.head,
+                    object_flag=fetch.object_flag,
+                )
+    else:
+        raise DependencyMissingError("Install 'aiohttp' required") # type: ignore
