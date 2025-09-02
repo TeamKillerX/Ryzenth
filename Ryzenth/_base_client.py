@@ -28,6 +28,7 @@ from box import Box
 from ._asynchisded import RyzenthOrg, RyzenthXAsync
 from ._errors import WhatFuckError
 from ._shared import UNKNOWN_TEST
+from .types import MakeFetch
 from ._synchisded import RyzenthXSync
 from .helper import Decorators
 
