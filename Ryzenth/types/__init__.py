@@ -18,7 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-from typing import Any, Optional, Callable
+from typing import Any, Callable, Optional
 
 from pydantic import BaseModel, Field
 
