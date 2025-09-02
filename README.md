@@ -1,4 +1,4 @@
-<img src="public/IMG_20250902_023801_062.jpg">
+<img src="https://cdn.ryzenths.dpdns.org/ryzenth.jpg">
 
 <p align="center">
   <a aria-label="Ryzenth logo" href="https://ryzenths.dpdns.org">
