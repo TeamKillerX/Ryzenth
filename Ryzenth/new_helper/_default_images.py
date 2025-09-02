@@ -164,7 +164,7 @@ class ImagesOrgAsync:
         self,
         prompt: str,
         *,
-        enabled_format_url: bool = False,
+        enabled_format_url: str = "false",
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
