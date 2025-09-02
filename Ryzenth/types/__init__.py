@@ -55,11 +55,11 @@ class RequestHumanizer(BaseModel):
 
 class MakeFetch(BaseModel):
     url: str
-    post: Optional[bool] = False
-    head: Optional[bool] = False
+    post: bool = False
+    head: bool = False
     headers: Optional[dict] = None
-    evaluate: Optional[str] = None
-    object_flag: Optional[bool] = False
-    return_json: Optional[bool] = False
-    return_content: Optional[bool] = False
-    return_json_and_obj: Optional[bool] = False
+    evaluate: Optional[Callable] = None
+    object_flag: bool = False
+    return_json: bool = False
+    return_content: bool = False
+    return_json_and_obj: bool = False
