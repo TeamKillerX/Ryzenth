@@ -52,3 +52,14 @@ class RequestHumanizer(BaseModel):
     writing_style: str
     author_id: str
     timestamp: str
+
+class MakeFetch(BaseModel):
+    url: str
+    post: Optional[bool] = False
+    head: Optional[bool] = False
+    headers: Optional[dict] = None
+    evaluate: Optional[str] = None
+    object_flag: Optional[bool] = False
+    return_json: Optional[bool] = False
+    return_content: Optional[bool] = False
+    return_json_and_obj: Optional[bool] = False
