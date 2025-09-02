@@ -22,7 +22,8 @@ TOOL_DOMAIN_MAP = {
     "gemini": "https://generativelanguage.googleapis.com/v1beta",
     "gemini-openai": "https://generativelanguage.googleapis.com/v1beta/openai",
     "zai": "https://api.z.ai",
-    "flux": "https://api.bfl.ai"
+    "flux": "https://api.bfl.ai",
+    "hugging": "https://router.huggingface.co"
 }
 
 ### -------------AI-----------------###
