@@ -160,6 +160,36 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
+    async def create_openai_to_ghibli_edit(
+        self,
+        file_path: str,
+        *,
+        timeout: Union[int, float] = 100
+    ) -> GeneratedImageOrVideo:
+        if not file_path:
+            file_path = "default.jpg"
+
+        try:
+            async with self._get_client() as client:
+                response = await client.post(
+                    tool="ryzenth-v2",
+                    path="/api/v1/openai-imagen/edit-image/ghibli",
+                    timeout=timeout,
+                    json={"base64Image": Helpers.encode_image_base64(file_path)},
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from OpenAI image generation API")
+                return GeneratedImageOrVideo(client=client, content=response)
+        except Exception as e:
+            self.logger.error(f"OpenAI Image generation failed: {e}")
+            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+        finally:
+            pass
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
     async def create_openai_and_captions(
         self,
         prompt: str,
