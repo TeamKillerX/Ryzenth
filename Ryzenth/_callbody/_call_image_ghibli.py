@@ -55,7 +55,7 @@ class ImagesGhibliFromOpenAI:
             async with self.parent._get_client() as client:
                 response = await client.post(
                     tool="ryzenth-v2",
-                    path="/api/v1/openai-imagen/edit-image/ghibli",
+                    path="/api/v1/ghibli/edit",
                     timeout=timeout,
                     json={
                         "base64Image": Helpers.encode_image_base64(file_path),
