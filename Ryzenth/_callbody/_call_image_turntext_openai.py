@@ -32,7 +32,7 @@ class ImagesTurnTextOpenAI:
         self.parent = parent
 
     @property
-    def _and(self):
+    def and_chain(self):
         return self
 
     @property
