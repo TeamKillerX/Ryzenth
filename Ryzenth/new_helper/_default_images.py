@@ -24,6 +24,7 @@ from typing import List, Union
 from .._benchmark import Benchmark
 from .._client import RyzenthApiClient
 from .._errors import (
+    BadRequestError,
     EmptyMessageError,
     EmptyResponseError,
     InitializeAPIError,
@@ -160,14 +161,15 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_openai_to_ghibli_edit(
+    async def create_ghibli_to_edit(
         self,
         file_path: str,
         *,
+        style: str = "ghibli.default",
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not file_path:
-            file_path = "default.jpg"
+            raise BadRequestError("Required file_path")
 
         try:
             async with self._get_client() as client:
