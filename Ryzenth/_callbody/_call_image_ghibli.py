@@ -26,12 +26,10 @@ from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
 
-
 class GhibliImageGenerator:
     ALLOWED_STYLES = [
         "mononoke", "totoro", "spiritedaway", "howl", "ponyo", "kiki"
     ]
-
     def __init__(self, parent, style: str):
         if style not in self.ALLOWED_STYLES:
             raise ValueError(
@@ -68,60 +66,9 @@ class GhibliImageGenerator:
                     use_type=ResponseType.JSON
                 )
                 if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
+                    raise EmptyResponseError("Empty response from Ghibli API")
                 return GeneratedImageOrVideo(client=client, content=response)
 
         except Exception as e:
-            self.parent.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(
-                f"OpenAI Image generation failed: {e}"
-            ) from e
-
-class GhibliMononoke:
-    def __init__(self, parent):
-        self.parent = parent
-
-    @property
-    def run(self):
-        return GhibliImageGenerator(self.parent, style="mononoke")
-
-class GhibliTotoro:
-    def __init__(self, parent):
-        self.parent = parent
-
-    @property
-    def run(self):
-        return GhibliImageGenerator(self.parent, style="totoro")
-
-class GhibliSpiritedAway:
-    def __init__(self, parent):
-        self.parent = parent
-
-    @property
-    def run(self):
-        return GhibliImageGenerator(self.parent, style="spirited_away")
-
-class GhibliKiki:
-    def __init__(self, parent):
-        self.parent = parent
-
-    @property
-    def run(self):
-        return GhibliImageGenerator(self.parent, style="kiki")
-
-class GhibliDefault:
-    def __init__(self, parent):
-        self.parent = parent
-
-    @property
-    def run(self):
-        return GhibliImageGenerator(self.parent, style="default")
-
-class GhibliHowl:
-    def __init__(self, parent):
-        self.parent = parent
-
-    @property
-    def run(self):
-        return GhibliImageGenerator(self.parent, style="howl")
+            self.parent.logger.error(f"Ghibli image generation failed: {e}")
+            raise InternalServerError(f"Ghibli image generation failed: {e}") from e
