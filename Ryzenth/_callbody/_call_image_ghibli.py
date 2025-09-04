@@ -18,7 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Union
-
+import logging
 from .._benchmark import Benchmark
 from .._errors import BadRequestError, EmptyResponseError, InternalServerError
 from .._export_class import GeneratedImageOrVideo
