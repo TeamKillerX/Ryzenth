@@ -14,6 +14,7 @@ from ._qwen_chats import ChatsQwenAsync
 from ._qwen_images import ImagesQwenAsync
 from ._qwen_videos import VideosQwenAsync
 from ._zai_chats import ChatsZaiAsync
+from ._ghibli_images import GhibliOrgAsync
 
 __all__ = [
     "ChatOrgAsync",
@@ -31,6 +32,7 @@ __all__ = [
     "ImagesOpenAIAsync",
     "ImagesFluxAsync",
     "VideosQwenAsync",
+    "GhibliOrgAsync"
 ]
 
 __author__ = "Randy W @xtdevs, @xtsea"
