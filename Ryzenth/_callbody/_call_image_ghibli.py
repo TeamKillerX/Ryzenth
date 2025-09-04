@@ -27,9 +27,18 @@ from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
 
 
-class GhibliMononoke:
-    def __init__(self, parent):
+class GhibliImageGenerator:
+    ALLOWED_STYLES = [
+        "mononoke", "totoro", "spiritedaway", "howl", "ponyo", "kiki"
+    ]
+
+    def __init__(self, parent, style: str):
+        if style not in self.ALLOWED_STYLES:
+            raise ValueError(
+                f"Invalid style '{style}'. Allowed styles are: {', '.join(self.ALLOWED_STYLES)}"
+            )
         self.parent = parent
+        self.style = style
 
     @property
     def run(self):
@@ -54,7 +63,7 @@ class GhibliMononoke:
                     timeout=timeout,
                     json={
                         "base64Image": Helpers.encode_image_base64(file_path),
-                        "style": "ghibli.mononoke"
+                        "style": f"ghibli.{self.style}",
                     },
                     use_type=ResponseType.JSON
                 )
@@ -62,9 +71,20 @@ class GhibliMononoke:
                     raise EmptyResponseError(
                         "Empty response from OpenAI image generation API")
                 return GeneratedImageOrVideo(client=client, content=response)
+
         except Exception as e:
             self.parent.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+            raise InternalServerError(
+                f"OpenAI Image generation failed: {e}"
+            ) from e
+
+class GhibliMononoke:
+    def __init__(self, parent):
+        self.parent = parent
+
+    @property
+    def run(self):
+        return GhibliImageGenerator(self.parent, style="mononoke")
 
 class GhibliTotoro:
     def __init__(self, parent):
@@ -72,38 +92,7 @@ class GhibliTotoro:
 
     @property
     def run(self):
-        return self
-
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def __call__(
-        self,
-        file_path: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not file_path:
-            raise BadRequestError("Required file_path")
-
-        try:
-            async with self.parent._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/ghibli/edit",
-                    timeout=timeout,
-                    json={
-                        "base64Image": Helpers.encode_image_base64(file_path),
-                        "style": "ghibli.totoro"
-                    },
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.parent.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+        return GhibliImageGenerator(self.parent, style="totoro")
 
 class GhibliSpiritedAway:
     def __init__(self, parent):
@@ -111,38 +100,7 @@ class GhibliSpiritedAway:
 
     @property
     def run(self):
-        return self
-
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def __call__(
-        self,
-        file_path: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not file_path:
-            raise BadRequestError("Required file_path")
-
-        try:
-            async with self.parent._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/ghibli/edit",
-                    timeout=timeout,
-                    json={
-                        "base64Image": Helpers.encode_image_base64(file_path),
-                        "style": "ghibli.spirited_away"
-                    },
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.parent.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+        return GhibliImageGenerator(self.parent, style="spirited_away")
 
 class GhibliKiki:
     def __init__(self, parent):
@@ -150,38 +108,7 @@ class GhibliKiki:
 
     @property
     def run(self):
-        return self
-
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def __call__(
-        self,
-        file_path: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not file_path:
-            raise BadRequestError("Required file_path")
-
-        try:
-            async with self.parent._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/ghibli/edit",
-                    timeout=timeout,
-                    json={
-                        "base64Image": Helpers.encode_image_base64(file_path),
-                        "style": "ghibli.kiki"
-                    },
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.parent.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+        return GhibliImageGenerator(self.parent, style="kiki")
 
 class GhibliDefault:
     def __init__(self, parent):
@@ -189,38 +116,7 @@ class GhibliDefault:
 
     @property
     def run(self):
-        return self
-
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def __call__(
-        self,
-        file_path: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not file_path:
-            raise BadRequestError("Required file_path")
-
-        try:
-            async with self.parent._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/ghibli/edit",
-                    timeout=timeout,
-                    json={
-                        "base64Image": Helpers.encode_image_base64(file_path),
-                        "style": "ghibli.default"
-                    },
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.parent.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+        return GhibliImageGenerator(self.parent, style="default")
 
 class GhibliHowl:
     def __init__(self, parent):
@@ -228,35 +124,4 @@ class GhibliHowl:
 
     @property
     def run(self):
-        return self
-
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def __call__(
-        self,
-        file_path: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not file_path:
-            raise BadRequestError("Required file_path")
-
-        try:
-            async with self.parent._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/ghibli/edit",
-                    timeout=timeout,
-                    json={
-                        "base64Image": Helpers.encode_image_base64(file_path),
-                        "style": "ghibli.howl"
-                    },
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.parent.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+        return GhibliImageGenerator(self.parent, style="howl")
