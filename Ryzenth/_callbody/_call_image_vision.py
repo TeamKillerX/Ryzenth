@@ -18,11 +18,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Union
-from .._errors import EmptyMessageError, InternalServerError
+
 from .._benchmark import Benchmark
-from ..enums import ResponseType
+from .._errors import EmptyMessageError, InternalServerError
 from .._export_class import ResponseResult
+from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
+
 
 class ImagesVision:
     def __init__(self, parent):

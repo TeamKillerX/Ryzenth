@@ -18,11 +18,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Union
-from .._errors import BadRequestError, InternalServerError, EmptyResponseError
+
 from .._benchmark import Benchmark
-from ..enums import ResponseType
+from .._errors import BadRequestError, EmptyResponseError, InternalServerError
 from .._export_class import GeneratedImageOrVideo
+from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
+
 
 class ImagesGhibliFromOpenAI:
     def __init__(self, parent):
