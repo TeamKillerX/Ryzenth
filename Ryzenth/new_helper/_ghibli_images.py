@@ -32,6 +32,7 @@ class GhibliOrgAsync:
         self._styles = [
             "totoro",
             "mononoke",
+            "default",
             "spirited_away",
             "howls_castle",
             "kiki_delivery",
