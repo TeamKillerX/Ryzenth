@@ -31,6 +31,7 @@ from .._errors import (
     InternalServerError,
     WhatFuckError,
 )
+from .._callbody import ImagesVision
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers, HelpersUseStatic
@@ -58,39 +59,9 @@ class ImagesOrgAsync:
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_upload_to_ask(
-        self,
-        captions: str,
-        file_path: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> ResponseResult:
-        if not captions or not captions.strip():
-            raise EmptyMessageError("Captions cannot be empty")
-
-        if not file_path:
-            file_path = "default.jpg"
-
-        try:
-            async with self._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/openai-v2/image-vision",
-                    timeout=timeout,
-                    json={
-                        "input": captions,
-                        "base64Image": Helpers.encode_image_base64(file_path)
-                    },
-                    use_type=ResponseType.JSON
-                )
-                return ResponseResult(client, response)
-        except Exception as e:
-            self.logger.error(f"Image vision failed: {e}")
-            raise InternalServerError(f"Image vision failed: {e}") from e
-        finally:
-            pass
+    @property
+    def vision_create(self):
+        return ImagesVision(self)
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
