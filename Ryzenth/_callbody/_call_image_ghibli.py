@@ -61,7 +61,10 @@ class ImagesGhibliFromOpenAI:
                     tool="ryzenth-v2",
                     path="/api/v1/openai-imagen/edit-image/ghibli",
                     timeout=timeout,
-                    json={"base64Image": Helpers.encode_image_base64(file_path)},
+                    json={
+                        "base64Image": Helpers.encode_image_base64(file_path),
+                        "style": style
+                    },
                     use_type=ResponseType.JSON
                 )
                 if not response:
