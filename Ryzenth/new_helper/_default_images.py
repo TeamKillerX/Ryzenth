@@ -24,7 +24,6 @@ from typing import List, Union
 from .._benchmark import Benchmark
 from .._callbody import (
     ImagesGeminiEdit,
-    ImagesGhibliFromOpenAI,
     ImagesOpenAI,
     ImagesTurnTextGemini,
     ImagesTurnTextOpenAI,
@@ -77,10 +76,6 @@ class ImagesOrgAsync:
     @property
     def openai(self):
         return ImagesOpenAI(self)
-
-    @property
-    def ghibli(self):
-        return ImagesGhibliFromOpenAI(self)
 
     @property
     def same_openai(self):
