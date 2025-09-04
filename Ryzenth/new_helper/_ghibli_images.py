@@ -25,7 +25,8 @@ from ..helper import HelpersUseStatic
 
 
 class GhibliOrgAsync:
-    def __init__(self):
+    def __init__(self, parent):
+        self.parent = parent
         self._client = None
         self.request = HelpersUseStatic
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
