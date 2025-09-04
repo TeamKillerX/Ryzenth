@@ -29,7 +29,7 @@ class ImagesOpenAI:
         self.parent = parent
 
     @property
-    def openai(self):
+    def run(self):
         return self
 
     @Benchmark.performance(level=logging.DEBUG)
