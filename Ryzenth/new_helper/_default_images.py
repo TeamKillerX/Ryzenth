@@ -31,7 +31,12 @@ from .._errors import (
     InternalServerError,
     WhatFuckError,
 )
-from .._callbody import ImagesVision, ImagesGeminiEdit, ImagesOpenAI
+from .._callbody import (
+    ImagesVision,
+    ImagesGeminiEdit,
+    ImagesOpenAI,
+    ImagesGhibliFromOpenAI
+)
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers, HelpersUseStatic
@@ -71,36 +76,9 @@ class ImagesOrgAsync:
     def openai_create(self):
         return ImagesOpenAI(self)
 
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_ghibli_to_edit(
-        self,
-        file_path: str,
-        *,
-        style: str = "ghibli.default",
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not file_path:
-            raise BadRequestError("Required file_path")
-
-        try:
-            async with self._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/openai-imagen/edit-image/ghibli",
-                    timeout=timeout,
-                    json={"base64Image": Helpers.encode_image_base64(file_path)},
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
-        finally:
-            pass
+    @property
+    def ghibli_create(self):
+        return ImagesGhibliFromOpenAI(self)
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
