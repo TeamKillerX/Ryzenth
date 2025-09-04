@@ -20,6 +20,7 @@
 from typing import Union
 from .._errors import EmptyMessageError, InternalServerError
 from .._benchmark import Benchmark
+from ..enums import ResponseType
 from .._export_class import ResponseResult
 from ..helper import AutoRetry, Helpers
 
