@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+
 from .._callbody import ImagesGhibliFromOpenAI
 from .._client import RyzenthApiClient
 from ..helper import HelpersUseStatic
