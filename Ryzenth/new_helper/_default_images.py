@@ -83,11 +83,11 @@ class ImagesOrgAsync:
         return ImagesGhibliFromOpenAI(self)
 
     @property
-    def openait_create(self):
+    def openai_turntext(self):
         return ImagesTurnTextOpenAI(self)
 
     @property
-    def geminit_create(self):
+    def gemini_turntext(self):
         return ImagesTurnTextGemini(self)
 
     @Benchmark.performance(level=logging.DEBUG)
