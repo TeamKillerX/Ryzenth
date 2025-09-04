@@ -22,6 +22,14 @@ import os
 from typing import List, Union
 
 from .._benchmark import Benchmark
+from .._callbody import (
+    ImagesGeminiEdit,
+    ImagesGhibliFromOpenAI,
+    ImagesOpenAI,
+    ImagesTurnTextGemini,
+    ImagesTurnTextOpenAI,
+    ImagesVision,
+)
 from .._client import RyzenthApiClient
 from .._errors import (
     BadRequestError,
@@ -58,201 +66,29 @@ class ImagesOrgAsync:
                     f"Failed to initialize API client: {e}") from e
         return self._client
 
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_upload_to_ask(
-        self,
-        captions: str,
-        file_path: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> ResponseResult:
-        if not captions or not captions.strip():
-            raise EmptyMessageError("Captions cannot be empty")
+    @property
+    def vision_create(self):
+        return ImagesVision(self)
 
-        if not file_path:
-            file_path = "default.jpg"
+    @property
+    def gemini_create(self):
+        return ImagesGeminiEdit(self)
 
-        try:
-            async with self._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/openai-v2/image-vision",
-                    timeout=timeout,
-                    json={
-                        "input": captions,
-                        "base64Image": Helpers.encode_image_base64(file_path)
-                    },
-                    use_type=ResponseType.JSON
-                )
-                return ResponseResult(client, response)
-        except Exception as e:
-            self.logger.error(f"Image vision failed: {e}")
-            raise InternalServerError(f"Image vision failed: {e}") from e
-        finally:
-            pass
+    @property
+    def openai_create(self):
+        return ImagesOpenAI(self)
 
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_gemini_to_edit(
-        self,
-        prompt: str,
-        file_path: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not prompt or not prompt.strip():
-            raise EmptyMessageError("Prompt cannot be empty")
+    @property
+    def ghibli_create(self):
+        return ImagesGhibliFromOpenAI(self)
 
-        if not file_path:
-            file_path = "default.jpg"
+    @property
+    def openai_turntext(self):
+        return ImagesTurnTextOpenAI(self)
 
-        try:
-            async with self._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/gemini-latest/imagen/edit",
-                    timeout=timeout,
-                    json={
-                        "input": prompt,
-                        "base64Image": Helpers.encode_image_base64(file_path)
-                    },
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from gemini edit image API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.logger.error(f"Gemini Image generation failed: {e}")
-            raise InternalServerError(f"Gemini Image generation failed: {e}") from e
-        finally:
-            pass
-
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_openai(
-        self,
-        prompt: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not prompt or not prompt.strip():
-            raise EmptyMessageError("Prompt cannot be empty")
-
-        try:
-            async with self._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/openai-imagen",
-                    timeout=timeout,
-                    json={"input": prompt.strip()},
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
-        finally:
-            pass
-
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_ghibli_to_edit(
-        self,
-        file_path: str,
-        *,
-        style: str = "ghibli.default",
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not file_path:
-            raise BadRequestError("Required file_path")
-
-        try:
-            async with self._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/openai-imagen/edit-image/ghibli",
-                    timeout=timeout,
-                    json={"base64Image": Helpers.encode_image_base64(file_path)},
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
-        finally:
-            pass
-
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_openai_and_captions(
-        self,
-        prompt: str,
-        *,
-        enabled_format_url: str = "false",
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not prompt or not prompt.strip():
-            raise EmptyMessageError("Prompt cannot be empty")
-
-        try:
-            async with self._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/openai-imagen/turn-text",
-                    timeout=timeout,
-                    json={
-                        "input": prompt.strip(),
-                        "enabled_format_url": enabled_format_url
-                    },
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
-        finally:
-            pass
-
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_gemini_and_captions(
-        self,
-        prompt: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not prompt or not prompt.strip():
-            raise EmptyMessageError("Prompt cannot be empty")
-
-        try:
-            async with self._get_client() as client:
-                response = await client.get(
-                    tool="ryzenth-v2",
-                    path="/api/v1/gemini-latest/imagen",
-                    timeout=timeout,
-                    params=client.get_kwargs(input=prompt.strip()),
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from gemini image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.logger.error(f"Gemini Image generation failed: {e}")
-            raise InternalServerError(f"Gemini Image generation failed: {e}") from e
-        finally:
-            pass
+    @property
+    def gemini_turntext(self):
+        return ImagesTurnTextGemini(self)
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
