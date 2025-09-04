@@ -26,6 +26,7 @@ from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
 
+
 class GhibliImageGenerator:
     ALLOWED_STYLES = [
         "mononoke", "default", "totoro", "spiritedaway", "howl", "ponyo", "kiki"

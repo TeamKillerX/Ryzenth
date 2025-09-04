@@ -23,6 +23,7 @@ from .._callbody import GhibliImageGenerator
 from .._client import RyzenthApiClient
 from ..helper import HelpersUseStatic
 
+
 class GhibliOrgAsync:
     def __init__(self, parent):
         self.parent = parent
