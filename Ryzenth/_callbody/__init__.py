@@ -1,5 +1,12 @@
 from ._call_image_gemini_edit import ImagesGeminiEdit
-from ._call_image_ghibli import ImagesGhibliFromOpenAI
+from ._call_image_ghibli import (
+    GhibliMononoke,
+    GhibliTotoro,
+    GhibliSpiritedAway,
+    GhibliKiki,
+    GhibliDefault,
+    GhibliHowl,
+)
 from ._call_image_openai import ImagesOpenAI
 from ._call_image_turntext_gemini import ImagesTurnTextGemini
 from ._call_image_turntext_openai import ImagesTurnTextOpenAI
@@ -11,5 +18,11 @@ __all__ = [
     "ImagesOpenAI",
     "ImagesGhibliFromOpenAI",
     "ImagesTurnTextOpenAI",
-    "ImagesTurnTextGemini"
+    "ImagesTurnTextGemini",
+    "GhibliMononoke",
+    "GhibliTotoro",
+    "GhibliSpiritedAway",
+    "GhibliKiki",
+    "GhibliDefault",
+    "GhibliHowl"
 ]
