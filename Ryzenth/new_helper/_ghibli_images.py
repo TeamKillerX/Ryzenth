@@ -19,7 +19,14 @@
 
 import logging
 
-from .._callbody import ImagesGhibliFromOpenAI
+from .._callbody import (
+    GhibliMononoke,
+    GhibliTotoro,
+    GhibliSpiritedAway,
+    GhibliKiki,
+    GhibliDefault,
+    GhibliHowl,
+)
 from .._client import RyzenthApiClient
 from ..helper import HelpersUseStatic
 
@@ -42,5 +49,25 @@ class GhibliOrgAsync:
         return self._client
 
     @property
-    def edit(self):
-        return ImagesGhibliFromOpenAI(self)
+    def mononoke(self):
+        return GhibliMononoke(self)
+
+    @property
+    def totoro(self):
+        return GhibliTotoro(self)
+
+    @property
+    def spirited_away(self):
+        return GhibliSpiritedAway(self)
+
+    @property
+    def kiki(self):
+        return GhibliKiki(self)
+
+    @property
+    def default(self):
+        return GhibliDefault(self)
+
+    @property
+    def howl(self):
+        return GhibliHowl(self)
