@@ -1,11 +1,11 @@
 from ._call_image_gemini_edit import ImagesGeminiEdit
 from ._call_image_ghibli import (
-    GhibliMononoke,
-    GhibliTotoro,
-    GhibliSpiritedAway,
-    GhibliKiki,
     GhibliDefault,
     GhibliHowl,
+    GhibliKiki,
+    GhibliMononoke,
+    GhibliSpiritedAway,
+    GhibliTotoro,
 )
 from ._call_image_openai import ImagesOpenAI
 from ._call_image_turntext_gemini import ImagesTurnTextGemini

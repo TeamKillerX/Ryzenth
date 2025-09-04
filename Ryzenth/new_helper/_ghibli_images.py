@@ -20,12 +20,12 @@
 import logging
 
 from .._callbody import (
-    GhibliMononoke,
-    GhibliTotoro,
-    GhibliSpiritedAway,
-    GhibliKiki,
     GhibliDefault,
     GhibliHowl,
+    GhibliKiki,
+    GhibliMononoke,
+    GhibliSpiritedAway,
+    GhibliTotoro,
 )
 from .._client import RyzenthApiClient
 from ..helper import HelpersUseStatic
