@@ -17,8 +17,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Union
 import logging
+from typing import Union
+
 from .._benchmark import Benchmark
 from .._errors import EmptyMessageError, EmptyResponseError, InternalServerError
 from .._export_class import GeneratedImageOrVideo
