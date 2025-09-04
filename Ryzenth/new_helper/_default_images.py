@@ -29,6 +29,7 @@ from .._errors import (
     InitializeAPIError,
     InternalServerError,
     WhatFuckError,
+    BadRequestError,
 )
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
@@ -160,14 +161,15 @@ class ImagesOrgAsync:
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
-    async def create_openai_to_ghibli_edit(
+    async def create_ghibli_to_edit(
         self,
         file_path: str,
         *,
+        style: str = "ghibli.default",
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not file_path:
-            file_path = "default.jpg"
+            raise BadRequestError("Required file_path")
 
         try:
             async with self._get_client() as client:
