@@ -31,7 +31,7 @@ from .._errors import (
     InternalServerError,
     WhatFuckError,
 )
-from .._callbody import ImagesVision, ImagesGeminiEdit
+from .._callbody import ImagesVision, ImagesGeminiEdit, ImagesOpenAI
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers, HelpersUseStatic
@@ -67,35 +67,9 @@ class ImagesOrgAsync:
     def gemini_create(self):
         return ImagesGeminiEdit(self)
 
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_openai(
-        self,
-        prompt: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not prompt or not prompt.strip():
-            raise EmptyMessageError("Prompt cannot be empty")
-
-        try:
-            async with self._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/openai-imagen",
-                    timeout=timeout,
-                    json={"input": prompt.strip()},
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from OpenAI image generation API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.logger.error(f"OpenAI Image generation failed: {e}")
-            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
-        finally:
-            pass
+    @property
+    def openai_create(self):
+        return ImagesOpenAI(self)
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
