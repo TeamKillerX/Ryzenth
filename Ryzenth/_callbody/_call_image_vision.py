@@ -36,10 +36,6 @@ class ImagesVision:
         return self
 
     @property
-    def to(self):
-        return self
-
-    @property
     def ask(self):
         return self
 

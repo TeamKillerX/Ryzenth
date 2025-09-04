@@ -32,11 +32,7 @@ class ImagesGeminiEdit:
         self.parent = parent
 
     @property
-    def gemini(self):
-        return self
-
-    @property
-    def to(self):
+    def run(self):
         return self
 
     @property
