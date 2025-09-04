@@ -32,15 +32,15 @@ class ImagesTurnTextGemini:
         self.parent = parent
 
     @property
-    def run(self):
-        return self
-
-    @property
-    def _and(self):
+    def and_chain(self):
         return self
 
     @property
     def captions(self):
+        return self
+
+    @property
+    def run(self):
         return self
 
     @Benchmark.performance(level=logging.DEBUG)

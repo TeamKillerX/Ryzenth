@@ -58,6 +58,7 @@ from .new_helper import (
     ChatsOpenAIAsync,
     ChatsQwenAsync,
     ChatsZaiAsync,
+    GhibliOrgAsync,
     ImagesFluxAsync,
     ImagesOpenAIAsync,
     ImagesOrgAsync,
@@ -78,6 +79,7 @@ class RyzenthOrg:
         self._api_key = api_key
         self._session = None
         self._closed = False
+        self.ghibli = GhibliOrgAsync(self)
         self.hugging_chat = ChatsHuggingFaceAsync(self)
         self.flux_images = ImagesFluxAsync(self)
         self.zai_chat = ChatsZaiAsync(self)

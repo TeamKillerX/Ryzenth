@@ -24,7 +24,6 @@ from typing import List, Union
 from .._benchmark import Benchmark
 from .._callbody import (
     ImagesGeminiEdit,
-    ImagesGhibliFromOpenAI,
     ImagesOpenAI,
     ImagesTurnTextGemini,
     ImagesTurnTextOpenAI,
@@ -67,27 +66,23 @@ class ImagesOrgAsync:
         return self._client
 
     @property
-    def vision_create(self):
+    def vision(self):
         return ImagesVision(self)
 
     @property
-    def gemini_create(self):
+    def gemini(self):
         return ImagesGeminiEdit(self)
 
     @property
-    def openai_create(self):
+    def openai(self):
         return ImagesOpenAI(self)
 
     @property
-    def ghibli_create(self):
-        return ImagesGhibliFromOpenAI(self)
-
-    @property
-    def openai_turntext(self):
+    def same_openai(self):
         return ImagesTurnTextOpenAI(self)
 
     @property
-    def gemini_turntext(self):
+    def same_gemini(self):
         return ImagesTurnTextGemini(self)
 
     @Benchmark.performance(level=logging.DEBUG)
