@@ -32,11 +32,11 @@ class ImagesGeminiEdit:
         self.parent = parent
 
     @property
-    def run(self):
+    def edit(self):
         return self
 
     @property
-    def edit(self):
+    def run(self):
         return self
 
     @Benchmark.performance(level=logging.DEBUG)
