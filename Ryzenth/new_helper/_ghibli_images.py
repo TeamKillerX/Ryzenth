@@ -19,14 +19,7 @@
 
 import logging
 
-from .._callbody import (
-    GhibliDefault,
-    GhibliHowl,
-    GhibliKiki,
-    GhibliMononoke,
-    GhibliSpiritedAway,
-    GhibliTotoro,
-)
+from .._callbody import GhibliImageGenerator
 from .._client import RyzenthApiClient
 from ..helper import HelpersUseStatic
 
@@ -34,9 +27,23 @@ from ..helper import HelpersUseStatic
 class GhibliOrgAsync:
     def __init__(self, parent):
         self.parent = parent
-        self._client = None
-        self.request = HelpersUseStatic
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
+        self._client = None
+
+        self._styles = [
+            "totoro",
+            "mononoke",
+            "default",
+            "spirited_away",
+            "howls_castle",
+            "kiki_delivery",
+        ]
+        for style in self._styles:
+            setattr(
+                self,
+                style,
+                GhibliImageGenerator(self, style=style)
+            )
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
@@ -47,27 +54,3 @@ class GhibliOrgAsync:
                 use_default_headers=True,
             )
         return self._client
-
-    @property
-    def mononoke(self):
-        return GhibliMononoke(self)
-
-    @property
-    def totoro(self):
-        return GhibliTotoro(self)
-
-    @property
-    def spirited_away(self):
-        return GhibliSpiritedAway(self)
-
-    @property
-    def kiki(self):
-        return GhibliKiki(self)
-
-    @property
-    def default(self):
-        return GhibliDefault(self)
-
-    @property
-    def howl(self):
-        return GhibliHowl(self)
