@@ -36,10 +36,6 @@ class ImagesGeminiEdit:
         return self
 
     @property
-    def to(self):
-        return self
-
-    @property
     def edit(self):
         return self
 
