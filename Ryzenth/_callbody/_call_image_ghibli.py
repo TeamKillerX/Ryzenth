@@ -29,7 +29,12 @@ from ..helper import AutoRetry, Helpers
 
 class GhibliImageGenerator:
     ALLOWED_STYLES = [
-        "mononoke", "default", "totoro", "spiritedaway", "howl", "ponyo", "kiki"
+        "totoro",
+        "mononoke",
+        "default",
+        "spirited_away",
+        "howls_castle",
+        "kiki_delivery",
     ]
     def __init__(self, parent, style: str):
         if style not in self.ALLOWED_STYLES:
