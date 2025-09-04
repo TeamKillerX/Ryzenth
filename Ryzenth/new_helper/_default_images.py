@@ -31,7 +31,7 @@ from .._errors import (
     InternalServerError,
     WhatFuckError,
 )
-from .._callbody import ImagesVision
+from .._callbody import ImagesVision, ImagesGeminiEdit
 from .._export_class import GeneratedImageOrVideo, ResponseResult
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers, HelpersUseStatic
@@ -63,42 +63,9 @@ class ImagesOrgAsync:
     def vision_create(self):
         return ImagesVision(self)
 
-    @Benchmark.performance(level=logging.DEBUG)
-    @AutoRetry(max_retries=3, delay=1.5)
-    async def create_gemini_to_edit(
-        self,
-        prompt: str,
-        file_path: str,
-        *,
-        timeout: Union[int, float] = 100
-    ) -> GeneratedImageOrVideo:
-        if not prompt or not prompt.strip():
-            raise EmptyMessageError("Prompt cannot be empty")
-
-        if not file_path:
-            file_path = "default.jpg"
-
-        try:
-            async with self._get_client() as client:
-                response = await client.post(
-                    tool="ryzenth-v2",
-                    path="/api/v1/gemini-latest/imagen/edit",
-                    timeout=timeout,
-                    json={
-                        "input": prompt,
-                        "base64Image": Helpers.encode_image_base64(file_path)
-                    },
-                    use_type=ResponseType.JSON
-                )
-                if not response:
-                    raise EmptyResponseError(
-                        "Empty response from gemini edit image API")
-                return GeneratedImageOrVideo(client=client, content=response)
-        except Exception as e:
-            self.logger.error(f"Gemini Image generation failed: {e}")
-            raise InternalServerError(f"Gemini Image generation failed: {e}") from e
-        finally:
-            pass
+    @property
+    def gemini_create(self):
+        return ImagesGeminiEdit(self)
 
     @Benchmark.performance(level=logging.DEBUG)
     @AutoRetry(max_retries=3, delay=1.5)
