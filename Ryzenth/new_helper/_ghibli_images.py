@@ -18,7 +18,9 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+
 import requests
+
 from .._callbody import GhibliImageGenerator
 from .._client import RyzenthApiClient
 from ..helper import HelpersUseStatic
