@@ -42,6 +42,7 @@ class GhibliImageGenerator:
         self,
         file_path: str,
         *,
+        model: "ghibli-4.1-smooth",
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not file_path:
@@ -56,6 +57,7 @@ class GhibliImageGenerator:
                     json={
                         "base64Image": Helpers.encode_image_base64(file_path),
                         "style": f"ghibli.{self.style}",
+                        "model": model
                     },
                     use_type=ResponseType.JSON
                 )
@@ -66,3 +68,5 @@ class GhibliImageGenerator:
         except Exception as e:
             self.parent.logger.error(f"Ghibli image generation failed: {e}")
             raise InternalServerError(f"Ghibli image generation failed: {e}") from e
+        finally:
+            pass
