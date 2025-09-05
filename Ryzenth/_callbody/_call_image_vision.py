@@ -36,7 +36,7 @@ class ImagesVision:
         return self
 
     @property
-    def run(self):
+    def ask(self):
         return self
 
     @Benchmark.performance(level=logging.DEBUG)
