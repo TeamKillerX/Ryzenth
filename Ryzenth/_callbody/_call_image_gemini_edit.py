@@ -73,3 +73,5 @@ class ImagesGeminiEdit:
         except Exception as e:
             self.parent.logger.error(f"Gemini Image generation failed: {e}")
             raise InternalServerError(f"Gemini Image generation failed: {e}") from e
+        finally:
+            pass
