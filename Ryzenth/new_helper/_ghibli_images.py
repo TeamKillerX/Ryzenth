@@ -19,37 +19,36 @@
 
 import logging
 
+import requests
+
 from .._callbody import GhibliImageGenerator
 from .._client import RyzenthApiClient
 from ..helper import HelpersUseStatic
 
 
 class GhibliOrgAsync:
+    DEFAULT_STYLES = [
+        "totoro",
+        "mononoke",
+        "default",
+        "kaguya_anime",
+        "princess_mononoke_anime",
+        "grave_of_fireflies_anime",
+        "ponyo_anime",
+        "spirited_away",
+        "howls_castle",
+        "kiki_delivery",
+    ]
+
     def __init__(self, parent):
         self.parent = parent
         self.logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
         self._client = None
+        self._styles = []
+        self.loaded_list()
 
-        self._styles = [
-            "totoro",
-            "mononoke",
-            "default",
-            "kaguya_anime",
-            "cartoon",
-            "computer_zbrush",
-            "princess_mononoke_anime",
-            "grave_of_fireflies_anime",
-            "ponyo_anime",
-            "spirited_away",
-            "howls_castle",
-            "kiki_delivery",
-        ]
         for style in self._styles:
-            setattr(
-                self,
-                style,
-                GhibliImageGenerator(self, style=style)
-            )
+            setattr(self, style, GhibliImageGenerator(self, style=style))
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
@@ -60,6 +59,22 @@ class GhibliOrgAsync:
                 use_default_headers=True,
             )
         return self._client
+
+    def loaded_list(self):
+        try:
+            response = requests.get(
+                "https://api.ryzenths.dpdns.org/api/v1/ghibli/list", timeout=5
+            )
+            response.raise_for_status()
+            data = response.json()
+            if "data" in data and isinstance(data["data"], list):
+                self._styles = data["data"]
+                self.logger.info("Loaded styles from API")
+            else:
+                raise ValueError("Invalid response format")
+        except Exception as e:
+            self.logger.warning(f"Failed to fetch styles from API, using fallback: {e}")
+            self._styles = self.DEFAULT_STYLES
 
     async def close(self):
         if self._client:
