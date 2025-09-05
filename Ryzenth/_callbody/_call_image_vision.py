@@ -64,3 +64,5 @@ class ImagesVision:
         except Exception as e:
             self.parent.logger.error(f"Image vision failed: {e}")
             raise InternalServerError(f"Image vision failed: {e}") from e
+        finally:
+            pass

@@ -70,3 +70,5 @@ class ImagesTurnTextOpenAI:
         except Exception as e:
             self.parent.logger.error(f"OpenAI Image generation failed: {e}")
             raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+        finally:
+            pass
