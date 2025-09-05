@@ -35,6 +35,8 @@ class GhibliOrgAsync:
             "mononoke",
             "default",
             "kaguya_anime",
+            "cartoon",
+            "computer_zbrush",
             "princess_mononoke_anime",
             "grave_of_fireflies_anime",
             "ponyo_anime",
