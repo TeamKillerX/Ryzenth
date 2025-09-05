@@ -36,10 +36,6 @@ class ImagesTurnTextGemini:
         return self
 
     @property
-    def captions(self):
-        return self
-
-    @property
     def run(self):
         return self
 

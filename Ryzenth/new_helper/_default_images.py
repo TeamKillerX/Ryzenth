@@ -78,11 +78,11 @@ class ImagesOrgAsync:
         return ImagesOpenAI(self)
 
     @property
-    def same_openai(self):
+    def captions_openai(self):
         return ImagesTurnTextOpenAI(self)
 
     @property
-    def same_gemini(self):
+    def captions_gemini(self):
         return ImagesTurnTextGemini(self)
 
     @Benchmark.performance(level=logging.DEBUG)
