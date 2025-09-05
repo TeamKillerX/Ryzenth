@@ -58,3 +58,14 @@ class GhibliOrgAsync:
                 use_default_headers=True,
             )
         return self._client
+
+    async def close(self):
+        if self._client:
+            await self._client.close()
+            self._client = None
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
