@@ -42,7 +42,7 @@ class GhibliImageGenerator:
         self,
         file_path: str,
         *,
-        model: "ghibli-4.1-smooth",
+        model: str = "ghibli-4.1-smooth",
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not file_path:
