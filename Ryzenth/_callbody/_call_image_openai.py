@@ -21,10 +21,10 @@ import logging
 from typing import Union
 
 from .._benchmark import Benchmark
-from .._errors import EmptyMessageError, EmptyResponseError, InternalServerError
+from .._errors import EmptyMessageError, EmptyResponseError, InternalServerError, BadRequestError
 from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
-from ..helper import AutoRetry
+from ..helper import AutoRetry, Helpers
 
 
 class ImagesOpenAI:
@@ -129,11 +129,14 @@ class ImagesEditOpenAI:
     async def __call__(
         self,
         prompt: str,
+        file_path: str,
         *,
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
             raise EmptyMessageError("Prompt cannot be empty")
+        if not file_path:
+            raise BadRequestError("Required file_path")
 
         try:
             async with self.parent._get_client() as client:
@@ -143,7 +146,7 @@ class ImagesEditOpenAI:
                     timeout=timeout,
                     json={
                         "input": prompt.strip(),
-                        "base64Image": ""
+                        "base64Image": Helpers.encode_image_base64(file_path)
                     },
                     use_type=ResponseType.JSON
                 )
