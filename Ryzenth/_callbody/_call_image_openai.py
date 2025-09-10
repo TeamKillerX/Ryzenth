@@ -144,9 +144,16 @@ class ImagesEditOpenAI:
                     tool="ryzenth-v2",
                     path="/api/v1/openai/edit/images",
                     timeout=timeout,
+                    try:
+                        base64_image = Helpers.encode_image_base64(file_path)
+                    except (FileNotFoundError, IOError) as encode_err:
+                        raise BadRequestError(f"Image file not found or unreadable: {file_path}") from encode_err
+                    except Exception as encode_err:
+                        raise BadRequestError(f"Failed to encode image: {encode_err}") from encode_err
+
                     json={
                         "input": prompt.strip(),
-                        "base64Image": Helpers.encode_image_base64(file_path)
+                        "base64Image": base64_image
                     },
                     use_type=ResponseType.JSON
                 )
