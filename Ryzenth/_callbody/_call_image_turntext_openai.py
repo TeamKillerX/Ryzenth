@@ -55,7 +55,7 @@ class ImagesTurnTextOpenAI:
             async with self.parent._get_client() as client:
                 response = await client.post(
                     tool="ryzenth-v2",
-                    path="/api/v1/openai-imagen/turn-text",
+                    path="/api/v1/openai/images/captions",
                     timeout=timeout,
                     json={
                         "input": prompt.strip(),
