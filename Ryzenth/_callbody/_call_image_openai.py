@@ -144,16 +144,9 @@ class ImagesEditOpenAI:
                     tool="ryzenth-v2",
                     path="/api/v1/openai/edit/images",
                     timeout=timeout,
-                    try:
-                        base64_image = Helpers.encode_image_base64(file_path)
-                    except (FileNotFoundError, IOError) as encode_err:
-                        raise BadRequestError(f"Image file not found or unreadable: {file_path}") from encode_err
-                    except Exception as encode_err:
-                        raise BadRequestError(f"Failed to encode image: {encode_err}") from encode_err
-
                     json={
                         "input": prompt.strip(),
-                        "base64Image": base64_image
+                        "base64Image": Helpers.encode_image_base64(file_path)
                     },
                     use_type=ResponseType.JSON
                 )
@@ -161,6 +154,8 @@ class ImagesEditOpenAI:
                     raise EmptyResponseError(
                         "Empty response from OpenAI image generation API")
                 return GeneratedImageOrVideo(client=client, content=response)
+        except (FileNotFoundError, IOError) as encode_err:
+            raise BadRequestError(f"Image file not found or unreadable: {file_path}") from encode_err
         except Exception as e:
             self.parent.logger.error(f"OpenAI Image generation failed: {e}")
             raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
