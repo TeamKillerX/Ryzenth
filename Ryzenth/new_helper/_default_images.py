@@ -23,9 +23,9 @@ from typing import List, Union
 
 from .._benchmark import Benchmark
 from .._callbody import (
+    ImagesEditOpenAI,
     ImagesGeminiEdit,
     ImagesOpenAI,
-    ImagesEditOpenAI,
     ImagesTurnTextGemini,
     ImagesTurnTextOpenAI,
     ImagesVision,

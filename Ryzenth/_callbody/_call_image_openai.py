@@ -21,7 +21,7 @@ import logging
 from typing import Union
 
 from .._benchmark import Benchmark
-from .._errors import EmptyMessageError, EmptyResponseError, InternalServerError, BadRequestError
+from .._errors import BadRequestError, EmptyMessageError, EmptyResponseError, InternalServerError
 from .._export_class import GeneratedImageOrVideo
 from ..enums import ResponseType
 from ..helper import AutoRetry, Helpers
