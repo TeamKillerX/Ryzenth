@@ -110,3 +110,49 @@ class ImagesTurnTextOpenAI:
             raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
         finally:
             pass
+
+
+class ImagesEditOpenAI:
+    def __init__(self, parent):
+        self.parent = parent
+
+    @property
+    def edit(self):
+        return self
+
+    @property
+    def run(self):
+        return self
+
+    @Benchmark.performance(level=logging.DEBUG)
+    @AutoRetry(max_retries=3, delay=1.5)
+    async def __call__(
+        self,
+        prompt: str,
+        *,
+        timeout: Union[int, float] = 100
+    ) -> GeneratedImageOrVideo:
+        if not prompt or not prompt.strip():
+            raise EmptyMessageError("Prompt cannot be empty")
+
+        try:
+            async with self.parent._get_client() as client:
+                response = await client.post(
+                    tool="ryzenth-v2",
+                    path="/api/v1/openai/edit/images",
+                    timeout=timeout,
+                    json={
+                        "input": prompt.strip(),
+                        "base64Image": ""
+                    },
+                    use_type=ResponseType.JSON
+                )
+                if not response:
+                    raise EmptyResponseError(
+                        "Empty response from OpenAI image generation API")
+                return GeneratedImageOrVideo(client=client, content=response)
+        except Exception as e:
+            self.parent.logger.error(f"OpenAI Image generation failed: {e}")
+            raise InternalServerError(f"OpenAI Image generation failed: {e}") from e
+        finally:
+            pass
