@@ -50,7 +50,7 @@ class ImagesOpenAI:
             async with self.parent._get_client() as client:
                 response = await client.post(
                     tool="ryzenth-v2",
-                    path="/api/v1/openai-imagen",
+                    path="/api/v1/openai/images",
                     timeout=timeout,
                     json={"input": prompt.strip()},
                     use_type=ResponseType.JSON
