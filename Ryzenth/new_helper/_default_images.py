@@ -23,6 +23,7 @@ from typing import List, Union
 
 from .._benchmark import Benchmark
 from .._callbody import (
+    ImagesEditOpenAI,
     ImagesGeminiEdit,
     ImagesOpenAI,
     ImagesTurnTextGemini,
@@ -76,6 +77,10 @@ class ImagesOrgAsync:
     @property
     def openai(self):
         return ImagesOpenAI(self)
+
+    @property
+    def and_openai(self):
+        return ImagesEditOpenAI(self)
 
     @property
     def captions_openai(self):
