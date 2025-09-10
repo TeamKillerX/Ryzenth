@@ -25,6 +25,7 @@ from .._benchmark import Benchmark
 from .._callbody import (
     ImagesGeminiEdit,
     ImagesOpenAI,
+    ImagesEditOpenAI,
     ImagesTurnTextGemini,
     ImagesTurnTextOpenAI,
     ImagesVision,
@@ -76,6 +77,10 @@ class ImagesOrgAsync:
     @property
     def openai(self):
         return ImagesOpenAI(self)
+
+    @property
+    def and_openai(self):
+        return ImagesEditOpenAI(self)
 
     @property
     def captions_openai(self):
