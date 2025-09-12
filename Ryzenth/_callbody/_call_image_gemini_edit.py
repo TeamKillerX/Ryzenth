@@ -46,6 +46,7 @@ class ImagesGeminiEdit:
         prompt: str,
         file_path: str,
         *,
+        edit_check_only: bool = False,
         timeout: Union[int, float] = 100
     ) -> GeneratedImageOrVideo:
         if not prompt or not prompt.strip():
@@ -56,9 +57,10 @@ class ImagesGeminiEdit:
 
         try:
             async with self.parent._get_client() as client:
+                path = "/api/v1/gemini-latest/image-preview/edit" if edit_check_only else "/api/v1/gemini-latest/imagen/edit"
                 response = await client.post(
                     tool="ryzenth-v2",
-                    path="/api/v1/gemini-latest/imagen/edit",
+                    path=path,
                     timeout=timeout,
                     json={
                         "input": prompt,
