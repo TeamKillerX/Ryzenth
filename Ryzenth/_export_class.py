@@ -95,14 +95,18 @@ class GeneratedImageOrVideo:
     async def to_buffer_request(
         self,
         response_content,
+        default_ryzenth_openai=False,
         return_image_base64=False,
-        disabled_http=False,
+        disabled_http_with_buffer=False,
     ):
         import requests
         try:
-            if disabled_http:
+            if disabled_http_with_buffer:
+                _content = response_content["data"]["image"]["result"] if default_ryzenth_openai else response_content
                 return self._client.to_buffer(
-                    response_content, return_image_base64=return_image_base64)
+                    _content,
+                    return_image_base64=return_image_base64
+                )
             response = requests.get(response_content)
             if response.status_code != 200:
                 raise WhatFuckError(
