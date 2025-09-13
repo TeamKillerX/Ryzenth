@@ -48,6 +48,7 @@ class ImagesOrgAsync:
     def __init__(self, parent):
         self.parent = parent
         self._client = None
+        self.model_ultra_toggle = "disabled"
         self.request = HelpersUseStatic
         self.logger = logging.getLogger(
             f"{__name__}.{self.__class__.__name__}")
@@ -57,7 +58,7 @@ class ImagesOrgAsync:
             try:
                 self._client = RyzenthApiClient(
                     tools_name=["ryzenth-v2"],
-                    api_key={"ryzenth-v2": [{}]},
+                    api_key={"ryzenth-v2": [{"X-UltraPlus-Async": self.model_ultra_toggle}]},
                     rate_limit=100,
                     use_default_headers=True
                 )
