@@ -29,7 +29,7 @@ from ._errors import WhatFuckError
 
 class ResponseResult:
     """Handle API response results with various output formats."""
-    
+
     def __init__(self, client=None, response=None, is_ultimate: bool = False):
         self._client = client
         self._is_ultimate = is_ultimate
@@ -58,7 +58,7 @@ class ResponseResult:
 
 class GeneratedImageOrVideo:
     """Handle generated image or video content with various operations."""
-    
+
     def __init__(self, client, content=None, file_path=None, logger=None):
         self._client = client
         self._content = content
@@ -72,26 +72,26 @@ class GeneratedImageOrVideo:
     ):
         """Poll task status until completion or failure."""
         retries = 0
-        
+
         while retries < max_retries:
             task_id = self._content["output"]["task_id"]
-            
+
             result = await self._client.get(
                 tool="alibaba",
                 path=f"/api/v1/tasks/{task_id}",
                 timeout=100
             )
-            
+
             status = result["output"]["task_status"]
-            
+
             if status == "SUCCEEDED":
                 return self._client.dict_convert_to_dot(result["output"])
             elif status == "FAILED":
                 raise WhatFuckError("Qwen Failed to generate image or video")
-                
+
             await asyncio.sleep(poll_interval)
             retries += 1
-            
+
         raise WhatFuckError(
             f"Task polling exceeded maximum retries ({max_retries})")
 
@@ -106,14 +106,14 @@ class GeneratedImageOrVideo:
 
         saved_path = await self._client.to_image_class(
             self._content, self._file_path)
-        
+
         if not saved_path:
             raise WhatFuckError("Failed to save generated image")
-            
+
         if self._logger:
             self._logger.info(
                 f"Successfully generated and saved image to: {saved_path}")
-                
+
         return saved_path
 
     async def to_buffer_request(
@@ -126,24 +126,24 @@ class GeneratedImageOrVideo:
         """Convert response content to buffer format."""
         try:
             if disabled_http_with_buffer:
-                content = (response_content["data"]["image"]["result"] 
+                content = (response_content["data"]["image"]["result"]
                           if default_ryzenth_openai else response_content)
                 return self._client.to_buffer(
                     content,
                     return_image_base64=return_image_base64
                 )
-                
+
             response = requests.get(response_content)
-            
+
             if response.status_code != 200:
                 raise WhatFuckError(
                     f"HTTP {response.status_code}: Request failed")
-                    
+
             return self._client.to_buffer(
-                response.content, 
+                response.content,
                 return_image_base64=return_image_base64
             )
-            
+
         except Exception as e:
             raise WhatFuckError(f"Request error: {e}") from e
 
