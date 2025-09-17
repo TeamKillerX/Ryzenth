@@ -72,13 +72,13 @@ class HelpersUseStatic:
 def to_buffer(
     response=None,
     filename="default.jpg",
-    return_image_base64=False
+    return_default_base64=False
 ):
-    allowed_extensions = (".jpg", ".jpeg", ".png", ".gif")
+    allowed_extensions = (".jpg", ".jpeg", ".png", ".gif", ".mp4")
     if not filename.lower().endswith(allowed_extensions):
         return None
     with open(filename, "wb") as f:
-        if return_image_base64:
+        if return_default_base64:
             if not response:
                 return None
             try:
