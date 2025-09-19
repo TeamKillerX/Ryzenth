@@ -149,7 +149,7 @@ const completion = await clients.chat.completions.create({
   model: 'moonshotai/kimi-k2-instruct',
   messages: [
     { role: 'system', content: 'Talk like a pirate.' },
-    { role: 'user', content: 'What your name?' },
+    { role: 'user', content: "What's your name?" },
   ],
 });
 
