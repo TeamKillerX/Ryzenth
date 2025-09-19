@@ -88,6 +88,75 @@ results = await chat.ask(
 print(await results.to_dict())
 ```
 
+## OpenAI compatibility
+- Support endpoints:
+- `https://api.ryzenths.dpdns.org/api/v1/chat/completions`
+- `https://api.ryzenths.dpdns.org/api/v1/responses`
+
+### Frequently Asked Questions
+>
+> **Is there a free trial for unlimited?**
+>
+> Yes! All free versions come with a free trial, no credit card required.
+>
+You can use source code [OpenAI Python SDK on GitHub](https://github.com/openai/openai-python) or [OpenAI Javascript SDK on GitHub](https://github.com/openai/openai-node)
+
+**List Models:**
+
+`chat.completions` (only)
+1. `qwen-plus`
+2. `openai/gpt-oss-20b`
+3. `moonshotai/kimi-k2-instruct` (**speed recommend**)
+4. `meta-llama/llama-guard-4-12b`
+5. `meta-llama/llama-4-scout-17b-16e-instruct`
+6. `ryzenth-web-compatibility`
+7. `gemini-2.0-flash`
+
+`responses` (only)
+1. `llama-3.3-70b-versatile` (**speed recommend**)
+2. `gpt-5`
+3. `gpt-5-mini`
+4. `gpt-5-nano`
+5. `ryzenth-ingalesh`
+6. `ryzenth-darknet`
+7. `ryzenth-ultraCEO`
+8. `ryzenth-otakuAI`
+
+Javascript Code
+```js
+import OpenAI from 'openai';
+
+const clients = new OpenAI({
+  apiKey: "ryzenth-free",
+  baseURL: "https://api.ryzenths.dpdns.org/api/v1"
+});
+
+const response = await clients.responses.create({
+  model: 'gpt-5',
+  input: [
+    {
+      role: "developer",
+      content: "Talk like a pirate."
+    },
+    {
+      role: "user",
+      content: "Are semicolons optional in JavaScript?",
+    }
+  ]
+});
+
+const completion = await clients.chat.completions.create({
+  model: 'moonshotai/kimi-k2-instruct',
+  messages: [
+    { role: 'system', content: 'Talk like a pirate.' },
+    { role: 'user', content: 'What your name?' },
+  ],
+});
+
+console.log(completion.choices[0].message.content);
+console.log(response.output_text);
+```
+
 ## Platform full support
 - [x] Claude
 - [x] OpenAI
