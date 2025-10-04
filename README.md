@@ -93,12 +93,6 @@ print(await results.to_dict())
 - `https://api.ryzenths.dpdns.org/api/v1/chat/completions`
 - `https://api.ryzenths.dpdns.org/api/v1/responses`
 
-### Frequently Asked Questions
->
-> **Is there a free trial for unlimited?**
->
-> Yes! All free versions come with a free trial, no credit card required.
->
 You can use source code [OpenAI Python SDK on GitHub](https://github.com/openai/openai-python) or [OpenAI Javascript SDK on GitHub](https://github.com/openai/openai-node)
 
 **List Models:**
@@ -127,7 +121,7 @@ Javascript Code
 import OpenAI from 'openai';
 
 const clients = new OpenAI({
-  apiKey: "ryzenth-free",
+  apiKey: "apikey-required",
   baseURL: "https://api.ryzenths.dpdns.org/api/v1"
 });
 
