@@ -18,6 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
+import os
 from typing import Dict, List, Union
 
 from .._benchmark import Benchmark
@@ -34,6 +35,7 @@ from .._errors import (
     InvalidMessageError,
     InvalidTypeError,
     WhatFuckError,
+    AuthenticationError,
 )
 from .._export_class import ResponseResult
 from ..enums import ResponseType
@@ -52,10 +54,21 @@ class ChatOrgAsync:
 
     def _get_client(self) -> RyzenthApiClient:
         if self._client is None:
+            api_key = getattr(
+                self.parent,
+                "_api_key",
+                None) or os.environ.get("RYZENTH_API_KEY")
+
+            if not api_key or not isinstance(
+                    api_key, str) or not api_key.strip():
+                raise AuthenticationError(
+                    "Missing or invalid API key for Ryzenth client initialization.")
             try:
                 self._client = RyzenthApiClient(
                     tools_name=["ryzenth-v2"],
-                    api_key={"ryzenth-v2": [{}]},
+                    api_key={"ryzenth-v2": [{
+                        "Authorization": f"Bearer {api_key}"
+                    }]},
                     rate_limit=100,
                     use_default_headers=True
                 )
