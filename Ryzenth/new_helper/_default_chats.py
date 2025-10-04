@@ -35,7 +35,6 @@ from .._errors import (
     InvalidMessageError,
     InvalidTypeError,
     WhatFuckError,
-    AuthenticationError,
 )
 from .._export_class import ResponseResult
 from ..enums import ResponseType
