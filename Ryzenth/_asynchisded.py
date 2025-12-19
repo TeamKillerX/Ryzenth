@@ -47,7 +47,7 @@ from .helper import (
     WhatAsync,
     WhisperAsync,
 )
-from .new_helper import (
+from .new_helper import (  # GhibliOrgAsync,
     ChatOrgAsync,
     ChatsClaudeAsync,
     ChatsCohereAsync,
@@ -58,7 +58,6 @@ from .new_helper import (
     ChatsOpenAIAsync,
     ChatsQwenAsync,
     ChatsZaiAsync,
-    # GhibliOrgAsync,
     ImagesFluxAsync,
     ImagesOpenAIAsync,
     ImagesOrgAsync,
