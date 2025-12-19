@@ -5,7 +5,8 @@ from ._default_chats import ChatOrgAsync
 from ._default_images import ImagesOrgAsync
 from ._flux_images import ImagesFluxAsync
 from ._gemini_chats import ChatsGeminiAsync
-from ._ghibli_images import GhibliOrgAsync
+
+# from ._ghibli_images import GhibliOrgAsync
 from ._grok_chats import ChatsGrokAsync
 from ._huggingface_chats import ChatsHuggingFaceAsync
 from ._old_gemini_chats import OldChatsGeminiAsync
@@ -31,8 +32,8 @@ __all__ = [
     "ImagesOrgAsync",
     "ImagesOpenAIAsync",
     "ImagesFluxAsync",
-    "VideosQwenAsync",
-    "GhibliOrgAsync"
+    "VideosQwenAsync"
+    #"GhibliOrgAsync"
 ]
 
 __author__ = "Randy W @xtdevs, @xtsea"
